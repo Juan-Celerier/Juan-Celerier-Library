@@ -1,0 +1,1 @@
+{"version":3,"file":"block-borrower.d.ts","sourceRoot":"","sources":["../../../src/use-cases/Borrower/block-borrower.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,iCAAiC,CAAC;AAK3D,OAAO,EAAE,kBAAkB,EAAE,MAAM,gDAAgD,CAAC;AAEpF,wBAAsB,aAAa,CACjC,UAAU,EAAE,kBAAkB,EAC9B,EAAE,EAAE,MAAM,GACT,OAAO,CAAC,QAAQ,CAAC,CAYnB"}

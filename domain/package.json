@@ -1,0 +1,28 @@
+{
+  "name": "domain",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/node": "^24.2.0",
+    "@types/uuid": "^10.0.0",
+    "@vitest/coverage-v8": "1.6.1",
+    "typescript": "^5.0.0",
+    "vitest": "1.6.1"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "uuid": "^11.1.0"
+  }
+}
