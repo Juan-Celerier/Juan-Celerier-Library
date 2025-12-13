@@ -5773,6 +5773,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lucide-react@npm:^0.561.0":
+  version: 0.561.0
+  resolution: "lucide-react@npm:0.561.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/d23c96a543bdb1e11cec1f05a631f86f961f2ee17a10da42e7c297bb06c5f1587a1b66927f58082c67d8edc0749b0a5e44e543b461deab9db19d22fb9ca93cd7
+  languageName: node
+  linkType: hard
+
 "lz-string@npm:^1.5.0":
   version: 1.5.0
   resolution: "lz-string@npm:1.5.0"
@@ -8996,6 +9005,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.3.3"
     autoprefixer: "npm:^10.4.20"
     eslint-plugin-storybook: "npm:0.10.2"
+    lucide-react: "npm:^0.561.0"
     postcss: "npm:^8.4.47"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
