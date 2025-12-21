@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram } from "lucide-react"; // Íconos sociales
 import { Logo } from "./Logo";

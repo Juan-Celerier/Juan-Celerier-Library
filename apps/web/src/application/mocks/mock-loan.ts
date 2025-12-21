@@ -63,3 +63,5 @@ export const mockLoans: Loan[] = [
     createdAt: new Date("2023-04-15"),
   },
 ];
+
+export default mockLoans;

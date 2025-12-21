@@ -1,4 +1,3 @@
-import React from "react";
 import { Loader2 } from "lucide-react"; // Usamos el ícono de loader de Lucide
 
 export interface PageLoaderProps {

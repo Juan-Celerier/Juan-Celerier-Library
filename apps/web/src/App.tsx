@@ -1,33 +1,75 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import React, { Suspense } from "react";
+
+// 1. IMPORTA TUS PÁGINAS Y LOADERS
+import Index, { indexLoader } from "./pages/index";
+import LoginPage from "./pages/login";
+import RegisterPage from "./pages/register";
+
+// Auth
+import { AuthProvider } from "./application/hooks/useAuth";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+// 2. CONFIGURA LA RUTA
+const BooksPage = React.lazy(() => import("./pages/books/index"));
+const BookDetailPage = React.lazy(() => import("./pages/books/[id]"));
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <ProtectedRoute>
+        <Index />
+      </ProtectedRoute>
+    ),
+    loader: indexLoader,
+  },
+  {
+    path: "/books",
+    element: (
+      <ProtectedRoute>
+        <Suspense fallback={<div>Cargando libros...</div>}>
+          <BooksPage />
+        </Suspense>
+      </ProtectedRoute>
+    ),
+    // loader will be handled inside the page via useLoaderData when wired; alternatively we used client-side call
+  },
+  {
+    path: "/books/:id",
+    element: (
+      <ProtectedRoute>
+        <Suspense fallback={<div>Cargando detalle...</div>}>
+          <BookDetailPage />
+        </Suspense>
+      </ProtectedRoute>
+    ),
+    // loader inside page
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+  },
+]);
 
 function App() {
-  const [count, setCount] = useState(0);
-
+  // 3. RENDERIZA EL PROVEEDOR envuelto en Suspense y AuthProvider
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Suspense
+      fallback={
+        <div className="h-screen flex items-center justify-center">
+          Cargando...
+        </div>
+      }
+    >
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </Suspense>
   );
 }
 

@@ -1,5 +1,3 @@
-import React from "react";
-
 // Basado en tu entidad Category
 export interface CategoryCardProps {
   /** Nombre de la categoría a mostrar */

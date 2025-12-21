@@ -61,3 +61,5 @@ export const mockUsers: User[] = [
     createdAt: new Date("2023-03-05"),
   },
 ];
+
+export default mockUsers;
