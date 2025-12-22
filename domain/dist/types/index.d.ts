@@ -10,3 +10,4 @@ export * from "./repositories/borrower-repository.js";
 export * from "./repositories/category-repository.js";
 export * from "./repositories/reservation-repository.js";
 export * from "./repositories/verification-token-repository.js";
+export * from "./dtos/dashboard.js";
