@@ -6,12 +6,12 @@ export const mockBorrowers: Borrower[] = [
     name: "Juan",
     surname: "Pérez",
     email: "juan.perez@ejemplo.com",
-    passwordHash: "hashed_password_1", // Placeholder; no uses en prod
+    passwordHash: "hashed_password_1",
     image: "https://example.com/images/juan-perez.jpg",
     token: "jwt_token_1",
     validated: true,
     locked: false,
-    role: "STUDENT" as BorrowerRole, // Directamente como string, con assertion para el tipo
+    role: "STUDENT" as BorrowerRole,
     createdAt: new Date("2023-03-01"),
   },
   {
