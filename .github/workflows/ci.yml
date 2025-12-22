@@ -15,12 +15,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: "yarn" # Opcional: Esto ayuda a que el CI sea más rápido guardando caché
+          # Borramos la línea "cache: 'yarn'" para evitar que falle aquí
 
-      # --- AGREGA ESTE PASO AQUÍ ---
       - name: Enable Corepack
         run: corepack enable
-      # -----------------------------
 
       - name: Install dependencies
         run: yarn install --immutable || yarn install
