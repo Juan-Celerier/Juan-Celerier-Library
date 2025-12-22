@@ -10,15 +10,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: "yarn" # Opcional: Esto ayuda a que el CI sea más rápido guardando caché
+
+      # --- AGREGA ESTE PASO AQUÍ ---
+      - name: Enable Corepack
+        run: corepack enable
+      # -----------------------------
+
       - name: Install dependencies
         run: yarn install --immutable || yarn install
+
       - name: Build
         run: yarn build
+
       - name: Run tests
         run: yarn test
+
       - name: Lint
         run: yarn lint || true
