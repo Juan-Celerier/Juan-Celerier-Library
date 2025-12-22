@@ -1,7 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "./Logo";
 import SearchBox from "./Search";
 import UserActions from "./UserActions";
+import { useAuth } from "../../application/hooks/useAuth";
 
 export interface HeaderProps {
   /** Estado de autenticación del usuario */
@@ -26,6 +27,29 @@ export const Header = ({
   onLogout,
   className = "",
 }: HeaderProps) => {
+  const navigate = useNavigate();
+  let auth;
+  try {
+    auth = useAuth();
+  } catch (err) {
+    auth = undefined as any;
+  }
+
+  const resolvedIsAuthenticated =
+    typeof isAuthenticated === "boolean"
+      ? isAuthenticated
+      : Boolean(auth && auth.token);
+
+  const resolvedUserName = userName ?? auth?.user?.name;
+
+  const handleLogin = onLogin ?? (() => navigate("/login"));
+  const handleRegister = () => navigate("/register");
+  const handleLogout =
+    onLogout ??
+    (() => {
+      auth?.logout();
+      navigate("/login");
+    });
   return (
     <header
       className={`sticky top-0 z-50 w-full border-b border-neutral-100 bg-white/80 backdrop-blur-md transition-all ${className}`}
@@ -60,12 +84,12 @@ export const Header = ({
           </div>
 
           <UserActions
-            isAuthenticated={isAuthenticated}
-            userName={userName}
-            onLoginClick={onLogin}
-            onLogoutClick={onLogout}
-            onRegisterClick={() => console.log("Register clicked")}
-            onProfileClick={() => console.log("Profile clicked")}
+            isAuthenticated={resolvedIsAuthenticated}
+            userName={resolvedUserName}
+            onLoginClick={handleLogin}
+            onLogoutClick={handleLogout}
+            onRegisterClick={handleRegister}
+            onProfileClick={() => navigate("/profile")}
           />
         </div>
       </div>

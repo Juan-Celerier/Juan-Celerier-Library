@@ -15,7 +15,7 @@ const LoginPage = () => {
     setError(null);
     const res = await login(email, password);
     if (!res.ok) setError(res.message || "Error de autenticación");
-    else navigate("/");
+    else navigate("/", { state: { toast: "Sesión iniciada correctamente" } });
   };
 
   return (

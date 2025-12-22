@@ -32,7 +32,13 @@ const BookDetailPage = () => {
             </p>
             <p className="mt-4 text-neutral-700">{book.description}</p>
             <div className="mt-6">
-              <button className="bg-emerald-600 text-white px-4 py-2 rounded mr-2">
+              <button
+                className="bg-emerald-600 text-white px-4 py-2 rounded mr-2"
+                onClick={() => {
+                  // Acción mock: en el futuro llamar a apiClient.call('createReservation', { bookId: book.id })
+                  alert("Solicitud de préstamo enviada (mock)");
+                }}
+              >
                 Solicitar préstamo
               </button>
               <Link to="/books" className="text-sm text-emerald-600">

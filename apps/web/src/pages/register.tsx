@@ -17,7 +17,7 @@ const RegisterPage = () => {
     setError(null);
     const res = await register({ name, surname, email, password });
     if (!res.ok) setError(res.message || "Error al registrar");
-    else navigate("/");
+    else navigate("/", { state: { toast: "Cuenta creada correctamente" } });
   };
 
   return (

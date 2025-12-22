@@ -5,6 +5,7 @@ import React, { Suspense } from "react";
 import Index, { indexLoader } from "./pages/index";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
+const ProfilePage = React.lazy(() => import("./pages/profile"));
 
 // Auth
 import { AuthProvider } from "./application/hooks/useAuth";
@@ -13,6 +14,10 @@ import ProtectedRoute from "./components/ProtectedRoute";
 // 2. CONFIGURA LA RUTA
 const BooksPage = React.lazy(() => import("./pages/books/index"));
 const BookDetailPage = React.lazy(() => import("./pages/books/[id]"));
+
+// Loaders para las páginas de libros (los exportan sus módulos)
+import { booksLoader } from "./pages/books/index";
+import { bookLoader } from "./pages/books/[id]";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +38,7 @@ const router = createBrowserRouter([
         </Suspense>
       </ProtectedRoute>
     ),
-    // loader will be handled inside the page via useLoaderData when wired; alternatively we used client-side call
+    loader: booksLoader,
   },
   {
     path: "/books/:id",
@@ -44,7 +49,7 @@ const router = createBrowserRouter([
         </Suspense>
       </ProtectedRoute>
     ),
-    // loader inside page
+    loader: bookLoader,
   },
   {
     path: "/login",
@@ -53,6 +58,16 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <Suspense fallback={<div>Cargando perfil...</div>}>
+          <ProfilePage />
+        </Suspense>
+      </ProtectedRoute>
+    ),
   },
 ]);
 
