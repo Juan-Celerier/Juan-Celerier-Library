@@ -9,8 +9,8 @@ export type RemoteResult<T> = T | { error: string };
 
 // Controlar mocks vía variable de entorno en tiempo de build
 const env: any = (import.meta as any).env || {};
-// Forzar uso de API real para probar
-const USE_MOCKS = false; // env.VITE_USE_MOCKS !== undefined ? env.VITE_USE_MOCKS === "true" : false;
+// Forzar uso de API real para probar, pero usar mocks en tests
+const USE_MOCKS = import.meta.env.MODE === 'test' || (env.VITE_USE_MOCKS !== undefined ? env.VITE_USE_MOCKS === "true" : false);
 
 // 2. FUNCIÓN PARA CALCULAR ESTADÍSTICAS REALES
 const getDynamicStats = () => {

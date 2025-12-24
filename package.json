@@ -25,6 +25,7 @@
     "@typescript-eslint/eslint-plugin": "^8.38.0",
     "@typescript-eslint/parser": "^8.39.1",
     "@vitest/coverage-v8": "1.6.1",
+    "baseline-browser-mapping": "^2.9.11",
     "eslint": "^8.55.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.0.1",
