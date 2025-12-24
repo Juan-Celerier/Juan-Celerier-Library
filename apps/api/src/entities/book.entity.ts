@@ -33,4 +33,22 @@ export class BookEntity extends BaseEntity {
 
   @OneToMany(() => ReservationEntity, (reservation) => reservation.book)
   reservations!: ReservationEntity[];
+
+  @Column("varchar", { length: 500, nullable: true })
+  image?: string;
+
+  @Column("int", { default: 0 })
+  totalCopies!: number;
+
+  @Column("int", { default: 0 })
+  availableCopies!: number;
+
+  @Column("varchar", { length: 13, nullable: true })
+  isbn?: string;
+
+  @Column("date", { nullable: true })
+  publicationDate?: Date;
+
+  @Column("text", { nullable: true })
+  description?: string;
 }

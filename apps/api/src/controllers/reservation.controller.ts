@@ -37,6 +37,15 @@ export const reservationController = {
     });
   }),
 
+  getByUser: asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const reservations = await reservationRepository.find({
+      where: { user: { id: userId } },
+      relations: ["user", "book", "book.author"],
+    });
+    res.json(reservations);
+  }),
+
   create: asyncHandler(async (req: Request, res: Response) => {
     const { user, book, reservedAt } = req.body;
     if (!user || !book || !reservedAt)

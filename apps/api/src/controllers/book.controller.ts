@@ -14,7 +14,18 @@ export const bookController = () => {
       const books = await repository.find({
         relations: ["author", "category", "publisher"],
       });
-      res.json({ success: true, data: books });
+      const transformedBooks = books.map((book) => ({
+        id: book.id,
+        title: book.title,
+        author: book.author
+          ? `${book.author.firstName} ${book.author.lastName}`
+          : "Desconocido",
+        availableCopies: book.availableCopies,
+        imageUrl: book.image,
+        image: book.image,
+        description: book.description,
+      }));
+      res.json(transformedBooks);
     }),
 
     getById: asyncHandler(async (req: Request, res: Response) => {
@@ -24,7 +35,18 @@ export const bookController = () => {
         relations: ["author", "category", "publisher"],
       });
       if (!book) throw createDomainError("Book not found");
-      res.json({ success: true, data: book });
+      const transformedBook = {
+        id: book.id,
+        title: book.title,
+        author: book.author
+          ? `${book.author.firstName} ${book.author.lastName}`
+          : "Desconocido",
+        availableCopies: book.availableCopies,
+        imageUrl: book.image,
+        image: book.image,
+        description: book.description,
+      };
+      res.json(transformedBook);
     }),
 
     create: asyncHandler(async (req: Request, res: Response) => {

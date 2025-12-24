@@ -19,4 +19,7 @@ export class LoanEntity extends BaseEntity {
 
   @Column("date", { nullable: true })
   returnDate?: Date | null;
+
+  @Column({ type: "varchar", default: "active" })
+  status!: "active" | "returned" | "overdue";
 }

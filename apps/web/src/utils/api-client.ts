@@ -9,8 +9,8 @@ export type RemoteResult<T> = T | { error: string };
 
 // Controlar mocks vía variable de entorno en tiempo de build
 const env: any = (import.meta as any).env || {};
-const USE_MOCKS =
-  env.VITE_USE_MOCKS !== undefined ? env.VITE_USE_MOCKS === "true" : true;
+// Forzar uso de API real para probar
+const USE_MOCKS = false; // env.VITE_USE_MOCKS !== undefined ? env.VITE_USE_MOCKS === "true" : false;
 
 // 2. FUNCIÓN PARA CALCULAR ESTADÍSTICAS REALES
 const getDynamicStats = () => {
@@ -72,6 +72,15 @@ const getFeaturedBooks = () => {
 };
 
 const MOCK_REGISTRY: Record<string, any> = {
+  dashboard: {
+    // Usamos getters para que se recalculen cada vez
+    get stats() {
+      return getDynamicStats();
+    },
+    get featuredBooks() {
+      return getFeaturedBooks();
+    },
+  },
   getDashboard: {
     // Usamos getters para que se recalculen cada vez
     get stats() {
@@ -146,6 +155,20 @@ const MOCK_REGISTRY: Record<string, any> = {
       },
     };
   },
+  books: (): BookDTO[] => {
+    return mockBooks.map((b: any) => ({
+      id: b.id,
+      title: b.title,
+      author:
+        typeof (b as any).author === "string"
+          ? (b as any).author
+          : (b as any).author?.name || "Desconocido",
+      availableCopies: (b as any).availableCopies,
+      imageUrl: (b as any).image || (b as any).imageUrl,
+      image: (b as any).image || (b as any).imageUrl,
+      description: (b as any).description,
+    }));
+  },
   getBooks: (): BookDTO[] => {
     return mockBooks.map((b: any) => ({
       id: b.id,
@@ -175,6 +198,24 @@ const MOCK_REGISTRY: Record<string, any> = {
       image: book.image || book.imageUrl,
       description: book.description,
     } as BookDTO;
+  },
+  createReservation: async (params: { bookId: string }) => {
+    // Mock: simular crear reserva
+    const reservationId = `res-${Date.now()}`;
+    // En un mock simple, asumimos éxito si el libro existe
+    const book = (mockBooks as any[]).find((b) => b.id === params.bookId);
+    if (!book) return { error: "Libro no encontrado" };
+    if (book.availableCopies <= 0)
+      return { error: "No hay copias disponibles" };
+    return { id: reservationId, bookId: params.bookId, status: "active" };
+  },
+  getUserLoans: (params: { userId: string }) => {
+    // Mock: filtrar loans por borrowerId
+    return mockLoans.filter((loan) => loan.borrowerId === params.userId);
+  },
+  getUserReservations: (_params: { userId: string }) => {
+    // Mock: por ahora devolver vacío, ya que no hay mockReservations
+    return [];
   },
 };
 
@@ -209,15 +250,39 @@ export const apiClient = {
       const base = env.VITE_API_BASE_URL || "";
       if (!base) return { error: "VITE_API_BASE_URL no configurada" };
 
+      const method =
+        endpoint.startsWith("auth/") || endpoint.startsWith("dashboard") ? "POST" : "GET";
+      const body = method === "POST" ? JSON.stringify(_params) : undefined;
+
+      // Get token from localStorage
+      const token =
+        typeof window !== "undefined" ? localStorage.getItem("token") : null;
+      const headers: Record<string, string> = body
+        ? { "Content-Type": "application/json" }
+        : {};
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
       const res = await fetch(`${base}/${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(_params),
+        method,
+        headers,
+        body,
       });
 
       if (!res.ok) {
-        const text = await res.text();
-        return { error: `API error: ${res.status} ${text}` };
+        try {
+          const json = await res.json();
+          if (json && json.error) {
+            const error = json.error;
+            const message = typeof error === 'string' ? error : error?.message || `API error: ${res.status}`;
+            return { error: message };
+          }
+          return { error: `API error: ${res.status}` };
+        } catch {
+          const text = await res.text();
+          return { error: `API error: ${res.status} ${text}` };
+        }
       }
 
       const json = await res.json();

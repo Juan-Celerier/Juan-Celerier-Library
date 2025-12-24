@@ -35,6 +35,15 @@ export const loanController = {
     });
   }),
 
+  getByUser: asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const loans = await loanRepository.find({
+      where: { user: { id: userId } },
+      relations: ["user", "book", "book.author"],
+    });
+    res.json(loans);
+  }),
+
   create: asyncHandler(async (req: Request, res: Response) => {
     const { user, book, loanDate, returnDate } = req.body;
     if (!user || !book || !loanDate)
