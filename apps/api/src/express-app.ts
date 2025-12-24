@@ -26,7 +26,7 @@ export function createExpressApp(config: ExpressAppConfig = {}): Express {
   if (enableLogging) app.use(morgan("dev"));
   if (enableCompression) app.use(compression());
 
-  app.use(cors({ origin: clientUrl, credentials: true }));
+  app.use(cors({ origin: [clientUrl, "http://localhost:5174"], credentials: true }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 

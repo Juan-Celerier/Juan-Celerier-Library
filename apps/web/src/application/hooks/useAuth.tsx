@@ -37,9 +37,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (email: string, password: string) => {
     const res = await apiClient.call<any>("auth/login", { email, password });
     if (res && typeof res === "object" && "error" in res) {
-      return { ok: false, message: (res as any).error };
+      const error = (res as any).error;
+      const message =
+        typeof error === "string"
+          ? error
+          : error?.message || "Authentication failed";
+      return { ok: false, message };
     }
-    const { token: t, user: u } = res as any;
+    const { data } = res as any;
+    const { token: t, user: u } = data || {};
     setToken(t || null);
     setUser(u);
     return { ok: true };
@@ -53,9 +59,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }) => {
     const res = await apiClient.call<any>("auth/register", payload);
     if (res && typeof res === "object" && "error" in res) {
-      return { ok: false, message: (res as any).error };
+      const error = (res as any).error;
+      const message =
+        typeof error === "string"
+          ? error
+          : error?.message || "Registration failed";
+      return { ok: false, message };
     }
-    const { token: t, user: u } = res as any;
+    const { data } = res as any;
+    const { token: t, user: u } = data || {};
     setToken(t || null);
     setUser(u);
     return { ok: true };
@@ -69,7 +81,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(undefined);
       return { ok: false };
     }
-    const { token: t, user: u } = res as any;
+    const { data } = res as any;
+    const { token: t, user: u } = data || {};
     setToken(t || null);
     setUser(u);
     return { ok: true };

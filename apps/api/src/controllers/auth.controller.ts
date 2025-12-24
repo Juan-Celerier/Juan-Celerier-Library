@@ -1,40 +1,51 @@
 // apps/api/src/controllers/auth.controller.ts
 import type { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import type { AuthService } from "domain/src/services/auth-service.js";
-import type { CryptoService } from "domain/src/services/crypto-service.js";
+import bcrypt from "bcrypt";
+import { AppDataSource } from "../config/data.js";
+import { UserEntity } from "../entities/user.entity.js";
 import {
   asyncHandler,
   createDomainError,
 } from "../middlewares/error-handler.js";
-import type { User } from "domain/src/entities/User.js";
 
-export const authController = (
-  authService: AuthService,
-  cryptoService: CryptoService
-) => ({
+const userRepository = AppDataSource.getRepository(UserEntity);
+
+export const authController = () => ({
   register: asyncHandler(async (req: Request, res: Response) => {
-    const { email, password, name, role } = req.body;
+    const { email, password, name } = req.body;
     if (!email || !password || !name)
       throw createDomainError("Missing registration fields");
 
-    const hashedPassword = await cryptoService.hashPassword(password);
+    // Check if user exists
+    const existingUser = await userRepository.findOne({ where: { email } });
+    if (existingUser) throw createDomainError("User already exists");
 
-    const user = await authService.createUser({
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    const user = userRepository.create({
       email,
       name,
-      role,
       hashedPassword,
+      role: "user",
     });
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        data: user,
-        message: "User registered",
-        timestamp: new Date().toISOString(),
-      });
+    await userRepository.save(user);
+
+    res.status(201).json({
+      success: true,
+      data: {
+        token: null,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      },
+      message: "User registered",
+      timestamp: new Date().toISOString(),
+    });
   }),
 
   login: asyncHandler(async (req: Request, res: Response) => {
@@ -42,20 +53,17 @@ export const authController = (
     if (!email || !password)
       throw createDomainError("Email and password are required");
 
-    const user = await authService.findByEmail(email);
+    const user = await userRepository.findOne({ where: { email } });
     if (!user) throw createDomainError("Invalid email or password");
 
-    const valid = await cryptoService.comparePassword(
-      password,
-      (user as any).hashedPassword
-    );
+    const valid = await bcrypt.compare(password, user.hashedPassword);
     if (!valid) throw createDomainError("Invalid email or password");
 
     const token = jwt.sign(
       {
-        id: (user as any).id,
-        email: (user as any).email,
-        role: (user as any).role,
+        id: user.id,
+        email: user.email,
+        role: user.role,
       },
       process.env.JWT_SECRET!,
       { expiresIn: "24h" }
@@ -63,14 +71,22 @@ export const authController = (
 
     res.json({
       success: true,
-      data: { token, user },
+      data: {
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      },
       message: "Login successful",
       timestamp: new Date().toISOString(),
     });
   }),
 
   getProfile: asyncHandler(async (req: Request, res: Response) => {
-    const user = req.user as unknown as User | undefined;
+    const user = req.user;
     if (!user) throw createDomainError("User not authenticated");
     res.json({
       success: true,
