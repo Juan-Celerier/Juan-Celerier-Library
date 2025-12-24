@@ -1,11 +1,13 @@
 import { Link, useLoaderData } from "react-router-dom";
+import { useState, useMemo } from "react";
 import MainLayout from "../../layouts/MainLayout";
 import type { BookDTO } from "app-domain/dtos/dashboard";
 import { apiClient } from "../../utils/api-client";
 import { BookCard } from "../../components/Card/Book-card";
+import { SearchBox } from "../../components/common/Search";
 
 export const booksLoader = async () => {
-  const res = await apiClient.call<BookDTO[]>("getBooks");
+  const res = await apiClient.call<BookDTO[]>("books");
   if (res && typeof res === "object" && "error" in (res as any)) {
     return { books: [] };
   }
@@ -14,6 +16,18 @@ export const booksLoader = async () => {
 
 const BooksPage = () => {
   const { books } = useLoaderData() as { books: BookDTO[] };
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredBooks = useMemo(() => {
+    if (!searchTerm) return books;
+    return books.filter((book) =>
+      (book.title?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+      (typeof book.author === "string"
+        ? book.author.toLowerCase().includes(searchTerm.toLowerCase())
+        : (book.author as any)?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false
+      )
+    );
+  }, [books, searchTerm]);
 
   return (
     <MainLayout>
@@ -23,8 +37,10 @@ const BooksPage = () => {
           <Link to="/books" className="text-sm text-emerald-600" />
         </header>
 
+        <SearchBox onSearchChange={setSearchTerm} />
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {books.map((b) => (
+          {filteredBooks.map((b) => (
             <Link key={b.id} to={`/books/${b.id}`}>
               <BookCard
                 title={b.title || "Untitled"}

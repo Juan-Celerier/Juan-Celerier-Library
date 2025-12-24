@@ -14,6 +14,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 // 2. CONFIGURA LA RUTA
 const BooksPage = React.lazy(() => import("./pages/books/index"));
 const BookDetailPage = React.lazy(() => import("./pages/books/[id]"));
+const MyLoansPage = React.lazy(() => import("./pages/my/loans"));
+const MyReservationsPage = React.lazy(() => import("./pages/my/reservations"));
 
 // Loaders para las páginas de libros (los exportan sus módulos)
 import { booksLoader } from "./pages/books/index";
@@ -65,6 +67,26 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <Suspense fallback={<div>Cargando perfil...</div>}>
           <ProfilePage />
+        </Suspense>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/my/loans",
+    element: (
+      <ProtectedRoute>
+        <Suspense fallback={<div>Cargando préstamos...</div>}>
+          <MyLoansPage />
+        </Suspense>
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/my/reservations",
+    element: (
+      <ProtectedRoute>
+        <Suspense fallback={<div>Cargando reservas...</div>}>
+          <MyReservationsPage />
         </Suspense>
       </ProtectedRoute>
     ),

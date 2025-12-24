@@ -14,10 +14,10 @@ import { type GetPropsContext, apiClient } from "../utils/api-client";
 import type { DashboardDTO } from "app-domain/dtos/dashboard";
 
 export async function getProps(api: GetPropsContext) {
-  const result = await api.remote.call<DashboardDTO>("getDashboard");
+  const result = await api.remote.call<DashboardDTO>("dashboard");
 
   if (result && typeof result === "object" && "error" in (result as any)) {
-    console.error("Error getDashboard:", (result as any).error);
+    console.error("Error dashboard:", (result as any).error);
     return {
       dashboard: { stats: [], featuredBooks: [] } as DashboardDTO,
       error: (result as any).error,

@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { AppDataSource } from "../config/data.js";
 import { AuthorEntity } from "../entities/author.entity.js";
 import { BookEntity } from "../entities/book.entity.js";
@@ -44,9 +45,22 @@ async function seedDevDB() {
   ]);
 
   // Crear usuarios
+  const hashedAdminPassword = await bcrypt.hash("password123", 12);
+  const hashedUserPassword = await bcrypt.hash("password123", 12);
+
   const users = await em.save(UserEntity, [
-    { name: "Admin", email: "admin@test.com", role: "admin" },
-    { name: "User", email: "user@test.com", role: "user" },
+    {
+      name: "Admin",
+      email: "admin@test.com",
+      hashedPassword: hashedAdminPassword,
+      role: "admin",
+    },
+    {
+      name: "User",
+      email: "user@test.com",
+      hashedPassword: hashedUserPassword,
+      role: "user",
+    },
   ]);
 
   // Crear libros

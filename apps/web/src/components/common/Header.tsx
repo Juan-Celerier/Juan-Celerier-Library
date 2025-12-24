@@ -62,7 +62,7 @@ export const Header = ({
           {/* Navegación - Oculta en móbiles, visible en md para arriba */}
           <nav className="hidden md:flex items-center gap-6">
             <Link
-              to="/catalog"
+              to="/books"
               className="text-sm font-medium text-neutral-600 hover:text-academy-blue transition-colors"
             >
               Catálogo
