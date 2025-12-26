@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { BookOpen, Clock, Users, Heart, BookMarked } from "lucide-react";
 
 // --- AQUÍ CORREGIMOS LAS RUTAS SEGÚN TU FOTO ---
@@ -19,7 +20,6 @@ interface DashboardSectionProps {
 export const DashboardSection = ({
   stats,
   featuredBooks,
-  onViewAllBooks,
 }: DashboardSectionProps) => {
   return (
     <section className="py-8 bg-gray-50">
@@ -38,13 +38,13 @@ export const DashboardSection = ({
             <h2 className="text-2xl font-bold text-gray-900">
               Libros Destacados
             </h2>
-            <button
-              onClick={onViewAllBooks}
-              className="flex items-center gap-2 text-emerald-600 font-medium"
+            <Link
+              to="/books"
+              className="flex items-center gap-2 text-emerald-600 font-medium hover:text-emerald-700 transition-colors"
             >
               <BookMarked className="h-5 w-5" />
               Ver todos
-            </button>
+            </Link>
           </div>
 
           <div className="grid gap-6">

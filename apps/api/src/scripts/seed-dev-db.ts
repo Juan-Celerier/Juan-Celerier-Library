@@ -53,13 +53,13 @@ async function seedDevDB() {
       name: "Admin",
       email: "admin@test.com",
       hashedPassword: hashedAdminPassword,
-      role: "admin",
+      role: "LIBRARIAN",
     },
     {
       name: "User",
       email: "user@test.com",
       hashedPassword: hashedUserPassword,
-      role: "user",
+      role: "BORROWER",
     },
   ]);
 

@@ -24,3 +24,27 @@ export const authMiddleware = (
     next(createDomainError("Invalid token"));
   }
 };
+
+export const roleMiddleware = (allowedRoles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "Authentication required" });
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({
+        message: "Insufficient permissions",
+        requiredRoles: allowedRoles,
+        userRole: req.user.role
+      });
+    }
+
+    next();
+  };
+};
+
+// Middleware específico para bibliotecarios
+export const librarianOnly = roleMiddleware(["LIBRARIAN"]);
+
+// Middleware para usuarios normales (borrowers)
+export const borrowerOnly = roleMiddleware(["BORROWER"]);

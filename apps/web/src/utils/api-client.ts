@@ -10,7 +10,9 @@ export type RemoteResult<T> = T | { error: string };
 // Controlar mocks vía variable de entorno en tiempo de build
 const env: any = (import.meta as any).env || {};
 // Forzar uso de API real para probar, pero usar mocks en tests
-const USE_MOCKS = import.meta.env.MODE === 'test' || (env.VITE_USE_MOCKS !== undefined ? env.VITE_USE_MOCKS === "true" : false);
+const USE_MOCKS =
+  import.meta.env.MODE === "test" ||
+  (env.VITE_USE_MOCKS !== undefined ? env.VITE_USE_MOCKS === "true" : false);
 
 // 2. FUNCIÓN PARA CALCULAR ESTADÍSTICAS REALES
 const getDynamicStats = () => {
@@ -200,9 +202,8 @@ const MOCK_REGISTRY: Record<string, any> = {
     } as BookDTO;
   },
   createReservation: async (params: { bookId: string }) => {
-    // Mock: simular crear reserva
     const reservationId = `res-${Date.now()}`;
-    // En un mock simple, asumimos éxito si el libro existe
+
     const book = (mockBooks as any[]).find((b) => b.id === params.bookId);
     if (!book) return { error: "Libro no encontrado" };
     if (book.availableCopies <= 0)
@@ -250,9 +251,16 @@ export const apiClient = {
       const base = env.VITE_API_BASE_URL || "";
       if (!base) return { error: "VITE_API_BASE_URL no configurada" };
 
-      const method =
-        endpoint.startsWith("auth/") || endpoint.startsWith("dashboard") ? "POST" : "GET";
-      const body = method === "POST" ? JSON.stringify(_params) : undefined;
+      let method =
+        endpoint.startsWith("auth/") || endpoint.startsWith("dashboard")
+          ? "POST"
+          : "GET";
+      const params = { ..._params };
+      if (params._method) {
+        method = params._method;
+        delete params._method;
+      }
+      const body = method !== "GET" && method !== "DELETE" ? JSON.stringify(params) : undefined;
 
       // Get token from localStorage
       const token =
@@ -273,13 +281,18 @@ export const apiClient = {
       if (!res.ok) {
         try {
           const json = await res.json();
+          console.log('API Error Response:', json);
           if (json && json.error) {
             const error = json.error;
-            const message = typeof error === 'string' ? error : error?.message || `API error: ${res.status}`;
+            const message =
+              typeof error === "string"
+                ? error
+                : error?.message || `API error: ${res.status}`;
             return { error: message };
           }
           return { error: `API error: ${res.status}` };
-        } catch {
+        } catch (e) {
+          console.log('Error parsing response:', e);
           const text = await res.text();
           return { error: `API error: ${res.status} ${text}` };
         }

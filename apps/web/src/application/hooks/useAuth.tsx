@@ -35,16 +35,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [token]);
 
   const login = async (email: string, password: string) => {
+    console.log('Attempting login with:', { email, password: password.substring(0, 3) + '...' });
     const res = await apiClient.call<any>("auth/login", { email, password });
+    console.log('Login response:', res);
+
     if (res && typeof res === "object" && "error" in res) {
       const error = (res as any).error;
       const message =
         typeof error === "string"
           ? error
           : error?.message || "Authentication failed";
+      console.log('Login failed:', message);
       return { ok: false, message };
     }
-    const { data } = res as any;
+
+    // Handle successful response - API returns { success: true, data: { token, user } }
+    const response = res as any;
+    if (response && response.success && response.data) {
+      const { token: t, user: u } = response.data;
+      console.log('Login successful, setting token and user');
+      setToken(t || null);
+      setUser(u);
+      return { ok: true };
+    }
+
+    // Fallback for other response formats
+    const { data } = response || {};
     const { token: t, user: u } = data || {};
     setToken(t || null);
     setUser(u);

@@ -10,16 +10,38 @@ const ProfilePage = React.lazy(() => import("./pages/profile"));
 // Auth
 import { AuthProvider } from "./application/hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
+import RoleProtectedRoute from "./components/RoleProtectedRoute";
 
 // 2. CONFIGURA LA RUTA
 const BooksPage = React.lazy(() => import("./pages/books/index"));
 const BookDetailPage = React.lazy(() => import("./pages/books/[id]"));
+const AdminIndexPage = React.lazy(() => import("./pages/admin/index"));
+const AdminBooksPage = React.lazy(() => import("./pages/admin/books"));
+const AdminCategoriesPage = React.lazy(
+  () => import("./pages/admin/categories")
+);
+const AdminAuthorsPage = React.lazy(() => import("./pages/admin/authors"));
+const AdminPublishersPage = React.lazy(
+  () => import("./pages/admin/publishers")
+);
 const MyLoansPage = React.lazy(() => import("./pages/my/loans"));
 const MyReservationsPage = React.lazy(() => import("./pages/my/reservations"));
 
+const AboutPage = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="text-center">
+      <h1 className="text-4xl font-bold mb-4">Sobre Nosotros</h1>
+      <p className="text-gray-600">Página en construcción...</p>
+    </div>
+  </div>
+);
+
 // Loaders para las páginas de libros (los exportan sus módulos)
-import { booksLoader } from "./pages/books/index";
 import { bookLoader } from "./pages/books/[id]";
+import { adminBooksLoader } from "./pages/admin/books";
+import { adminCategoriesLoader } from "./pages/admin/categories";
+import { adminAuthorsLoader } from "./pages/admin/authors";
+import { adminPublishersLoader } from "./pages/admin/publishers";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +62,6 @@ const router = createBrowserRouter([
         </Suspense>
       </ProtectedRoute>
     ),
-    loader: booksLoader,
   },
   {
     path: "/books/:id",
@@ -52,6 +73,60 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     loader: bookLoader,
+  },
+  {
+    path: "/admin",
+    element: (
+      <RoleProtectedRoute allowedRoles={["LIBRARIAN"]}>
+        <Suspense fallback={<div>Cargando administración...</div>}>
+          <AdminIndexPage />
+        </Suspense>
+      </RoleProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/books",
+    element: (
+      <RoleProtectedRoute allowedRoles={["LIBRARIAN"]}>
+        <Suspense fallback={<div>Cargando administración...</div>}>
+          <AdminBooksPage />
+        </Suspense>
+      </RoleProtectedRoute>
+    ),
+    loader: adminBooksLoader,
+  },
+  {
+    path: "/admin/categories",
+    element: (
+      <RoleProtectedRoute allowedRoles={["LIBRARIAN"]}>
+        <Suspense fallback={<div>Cargando administración...</div>}>
+          <AdminCategoriesPage />
+        </Suspense>
+      </RoleProtectedRoute>
+    ),
+    loader: adminCategoriesLoader,
+  },
+  {
+    path: "/admin/authors",
+    element: (
+      <RoleProtectedRoute allowedRoles={["LIBRARIAN"]}>
+        <Suspense fallback={<div>Cargando administración...</div>}>
+          <AdminAuthorsPage />
+        </Suspense>
+      </RoleProtectedRoute>
+    ),
+    loader: adminAuthorsLoader,
+  },
+  {
+    path: "/admin/publishers",
+    element: (
+      <RoleProtectedRoute allowedRoles={["LIBRARIAN"]}>
+        <Suspense fallback={<div>Cargando administración...</div>}>
+          <AdminPublishersPage />
+        </Suspense>
+      </RoleProtectedRoute>
+    ),
+    loader: adminPublishersLoader,
   },
   {
     path: "/login",
@@ -90,6 +165,10 @@ const router = createBrowserRouter([
         </Suspense>
       </ProtectedRoute>
     ),
+  },
+  {
+    path: "/about",
+    element: <AboutPage />,
   },
 ]);
 

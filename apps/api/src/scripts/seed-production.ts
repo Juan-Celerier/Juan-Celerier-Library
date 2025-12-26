@@ -15,7 +15,8 @@ async function seedProdDB() {
     userRepo.create({
       name: "Admin",
       email: "admin@library.com",
-      role: "admin",
+      hashedPassword: "$2b$12$dummy.hash.for.production", // Hash dummy para producción
+      role: "LIBRARIAN",
     })
   );
 

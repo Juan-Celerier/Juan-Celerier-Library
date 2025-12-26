@@ -27,7 +27,7 @@ export const authController = () => ({
       email,
       name,
       hashedPassword,
-      role: "user",
+      role: "BORROWER",
     });
 
     await userRepository.save(user);

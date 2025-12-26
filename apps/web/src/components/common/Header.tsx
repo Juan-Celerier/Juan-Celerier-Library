@@ -36,9 +36,7 @@ export const Header = ({
   }
 
   const resolvedIsAuthenticated =
-    typeof isAuthenticated === "boolean"
-      ? isAuthenticated
-      : Boolean(auth && auth.token);
+    auth !== undefined ? Boolean(auth && auth.token) : isAuthenticated;
 
   const resolvedUserName = userName ?? auth?.user?.name;
 

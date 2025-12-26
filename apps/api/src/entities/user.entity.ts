@@ -15,8 +15,8 @@ export class UserEntity extends BaseEntity {
   @Column("varchar", { length: 255 })
   hashedPassword!: string;
 
-  @Column("varchar", { length: 20, default: "user" })
-  role!: "user" | "admin";
+  @Column("varchar", { length: 20, default: "BORROWER" })
+  role!: "BORROWER" | "LIBRARIAN";
 
   @OneToMany(() => LoanEntity, (loan) => loan.user)
   loans!: LoanEntity[];
