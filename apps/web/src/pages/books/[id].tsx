@@ -107,48 +107,77 @@ const BookDetailPage = () => {
             </div>
 
             {/* Información de disponibilidad */}
-            <div className="bg-white rounded-lg shadow-sm border p-6 space-y-4">
+            <div className={`rounded-lg shadow-sm border-2 p-6 space-y-4 ${
+              isAvailable
+                ? "bg-green-50 border-green-200"
+                : "bg-red-50 border-red-200"
+            }`}>
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-700">
-                  Disponibilidad
+                <span className="text-lg font-semibold text-gray-900">
+                  Estado del libro
                 </span>
-                <Badge variant={isAvailable ? "success" : "secondary"}>
-                  {isAvailable ? "Disponible" : "No disponible"}
+                <Badge variant={isAvailable ? "success" : "destructive"} className="text-sm px-3 py-1">
+                  {isAvailable ? "📚 Disponible" : "❌ No disponible"}
                 </Badge>
               </div>
 
-              <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900">
+              <div className="text-center py-4">
+                <div className={`text-4xl font-bold mb-2 ${
+                  isAvailable ? "text-green-600" : "text-red-600"
+                }`}>
                   {availableCopies}
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-base text-gray-700 font-medium">
                   {availableCopies === 1
-                    ? "copia disponible"
-                    : "copias disponibles"}
+                    ? "copia disponible para préstamo"
+                    : availableCopies === 0
+                      ? "copias disponibles (agotado)"
+                      : "copias disponibles para préstamo"}
                 </div>
+              </div>
+
+              {/* Indicador visual adicional */}
+              <div className={`flex items-center justify-center gap-2 p-3 rounded-lg ${
+                isAvailable
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }`}>
+                {isAvailable ? (
+                  <>
+                    <span className="text-2xl">✅</span>
+                    <span className="font-medium">¡Puedes solicitar este libro ahora!</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-2xl">⏳</span>
+                    <span className="font-medium">Libro actualmente prestado</span>
+                  </>
+                )}
               </div>
 
               {/* Botón de acción */}
               <Button
                 onClick={handleRequestBook}
                 disabled={!isAvailable || isRequesting}
-                className={`w-full ${
+                className={`w-full py-3 text-base font-semibold ${
                   isAvailable
-                    ? "bg-emerald-600 hover:bg-emerald-700 text-white"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                } disabled:opacity-50`}
+                    ? "!bg-emerald-600 !text-white hover:!bg-emerald-700 !shadow-lg"
+                    : "!bg-gray-400 !text-gray-200 !cursor-not-allowed"
+                } disabled:!opacity-50`}
               >
                 {isRequesting
-                  ? "Procesando..."
+                  ? "⏳ Procesando solicitud..."
                   : isAvailable
-                    ? "Solicitar préstamo"
-                    : "No disponible"}
+                    ? "📖 Solicitar préstamo"
+                    : "❌ No disponible actualmente"}
               </Button>
 
               {!user && (
-                <p className="text-xs text-gray-500 text-center">
-                  Debes iniciar sesión para solicitar préstamos
-                </p>
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <p className="text-sm text-blue-800 text-center font-medium">
+                    🔐 Debes iniciar sesión para solicitar préstamos
+                  </p>
+                </div>
               )}
             </div>
 
@@ -290,7 +319,7 @@ const BookDetailPage = () => {
             {/* Acciones adicionales */}
             <div className="flex flex-wrap gap-4 pt-6 border-t">
               <Link to="/books">
-                <Button className="bg-gray-500 text-white">
+                <Button className="!bg-gray-500 !text-white hover:!bg-gray-600">
                   ← Volver al catálogo
                 </Button>
               </Link>
@@ -298,12 +327,12 @@ const BookDetailPage = () => {
               {user && (
                 <>
                   <Link to="/my/loans">
-                    <Button className="bg-blue-600 text-white">
+                    <Button className="!bg-blue-600 !text-white hover:!bg-blue-700">
                       Ver mis préstamos
                     </Button>
                   </Link>
                   <Link to="/my/reservations">
-                    <Button className="bg-green-600 text-white">
+                    <Button className="!bg-green-600 !text-white hover:!bg-green-700">
                       Ver mis reservas
                     </Button>
                   </Link>
@@ -350,14 +379,14 @@ const BookDetailPage = () => {
             <div className="flex justify-end gap-3">
               <Button
                 onClick={() => setShowConfirmModal(false)}
-                className="bg-gray-500 text-white"
+                className="!bg-gray-500 !text-white hover:!bg-gray-600"
               >
                 Cancelar
               </Button>
               <Button
                 onClick={confirmRequestBook}
                 disabled={isRequesting}
-                className="bg-emerald-600 text-white disabled:opacity-50"
+                className="!bg-emerald-600 !text-white hover:!bg-emerald-700 disabled:!opacity-50"
               >
                 {isRequesting ? "Procesando..." : "Confirmar préstamo"}
               </Button>

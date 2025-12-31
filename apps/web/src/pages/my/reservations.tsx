@@ -31,9 +31,12 @@ const MyReservationsPage = () => {
   const { user } = useAuth();
   const [reservations, setReservations] = useState<ReservationWithBook[]>([]);
   const [loading, setLoading] = useState(true);
-  const [cancellingReservationId, setCancellingReservationId] = useState<string | null>(null);
+  const [cancellingReservationId, setCancellingReservationId] = useState<
+    string | null
+  >(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
-  const [selectedReservation, setSelectedReservation] = useState<ReservationWithBook | null>(null);
+  const [selectedReservation, setSelectedReservation] =
+    useState<ReservationWithBook | null>(null);
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -67,7 +70,7 @@ const MyReservationsPage = () => {
     setCancellingReservationId(reservationId);
     try {
       const res = await apiClient.call(`reservations/${reservationId}`, {
-        _method: "DELETE"
+        _method: "DELETE",
       });
 
       if (res && typeof res === "object" && "error" in (res as any)) {
@@ -75,7 +78,9 @@ const MyReservationsPage = () => {
       } else {
         // Actualizar el estado local removiendo la reserva cancelada
         setReservations((prevReservations) =>
-          prevReservations.filter((reservation) => reservation.id !== reservationId)
+          prevReservations.filter(
+            (reservation) => reservation.id !== reservationId
+          )
         );
         alert("Reserva cancelada exitosamente!");
       }
@@ -178,7 +183,7 @@ const MyReservationsPage = () => {
             </p>
             <Button
               onClick={() => (window.location.href = "/books")}
-              className="bg-emerald-600 text-white"
+              className="!bg-emerald-600 !text-white hover:!bg-emerald-700"
             >
               Explorar catálogo
             </Button>
@@ -186,8 +191,14 @@ const MyReservationsPage = () => {
         ) : (
           <div className="grid gap-6">
             {reservations.map((reservation) => {
-              const expired = isExpired(reservation.expirationDate, reservation.status);
-              const daysUntilExpiration = reservation.status === "PENDING" ? getDaysUntilExpiration(reservation.expirationDate) : null;
+              const expired = isExpired(
+                reservation.expirationDate,
+                reservation.status
+              );
+              const daysUntilExpiration =
+                reservation.status === "PENDING"
+                  ? getDaysUntilExpiration(reservation.expirationDate)
+                  : null;
 
               return (
                 <div
@@ -240,42 +251,47 @@ const MyReservationsPage = () => {
                               <br />
                               {formatDate(reservation.expirationDate)}
                             </div>
-                            {daysUntilExpiration !== null && daysUntilExpiration > 0 && (
-                              <div>
-                                <span className="font-medium">
-                                  Días restantes:
-                                </span>
-                                <br />
-                                <span
-                                  className={
-                                    daysUntilExpiration <= 2
-                                      ? "text-orange-600 font-semibold"
-                                      : ""
-                                  }
-                                >
-                                  {daysUntilExpiration} día
-                                  {daysUntilExpiration !== 1 ? "s" : ""}
-                                </span>
-                              </div>
-                            )}
+                            {daysUntilExpiration !== null &&
+                              daysUntilExpiration > 0 && (
+                                <div>
+                                  <span className="font-medium">
+                                    Días restantes:
+                                  </span>
+                                  <br />
+                                  <span
+                                    className={
+                                      daysUntilExpiration <= 2
+                                        ? "text-orange-600 font-semibold"
+                                        : ""
+                                    }
+                                  >
+                                    {daysUntilExpiration} día
+                                    {daysUntilExpiration !== 1 ? "s" : ""}
+                                  </span>
+                                </div>
+                              )}
                           </div>
                         </div>
 
                         {/* Estado y acciones */}
                         <div className="flex flex-col items-start lg:items-end gap-3">
-                          <Badge variant={getStatusBadgeVariant(reservation.status)}>
+                          <Badge
+                            variant={getStatusBadgeVariant(reservation.status)}
+                          >
                             {getStatusText(reservation.status)}
                           </Badge>
 
                           {reservation.status === "PENDING" && (
                             <Button
                               onClick={() => openCancelModal(reservation)}
-                              disabled={cancellingReservationId === reservation.id}
-                              className={`${
+                              disabled={
+                                cancellingReservationId === reservation.id
+                              }
+                              className={`!px-4 !py-2 !text-sm !font-medium !rounded-md !transition-colors ${
                                 expired
-                                  ? "bg-red-600 hover:bg-red-700 text-white"
-                                  : "bg-gray-600 hover:bg-gray-700 text-white"
-                              } disabled:opacity-50`}
+                                  ? "!bg-red-600 !text-white hover:!bg-red-700"
+                                  : "!bg-gray-600 !text-white hover:!bg-gray-700"
+                              } disabled:!opacity-50`}
                             >
                               {cancellingReservationId === reservation.id
                                 ? "Cancelando..."
@@ -327,22 +343,26 @@ const MyReservationsPage = () => {
                 <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
                   <p className="text-sm text-amber-800">
                     Una vez cancelada la reserva, perderás tu lugar en la cola
-                    para este libro. Si deseas reservarlo nuevamente, tendrás que
-                    esperar a que vuelva a estar disponible.
+                    para este libro. Si deseas reservarlo nuevamente, tendrás
+                    que esperar a que vuelva a estar disponible.
                   </p>
                 </div>
 
                 <div className="flex justify-end gap-3">
                   <Button
                     onClick={() => setShowCancelModal(false)}
-                    className="bg-gray-500 text-white"
+                    className="!bg-gray-500 !text-white hover:!bg-gray-600"
                   >
                     Mantener reserva
                   </Button>
                   <Button
-                    onClick={() => handleCancelReservation(selectedReservation.id)}
-                    disabled={cancellingReservationId === selectedReservation.id}
-                    className="bg-red-600 text-white disabled:opacity-50"
+                    onClick={() =>
+                      handleCancelReservation(selectedReservation.id)
+                    }
+                    disabled={
+                      cancellingReservationId === selectedReservation.id
+                    }
+                    className="!bg-red-600 !text-white hover:!bg-red-700 disabled:!opacity-50"
                   >
                     {cancellingReservationId === selectedReservation.id
                       ? "Cancelando..."

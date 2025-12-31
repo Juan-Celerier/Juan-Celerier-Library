@@ -1,6 +1,16 @@
 import { Search, BookOpen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const HeroSection = () => {
+  const navigate = useNavigate();
+
+  const handleSearch = (term: string) => {
+    if (term.trim()) {
+      navigate(`/books?search=${encodeURIComponent(term.trim())}`);
+    } else {
+      navigate("/books");
+    }
+  };
   return (
     <div className="relative bg-white border-b border-gray-200 overflow-hidden">
       {/* Fondo decorativo sutil (opcional) */}
@@ -22,7 +32,7 @@ export const HeroSection = () => {
           conocimiento desde cualquier lugar. Tu biblioteca digital inteligente.
         </p>
 
-        {/* Barra de Búsqueda Falsa (Solo visual) */}
+        {/* Barra de Búsqueda Funcional */}
         <div className="max-w-2xl mx-auto relative shadow-lg rounded-full">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <Search className="h-6 w-6 text-gray-400" />
@@ -31,10 +41,22 @@ export const HeroSection = () => {
             type="text"
             className="block w-full pl-12 pr-4 py-4 rounded-full border-gray-200 bg-white text-gray-900 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all placeholder-gray-400"
             placeholder="Buscar por título, autor o género..."
-            readOnly // Solo visual por ahora
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSearch((e.target as HTMLInputElement).value);
+              }
+            }}
           />
           <div className="absolute inset-y-1 right-1">
-            <button className="h-full bg-emerald-600 hover:bg-emerald-700 text-white px-6 rounded-full font-medium transition-colors">
+            <button
+              onClick={() => {
+                const input = document.querySelector('input[placeholder="Buscar por título, autor o género..."]') as HTMLInputElement;
+                if (input) {
+                  handleSearch(input.value);
+                }
+              }}
+              className="h-full bg-emerald-600 hover:bg-emerald-700 text-white px-6 rounded-full font-medium transition-colors"
+            >
               Buscar
             </button>
           </div>

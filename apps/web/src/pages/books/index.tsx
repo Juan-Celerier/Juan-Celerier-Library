@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import MainLayout from "../../layouts/MainLayout";
 import type { BookDTO } from "app-domain/dtos/dashboard";
@@ -9,16 +9,50 @@ import Button from "../../components/Button";
 import { Badge } from "../../ui/Badge";
 
 const BooksPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [books, setBooks] = useState<BookDTO[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get("search") || ""
+  );
   const [availabilityFilter, setAvailabilityFilter] = useState<
     "all" | "available" | "unavailable"
   >("all");
+  const [sortBy, setSortBy] = useState<
+    "title" | "author" | "newest" | "oldest"
+  >("title");
+  const [authorFilter, setAuthorFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState<string | null>(null);
 
   const booksPerPage = 12;
+
+  // Extraer autores únicos de los libros
+  const uniqueAuthors = Array.from(
+    new Set(
+      books
+        .map((book) => {
+          if (typeof book.author === "string") return book.author;
+          return (book.author as any)?.name || "";
+        })
+        .filter(Boolean)
+    )
+  ).sort();
+
+  // Actualizar searchTerm cuando cambie el parámetro de URL
+  useEffect(() => {
+    const searchFromUrl = searchParams.get("search") || "";
+    setSearchTerm(searchFromUrl);
+  }, [searchParams]);
+
+  // Actualizar URL cuando cambie searchTerm
+  useEffect(() => {
+    if (searchTerm) {
+      setSearchParams({ search: searchTerm });
+    } else {
+      setSearchParams({});
+    }
+  }, [searchTerm, setSearchParams]);
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -62,6 +96,17 @@ const BooksPage = () => {
       );
     }
 
+    // Filtro por autor
+    if (authorFilter) {
+      filtered = filtered.filter((book) => {
+        const bookAuthor =
+          typeof book.author === "string"
+            ? book.author
+            : (book.author as any)?.name || "";
+        return bookAuthor === authorFilter;
+      });
+    }
+
     // Filtro de disponibilidad
     if (availabilityFilter === "available") {
       filtered = filtered.filter((book) => (book.availableCopies ?? 0) > 0);
@@ -69,8 +114,35 @@ const BooksPage = () => {
       filtered = filtered.filter((book) => (book.availableCopies ?? 0) <= 0);
     }
 
+    // Ordenamiento
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case "title":
+          return (a.title || "").localeCompare(b.title || "");
+        case "author": {
+          const authorA =
+            typeof a.author === "string"
+              ? a.author
+              : (a.author as any)?.name || "";
+          const authorB =
+            typeof b.author === "string"
+              ? b.author
+              : (b.author as any)?.name || "";
+          return authorA.localeCompare(authorB);
+        }
+        case "newest":
+          // Asumiendo que no tenemos fecha, ordenamos por ID descendente
+          return parseInt(b.id || "0") - parseInt(a.id || "0");
+        case "oldest":
+          // Asumiendo que no tenemos fecha, ordenamos por ID ascendente
+          return parseInt(a.id || "0") - parseInt(b.id || "0");
+        default:
+          return 0;
+      }
+    });
+
     return filtered;
-  }, [books, searchTerm, availabilityFilter]);
+  }, [books, searchTerm, authorFilter, availabilityFilter, sortBy]);
 
   // Paginación
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
@@ -86,7 +158,9 @@ const BooksPage = () => {
 
   const clearFilters = () => {
     setSearchTerm("");
+    setAuthorFilter("");
     setAvailabilityFilter("all");
+    setSortBy("title");
     setCurrentPage(1);
   };
 
@@ -147,53 +221,95 @@ const BooksPage = () => {
               />
             </div>
 
-            {/* Filtros de disponibilidad */}
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setAvailabilityFilter("all")}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  availabilityFilter === "all"
-                    ? "bg-emerald-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                Todos ({books.length})
-              </button>
-              <button
-                onClick={() => setAvailabilityFilter("available")}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  availabilityFilter === "available"
-                    ? "bg-emerald-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                Disponibles (
-                {books.filter((b) => (b.availableCopies ?? 0) > 0).length})
-              </button>
-              <button
-                onClick={() => setAvailabilityFilter("unavailable")}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  availabilityFilter === "unavailable"
-                    ? "bg-emerald-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                No disponibles (
-                {books.filter((b) => (b.availableCopies ?? 0) <= 0).length})
-              </button>
+            {/* Filtros avanzados */}
+            <div className="flex flex-wrap gap-3 items-end">
+              {/* Filtro por autor */}
+              <div className="min-w-[150px]">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Autor
+                </label>
+                <select
+                  value={authorFilter}
+                  onChange={(e) => setAuthorFilter(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                >
+                  <option value="">Todos los autores</option>
+                  {uniqueAuthors.map((author) => (
+                    <option key={author} value={author}>
+                      {author}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Ordenar por */}
+              <div className="min-w-[150px]">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Ordenar por
+                </label>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                >
+                  <option value="title">Título A-Z</option>
+                  <option value="author">Autor A-Z</option>
+                  <option value="newest">Más recientes</option>
+                  <option value="oldest">Más antiguos</option>
+                </select>
+              </div>
+
+              {/* Filtros de disponibilidad */}
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setAvailabilityFilter("all")}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    availabilityFilter === "all"
+                      ? "bg-emerald-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  Todos ({books.length})
+                </button>
+                <button
+                  onClick={() => setAvailabilityFilter("available")}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    availabilityFilter === "available"
+                      ? "bg-emerald-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  Disponibles (
+                  {books.filter((b) => (b.availableCopies ?? 0) > 0).length})
+                </button>
+                <button
+                  onClick={() => setAvailabilityFilter("unavailable")}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    availabilityFilter === "unavailable"
+                      ? "bg-emerald-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  No disponibles (
+                  {books.filter((b) => (b.availableCopies ?? 0) <= 0).length})
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Información de filtros aplicados */}
-          {(searchTerm || availabilityFilter !== "all") && (
+          {(searchTerm || authorFilter || availabilityFilter !== "all") && (
             <div className="flex items-center justify-between pt-4 border-t">
-              <div className="flex items-center gap-4 text-sm text-gray-600">
+              <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600">
                 <span>
                   Mostrando {paginatedBooks.length} de {filteredBooks.length}{" "}
                   libros
                 </span>
                 {searchTerm && (
                   <Badge variant="secondary">Búsqueda: "{searchTerm}"</Badge>
+                )}
+                {authorFilter && (
+                  <Badge variant="secondary">Autor: {authorFilter}</Badge>
                 )}
                 {availabilityFilter !== "all" && (
                   <Badge variant="secondary">

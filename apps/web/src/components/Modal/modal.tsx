@@ -57,14 +57,14 @@ export const Modal = ({
     >
       {/* Fondo semitransparente */}
       <div
-        className="fixed inset-0 bg-black/50 transition-opacity"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
         aria-hidden="true"
         onClick={onClose}
       ></div>
 
       {/* Panel del Modal */}
       <div
-        className={`relative m-4 w-full max-w-lg transform rounded-xl bg-paper p-6 text-left shadow-heavy transition-all animate-scale-in ${className}`}
+        className={`relative m-4 w-full max-w-lg transform rounded-xl bg-white p-6 text-left shadow-2xl transition-all animate-scale-in border border-gray-200 ${className}`}
         onClick={(e) => e.stopPropagation()} // Evita que el clic dentro del modal lo cierre
       >
         {/* Cabecera */}

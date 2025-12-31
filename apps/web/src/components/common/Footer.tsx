@@ -12,6 +12,8 @@ export const Footer = ({ className = "" }: FooterProps) => {
   return (
     <footer
       className={`bg-neutral-50 border-t border-neutral-100 py-12 ${className}`}
+      role="contentinfo"
+      aria-label="Información del sitio"
     >
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
@@ -30,26 +32,26 @@ export const Footer = ({ className = "" }: FooterProps) => {
             <ul className="space-y-2 text-sm text-neutral-600">
               <li>
                 <Link
-                  to="/catalog"
-                  className="hover:text-academy-blue transition-colors"
+                  to="/books"
+                  className="hover:text-emerald-600 transition-colors"
                 >
                   Catálogo
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/new-arrivals"
-                  className="hover:text-academy-blue transition-colors"
+                  to="/about"
+                  className="hover:text-emerald-600 transition-colors"
                 >
-                  Novedades
+                  Sobre Nosotros
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/popular"
-                  className="hover:text-academy-blue transition-colors"
+                  to="/profile"
+                  className="hover:text-emerald-600 transition-colors"
                 >
-                  Más Populares
+                  Mi Perfil
                 </Link>
               </li>
             </ul>
@@ -57,30 +59,30 @@ export const Footer = ({ className = "" }: FooterProps) => {
 
           {/* Columna 3: Soporte */}
           <div>
-            <h3 className="font-semibold text-neutral-900 mb-4">Soporte</h3>
+            <h3 className="font-semibold text-neutral-900 mb-4">Cuenta</h3>
             <ul className="space-y-2 text-sm text-neutral-600">
               <li>
                 <Link
-                  to="/help"
-                  className="hover:text-academy-blue transition-colors"
+                  to="/my/loans"
+                  className="hover:text-emerald-600 transition-colors"
                 >
-                  Centro de Ayuda
+                  Mis Préstamos
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/rules"
-                  className="hover:text-academy-blue transition-colors"
+                  to="/my/reservations"
+                  className="hover:text-emerald-600 transition-colors"
                 >
-                  Normas de Préstamo
+                  Mis Reservas
                 </Link>
               </li>
               <li>
                 <Link
-                  to="/contact"
-                  className="hover:text-academy-blue transition-colors"
+                  to="/profile"
+                  className="hover:text-emerald-600 transition-colors"
                 >
-                  Contacto
+                  Mi Perfil
                 </Link>
               </li>
             </ul>
@@ -116,16 +118,8 @@ export const Footer = ({ className = "" }: FooterProps) => {
         </div>
 
         {/* Barra inferior: Copyright */}
-        <div className="pt-8 border-t border-neutral-200 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-500">
+        <div className="pt-8 border-t border-neutral-200 text-center text-xs text-neutral-500">
           <p>© {currentYear} BiblioSys. Todos los derechos reservados.</p>
-          <div className="flex gap-6">
-            <Link to="/privacy" className="hover:text-neutral-900">
-              Privacidad
-            </Link>
-            <Link to="/terms" className="hover:text-neutral-900">
-              Términos
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

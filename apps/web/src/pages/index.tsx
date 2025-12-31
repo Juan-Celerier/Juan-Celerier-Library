@@ -49,7 +49,6 @@ const Index = () => {
         <DashboardSection
           stats={dashboard.stats}
           featuredBooks={dashboard.featuredBooks}
-          onViewAllBooks={() => console.log("Navegar a /libros")}
         />
       </main>
     </MainLayout>

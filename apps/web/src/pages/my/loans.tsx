@@ -72,7 +72,7 @@ const MyLoansPage = () => {
       const returnDate = new Date().toISOString();
       const res = await apiClient.call(`loans/${loanId}`, {
         returnDate: returnDate,
-        _method: "PUT"
+        _method: "PUT",
       });
 
       if (res && typeof res === "object" && "error" in (res as any)) {
@@ -183,7 +183,7 @@ const MyLoansPage = () => {
             </p>
             <Button
               onClick={() => (window.location.href = "/books")}
-              className="bg-emerald-600 text-white"
+              className="!bg-emerald-600 !text-white hover:!bg-emerald-700"
             >
               Explorar catálogo
             </Button>
@@ -285,11 +285,11 @@ const MyLoansPage = () => {
                             <Button
                               onClick={() => openReturnModal(loan)}
                               disabled={returningLoanId === loan.id}
-                              className={`${
+                              className={`!px-4 !py-2 !text-sm !font-medium !rounded-md !transition-colors ${
                                 overdue
-                                  ? "bg-red-600 hover:bg-red-700 text-white"
-                                  : "bg-emerald-600 hover:bg-emerald-700 text-white"
-                              } disabled:opacity-50`}
+                                  ? "!bg-red-600 !text-white hover:!bg-red-700"
+                                  : "!bg-emerald-600 !text-white hover:!bg-emerald-700"
+                              } disabled:!opacity-50`}
                             >
                               {returningLoanId === loan.id
                                 ? "Devolviendo..."
@@ -337,14 +337,14 @@ const MyLoansPage = () => {
                 <div className="flex justify-end gap-3">
                   <Button
                     onClick={() => setShowReturnModal(false)}
-                    className="bg-gray-500 text-white"
+                    className="!bg-gray-500 !text-white hover:!bg-gray-600"
                   >
                     Cancelar
                   </Button>
                   <Button
                     onClick={() => handleReturnBook(selectedLoan.id)}
                     disabled={returningLoanId === selectedLoan.id}
-                    className="bg-emerald-600 text-white disabled:opacity-50"
+                    className="!bg-emerald-600 !text-white hover:!bg-emerald-700 disabled:!opacity-50"
                   >
                     {returningLoanId === selectedLoan.id
                       ? "Devolviendo..."

@@ -48,9 +48,18 @@ export const Header = ({
       auth?.logout();
       navigate("/login");
     });
+
+  const handleSearch = (term: string) => {
+    if (term.trim()) {
+      navigate(`/books?search=${encodeURIComponent(term.trim())}`);
+    } else {
+      navigate("/books");
+    }
+  };
   return (
     <header
       className={`sticky top-0 z-50 w-full border-b border-neutral-100 bg-white/80 backdrop-blur-md transition-all ${className}`}
+      role="banner"
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         {/* Sección Izquierda: Logo y Navegación Desktop */}
@@ -58,16 +67,21 @@ export const Header = ({
           <Logo />
 
           {/* Navegación - Oculta en móbiles, visible en md para arriba */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav
+            id="navigation"
+            className="hidden md:flex items-center gap-6"
+            role="navigation"
+            aria-label="Navegación principal"
+          >
             <Link
               to="/books"
-              className="text-sm font-medium text-neutral-600 hover:text-academy-blue transition-colors"
+              className="text-sm font-medium text-neutral-600 hover:text-academy-blue transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded px-2 py-1"
             >
               Catálogo
             </Link>
             <Link
               to="/about"
-              className="text-sm font-medium text-neutral-600 hover:text-academy-blue transition-colors"
+              className="text-sm font-medium text-neutral-600 hover:text-academy-blue transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded px-2 py-1"
             >
               Nosotros
             </Link>
@@ -77,8 +91,11 @@ export const Header = ({
         {/* Sección Central/Derecha: Búsqueda y Acciones */}
         <div className="flex items-center gap-4">
           {/* La búsqueda se oculta en pantallas muy pequeñas si hace falta espacio */}
-          <div className="hidden sm:block w-full max-w-xs">
-            <SearchBox onSearchChange={onSearch} />
+          <div id="search" className="hidden sm:block w-full max-w-xs">
+            <SearchBox
+              onSearchChange={handleSearch}
+              aria-label="Buscar libros en la biblioteca"
+            />
           </div>
 
           <UserActions

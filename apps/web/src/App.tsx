@@ -5,12 +5,17 @@ import React, { Suspense } from "react";
 import Index, { indexLoader } from "./pages/index";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
+import AboutPage from "./pages/about";
+import NotFoundPage from "./pages/NotFound";
 const ProfilePage = React.lazy(() => import("./pages/profile"));
 
 // Auth
 import { AuthProvider } from "./application/hooks/useAuth";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RoleProtectedRoute from "./components/RoleProtectedRoute";
+
+// Notifications
+import { NotificationProvider } from "./application/hooks/useNotifications";
 
 // 2. CONFIGURA LA RUTA
 const BooksPage = React.lazy(() => import("./pages/books/index"));
@@ -27,17 +32,9 @@ const AdminPublishersPage = React.lazy(
 const MyLoansPage = React.lazy(() => import("./pages/my/loans"));
 const MyReservationsPage = React.lazy(() => import("./pages/my/reservations"));
 
-const AboutPage = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="text-center">
-      <h1 className="text-4xl font-bold mb-4">Sobre Nosotros</h1>
-      <p className="text-gray-600">Página en construcción...</p>
-    </div>
-  </div>
-);
-
 // Loaders para las páginas de libros (los exportan sus módulos)
 import { bookLoader } from "./pages/books/[id]";
+import { adminIndexLoader } from "./pages/admin/index";
 import { adminBooksLoader } from "./pages/admin/books";
 import { adminCategoriesLoader } from "./pages/admin/categories";
 import { adminAuthorsLoader } from "./pages/admin/authors";
@@ -83,6 +80,7 @@ const router = createBrowserRouter([
         </Suspense>
       </RoleProtectedRoute>
     ),
+    loader: adminIndexLoader,
   },
   {
     path: "/admin/books",
@@ -170,21 +168,30 @@ const router = createBrowserRouter([
     path: "/about",
     element: <AboutPage />,
   },
+  {
+    path: "*",
+    element: <NotFoundPage />,
+  },
 ]);
 
 function App() {
-  // 3. RENDERIZA EL PROVEEDOR envuelto en Suspense y AuthProvider
+  // 3. RENDERIZA LOS PROVEEDORES envueltos en Suspense
   return (
     <Suspense
       fallback={
         <div className="h-screen flex items-center justify-center">
-          Cargando...
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Cargando BiblioSys...</p>
+          </div>
         </div>
       }
     >
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <NotificationProvider>
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
+      </NotificationProvider>
     </Suspense>
   );
 }
