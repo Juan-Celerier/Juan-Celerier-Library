@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 interface SkipLinkProps {
   href: string;
   children: React.ReactNode;

@@ -50,10 +50,14 @@ export const Header = ({
     });
 
   const handleSearch = (term: string) => {
-    if (term.trim()) {
-      navigate(`/books?search=${encodeURIComponent(term.trim())}`);
+    if (onSearch) {
+      onSearch(term);
     } else {
-      navigate("/books");
+      if (term.trim()) {
+        navigate(`/books?search=${encodeURIComponent(term.trim())}`);
+      } else {
+        navigate("/books");
+      }
     }
   };
   return (
