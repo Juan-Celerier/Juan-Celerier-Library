@@ -1,1 +1,0 @@
-{"version":3,"file":"get-loan.d.ts","sourceRoot":"","sources":["../../../src/use-cases/Loan/get-loan.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,6BAA6B,CAAC;AAEnD,OAAO,EAAE,cAAc,EAAE,MAAM,4CAA4C,CAAC;AAG5E,MAAM,MAAM,WAAW,GAAG;IACxB,cAAc,EAAE,cAAc,CAAC;CAChC,CAAC;AAEF,wBAAsB,OAAO,CAC3B,EAAE,cAAc,EAAE,EAAE,WAAW,EAC/B,EAAE,EAAE,MAAM,GACT,OAAO,CAAC,IAAI,CAAC,CAQf"}
