@@ -1,12 +1,12 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist-types",
+    "outDir": "dist/types",
     "rootDir": "src",
     "declaration": true,
     "emitDeclarationOnly": true,
     "composite": true
   },
   "include": ["src"],
-  "exclude": ["dist", "dist-types", "node_modules"]
+  "exclude": ["dist", "node_modules"]
 }

@@ -2,11 +2,11 @@
   "name": "domain",
   "version": "1.0.0",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/types/index.js",
+  "types": "dist/types/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js"
+      "import": "./dist/types/index.js"
     },
     "./src/*": "./src/*"
   },
