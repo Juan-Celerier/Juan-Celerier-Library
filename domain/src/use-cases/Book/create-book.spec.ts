@@ -80,108 +80,110 @@ describe("createBook", () => {
     expect(result.warning).toBeDefined();
   });
 
-  test("fails when title is empty", async () => {
-    const request: CreateBookRequest = {
-      title: "",
-      author: "Autor Test",
-      publisher: "Editorial Test",
-      publicationDate: new Date(),
-      isbn: "978-123-456-789-0",
-      availableCopies: 5,
-      totalCopies: 5,
-    };
+  describe("Validation Tests", () => {
+    test("should fail when title is empty", async () => {
+      const request: CreateBookRequest = {
+        title: "",
+        author: "Autor Test",
+        publisher: "Editorial Test",
+        publicationDate: new Date(),
+        isbn: "978-123-456-789-0",
+        availableCopies: 5,
+        totalCopies: 5,
+      };
 
-    const result = await createBook(request, dependencies);
+      const result = await createBook(request, dependencies);
 
-    expect(result.success).toBe(false);
-    expect(result.error).toBe(createInvalidBookDataError().message);
-  });
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(createInvalidBookDataError().message);
+    });
 
-  test("fails when author is empty", async () => {
-    const request: CreateBookRequest = {
-      title: "Libro Test",
-      author: "",
-      publisher: "Editorial Test",
-      publicationDate: new Date(),
-      isbn: "978-123-456-789-0",
-      availableCopies: 5,
-      totalCopies: 5,
-    };
+    test("should fail when author is empty", async () => {
+      const request: CreateBookRequest = {
+        title: "Libro Test",
+        author: "",
+        publisher: "Editorial Test",
+        publicationDate: new Date(),
+        isbn: "978-123-456-789-0",
+        availableCopies: 5,
+        totalCopies: 5,
+      };
 
-    const result = await createBook(request, dependencies);
+      const result = await createBook(request, dependencies);
 
-    expect(result.success).toBe(false);
-    expect(result.error).toBe(createInvalidBookDataError().message);
-  });
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(createInvalidBookDataError().message);
+    });
 
-  test("fails when ISBN is empty", async () => {
-    const request: CreateBookRequest = {
-      title: "Libro Test",
-      author: "Autor Test",
-      publisher: "Editorial Test",
-      publicationDate: new Date(),
-      isbn: "",
-      availableCopies: 5,
-      totalCopies: 5,
-    };
+    test("should fail when ISBN is empty", async () => {
+      const request: CreateBookRequest = {
+        title: "Libro Test",
+        author: "Autor Test",
+        publisher: "Editorial Test",
+        publicationDate: new Date(),
+        isbn: "",
+        availableCopies: 5,
+        totalCopies: 5,
+      };
 
-    const result = await createBook(request, dependencies);
+      const result = await createBook(request, dependencies);
 
-    expect(result.success).toBe(false);
-    expect(result.error).toBe(createInvalidBookDataError().message);
-  });
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(createInvalidBookDataError().message);
+    });
 
-  test("fails when publication date is in the future", async () => {
-    const futureDate = new Date();
-    futureDate.setFullYear(futureDate.getFullYear() + 1);
+    test("should fail when publication date is in the future", async () => {
+      const futureDate = new Date();
+      futureDate.setFullYear(futureDate.getFullYear() + 1);
 
-    const request: CreateBookRequest = {
-      title: "Libro Futuro",
-      author: "Autor",
-      publisher: "Editorial",
-      publicationDate: futureDate,
-      isbn: "978-123-456-789-0",
-      availableCopies: 5,
-      totalCopies: 5,
-    };
+      const request: CreateBookRequest = {
+        title: "Libro Futuro",
+        author: "Autor",
+        publisher: "Editorial",
+        publicationDate: futureDate,
+        isbn: "978-123-456-789-0",
+        availableCopies: 5,
+        totalCopies: 5,
+      };
 
-    const result = await createBook(request, dependencies);
+      const result = await createBook(request, dependencies);
 
-    expect(result.success).toBe(false);
-    expect(result.error).toBe(createInvalidBookDataError().message);
-  });
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(createInvalidBookDataError().message);
+    });
 
-  test("fails when availableCopies > totalCopies", async () => {
-    const request: CreateBookRequest = {
-      title: "Libro Test",
-      author: "Autor Test",
-      publisher: "Editorial Test",
-      publicationDate: new Date(),
-      isbn: "978-123-456-789-0",
-      availableCopies: 10,
-      totalCopies: 5,
-    };
+    test("should fail when availableCopies > totalCopies", async () => {
+      const request: CreateBookRequest = {
+        title: "Libro Test",
+        author: "Autor Test",
+        publisher: "Editorial Test",
+        publicationDate: new Date(),
+        isbn: "978-123-456-789-0",
+        availableCopies: 10,
+        totalCopies: 5,
+      };
 
-    const result = await createBook(request, dependencies);
+      const result = await createBook(request, dependencies);
 
-    expect(result.success).toBe(false);
-    expect(result.error).toBe(createInvalidBookDataError().message);
-  });
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(createInvalidBookDataError().message);
+    });
 
-  test("fails when copies are negative", async () => {
-    const request: CreateBookRequest = {
-      title: "Libro Test",
-      author: "Autor Test",
-      publisher: "Editorial Test",
-      publicationDate: new Date(),
-      isbn: "978-123-456-789-0",
-      availableCopies: -1,
-      totalCopies: 5,
-    };
+    test("should fail when copies are negative", async () => {
+      const request: CreateBookRequest = {
+        title: "Libro Test",
+        author: "Autor Test",
+        publisher: "Editorial Test",
+        publicationDate: new Date(),
+        isbn: "978-123-456-789-0",
+        availableCopies: -1,
+        totalCopies: 5,
+      };
 
-    const result = await createBook(request, dependencies);
+      const result = await createBook(request, dependencies);
 
-    expect(result.success).toBe(false);
-    expect(result.error).toBe(createInvalidBookDataError().message);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe(createInvalidBookDataError().message);
+    });
   });
 });
