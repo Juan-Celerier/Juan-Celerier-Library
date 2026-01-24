@@ -1,8 +1,8 @@
-// domain/src/repositories/user-repository-impl.ts
+// apps/api/src/repositories/user-repository-impl.ts
 
-import { User } from "../entities/User.js";
+import { User } from "domain/src/entities/User.js";
 import { v4 as uuidv4 } from "uuid";
-import { UserRepository, CreateUserDTO } from "./user-repository.js";
+import { UserRepository, CreateUserDTO } from "domain/src/repositories/user-repository.js";
 
 export function createUserRepository(): UserRepository {
   const users: User[] = [];
