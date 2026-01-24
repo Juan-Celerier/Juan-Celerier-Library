@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { UUID } from "crypto";
-import { CryptoService } from "domain/dist/index.js";
+import { CryptoService } from "domain/src/index.js";
+
 
 export class CryptoServiceImplementation implements CryptoService {
   async hashPassword(password: string): Promise<string> {

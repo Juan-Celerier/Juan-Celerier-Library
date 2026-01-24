@@ -1,5 +1,6 @@
-import { UserRepository, CryptoService } from "domain/dist/index.js";
 import jwt from "jsonwebtoken";
+import { CryptoService } from "./crypto.service.js";
+import { UserRepository } from "domain/src/index.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "changeme";
 
