@@ -1,0 +1,1 @@
+{"version":3,"file":"get-borrower.d.ts","sourceRoot":"","sources":["../../../../src/use-cases/Borrower/get-borrower.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,iCAAiC,CAAC;AAE3D,OAAO,EAAE,kBAAkB,EAAE,MAAM,gDAAgD,CAAC;AAGpF,wBAAsB,WAAW,CAC/B,UAAU,EAAE,kBAAkB,EAC9B,EAAE,EAAE,MAAM,GACT,OAAO,CAAC,QAAQ,CAAC,CAMnB"}

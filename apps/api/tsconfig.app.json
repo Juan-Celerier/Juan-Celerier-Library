@@ -2,8 +2,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "noEmit": false,
-    "outDir": "dist"
+    "outDir": "dist",
+    "baseUrl": "../../",
+    "paths": {
+      "domain/*": ["domain/src/*"]
+    }
   },
-  "files": ["src/server.ts"],
+  "include": ["src/**/*", "../../domain/src/**/*"],
   "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }

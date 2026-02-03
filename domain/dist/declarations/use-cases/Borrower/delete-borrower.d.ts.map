@@ -1,0 +1,1 @@
+{"version":3,"file":"delete-borrower.d.ts","sourceRoot":"","sources":["../../../../src/use-cases/Borrower/delete-borrower.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,kBAAkB,EAAE,MAAM,gDAAgD,CAAC;AAGpF,wBAAsB,cAAc,CAClC,UAAU,EAAE,kBAAkB,EAC9B,EAAE,EAAE,MAAM,GACT,OAAO,CAAC,IAAI,CAAC,CAOf"}
