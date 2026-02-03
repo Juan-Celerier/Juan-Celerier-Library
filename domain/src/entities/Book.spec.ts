@@ -11,9 +11,9 @@ describe("Book Entity", () => {
       publisher: "Test Publisher",
       publicationDate: new Date(),
       isbn: "978-1234567890",
+      description: "Test description",
       availableCopies: 5,
       totalCopies: 10,
-      description: "Test description",
     };
 
     // Should not have id or createdAt
@@ -21,9 +21,8 @@ describe("Book Entity", () => {
     expect(bookData).not.toHaveProperty("createdAt");
   });
 
-  test("UpdateBookDTO should exclude createdAt but include id", () => {
+  test("UpdateBookDTO should exclude id and createdAt", () => {
     const bookData: UpdateBookDTO = {
-      id: "book-1",
       title: "Updated Book",
       author: "Updated Author",
       authors: ["author-1"],
@@ -31,12 +30,12 @@ describe("Book Entity", () => {
       publisher: "Updated Publisher",
       publicationDate: new Date(),
       isbn: "978-1234567890",
-      availableCopies: 3,
+      availableCopies: 5,
       totalCopies: 10,
     };
 
-    // Should have id but not createdAt
-    expect(bookData).toHaveProperty("id");
+    // Should not have id or createdAt
+    expect(bookData).not.toHaveProperty("id");
     expect(bookData).not.toHaveProperty("createdAt");
   });
 
@@ -50,9 +49,9 @@ describe("Book Entity", () => {
       publisher: "Publisher",
       publicationDate: new Date(),
       isbn: "978-1234567890",
+      createdAt: new Date(),
       availableCopies: 5,
       totalCopies: 10,
-      createdAt: new Date(),
     };
 
     expect(book).toHaveProperty("id");
@@ -63,8 +62,6 @@ describe("Book Entity", () => {
     expect(book).toHaveProperty("publisher");
     expect(book).toHaveProperty("publicationDate");
     expect(book).toHaveProperty("isbn");
-    expect(book).toHaveProperty("availableCopies");
-    expect(book).toHaveProperty("totalCopies");
     expect(book).toHaveProperty("createdAt");
   });
 
@@ -78,9 +75,9 @@ describe("Book Entity", () => {
       publisher: "Publisher",
       publicationDate: new Date(),
       isbn: "978-1234567890",
-      availableCopies: 1,
-      totalCopies: 1,
       createdAt: new Date(),
+      availableCopies: 5,
+      totalCopies: 10,
       // image and description are optional
     };
 

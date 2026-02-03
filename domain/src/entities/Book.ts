@@ -10,10 +10,10 @@ export interface Book {
   isbn: string;
   image?: string;
   description?: string;
+  createdAt: Date;
   availableCopies: number;
   totalCopies: number;
-  createdAt: Date;
 }
 
 export type CreateBookDTO = Omit<Book, "id" | "createdAt">;
-export type UpdateBookDTO = Omit<Book, "createdAt">;
+export type UpdateBookDTO = Partial<Omit<Book, "id" | "createdAt">>;

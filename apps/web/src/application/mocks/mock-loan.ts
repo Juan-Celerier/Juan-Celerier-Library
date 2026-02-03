@@ -10,6 +10,7 @@ export const mockLoans: Loan[] = [
     returnDate: new Date("2023-04-10"), // Devuelto antes
     status: "returned",
     fineAmount: 0,
+    bookCopyId: "copy-001", // Ejemplar específico
     createdAt: new Date("2023-04-01"),
   },
   {
@@ -18,6 +19,7 @@ export const mockLoans: Loan[] = [
     borrowerId: "2", // María García
     loanDate: new Date("2023-04-05"),
     dueDate: new Date("2023-04-20"),
+    bookCopyId: "copy-002", // Ejemplar específico
     status: "active", // Aún activo
     createdAt: new Date("2023-04-05"),
   },
@@ -26,6 +28,7 @@ export const mockLoans: Loan[] = [
     bookId: "3", // Ficciones
     borrowerId: "3", // Carlos López
     loanDate: new Date("2023-03-10"),
+    bookCopyId: "copy-003", // Ejemplar específico
     dueDate: new Date("2023-03-25"),
     returnDate: undefined,
     status: "overdue", // Vencido
@@ -39,6 +42,7 @@ export const mockLoans: Loan[] = [
     loanDate: new Date("2023-04-08"),
     dueDate: new Date("2023-04-23"),
     returnDate: new Date("2023-04-22"),
+    bookCopyId: "copy-004", // Ejemplar específico
     status: "returned",
     createdAt: new Date("2023-04-08"),
   },
@@ -47,6 +51,7 @@ export const mockLoans: Loan[] = [
     bookId: "5", // El Código Da Vinci
     borrowerId: "5", // Luis Rodríguez
     loanDate: new Date("2023-04-12"),
+    bookCopyId: "copy-005", // Ejemplar específico
     dueDate: new Date("2023-04-27"),
     status: "active",
     createdAt: new Date("2023-04-12"),
@@ -58,6 +63,7 @@ export const mockLoans: Loan[] = [
     loanDate: new Date("2023-04-15"),
     dueDate: new Date("2023-04-30"),
     returnDate: undefined,
+    bookCopyId: "copy-006", // Ejemplar específico
     status: "active",
     fineAmount: undefined,
     createdAt: new Date("2023-04-15"),

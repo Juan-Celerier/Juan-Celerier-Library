@@ -29,14 +29,15 @@ interface ReservationWithBook {
 
 const MyReservationsPage = () => {
   const { user } = useAuth();
-  const [reservations, setReservations] = useState<ReservationWithBook[]>([]);
+  const [reservations, setReservations] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [cancellingReservationId, setCancellingReservationId] = useState<
     string | null
   >(null);
   const [showCancelModal, setShowCancelModal] = useState(false);
-  const [selectedReservation, setSelectedReservation] =
-    useState<ReservationWithBook | null>(null);
+  const [selectedReservation, setSelectedReservation] = useState<any | null>(
+    null,
+  );
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -47,13 +48,26 @@ const MyReservationsPage = () => {
 
       try {
         const res = await apiClient.call<ReservationWithBook[]>(
-          `reservations/user/${user.id}`
+          `reservations/user/${user.id}`,
         );
         if (res && typeof res === "object" && "error" in (res as any)) {
           console.error("Error fetching reservations:", (res as any).error);
           setReservations([]);
         } else {
-          setReservations(res as ReservationWithBook[]);
+          const mappedReservations = (res as any[]).map((reservation: any) => ({
+            id: reservation.id,
+            bookTitle: reservation.book?.title || "Título desconocido",
+            bookGenre: reservation.book?.genre || "Género desconocido",
+            userName: reservation.user?.name || "Usuario desconocido",
+            reservedAt: new Date(
+              reservation.reservationDate,
+            ).toLocaleDateString(),
+            status: reservation.status.toLowerCase() as
+              | "active"
+              | "cancelled"
+              | "fulfilled",
+          }));
+          setReservations(mappedReservations);
         }
       } catch (error) {
         console.error("Error fetching reservations:", error);
@@ -65,6 +79,11 @@ const MyReservationsPage = () => {
 
     fetchReservations();
   }, [user?.id]);
+
+  const handleReservationCreated = async () => {
+    // Refrescar la lista de reservas después de crear una nueva
+    setReservations((prevReservations) => [...prevReservations]);
+  };
 
   const handleCancelReservation = async (reservationId: string) => {
     setCancellingReservationId(reservationId);
@@ -79,8 +98,8 @@ const MyReservationsPage = () => {
         // Actualizar el estado local removiendo la reserva cancelada
         setReservations((prevReservations) =>
           prevReservations.filter(
-            (reservation) => reservation.id !== reservationId
-          )
+            (reservation) => reservation.id !== reservationId,
+          ),
         );
         alert("Reserva cancelada exitosamente!");
       }
@@ -141,11 +160,12 @@ const MyReservationsPage = () => {
     });
   };
 
-  const getDaysUntilExpiration = (expirationDate: Date) => {
+  const getDaysUntilExpiration = (expirationDate: Date): number => {
     const today = new Date();
-    const expiration = new Date(expirationDate);
-    const diffTime = expiration.getTime() - today.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const oneDay = 24 * 60 * 60 * 1000;
+    const diffDays = Math.ceil(
+      (new Date(expirationDate).getTime() - today.getTime()) / oneDay,
+    );
     return diffDays;
   };
 
@@ -193,7 +213,7 @@ const MyReservationsPage = () => {
             {reservations.map((reservation) => {
               const expired = isExpired(
                 reservation.expirationDate,
-                reservation.status
+                reservation.status,
               );
               const daysUntilExpiration =
                 reservation.status === "PENDING"
@@ -296,6 +316,15 @@ const MyReservationsPage = () => {
                               {cancellingReservationId === reservation.id
                                 ? "Cancelando..."
                                 : "Cancelar reserva"}
+                            </Button>
+                          )}
+
+                          {reservation.status === "PENDING" && (
+                            <Button
+                              onClick={() => handleReservationCreated()}
+                              className="!px-4 !py-2 !text-sm !font-medium !rounded-md !transition-colors !bg-green-600 !text-white hover:!bg-green-700"
+                            >
+                              Refrescar
                             </Button>
                           )}
 

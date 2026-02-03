@@ -42,17 +42,33 @@ const BookDetailPage = () => {
     setShowConfirmModal(false);
 
     try {
-      // Intentar crear una reserva primero
-      const result = await apiClient.call("createReservation", {
-        bookId: book.id,
-      });
+      let result;
+      if (isAvailable) {
+        // Intentar crear un préstamo
+        result = await apiClient.call("loans", {
+          user: user.id,
+          book: book.id,
+          loanDate: new Date().toISOString(),
+        });
+      } else {
+        // Crear una reserva si no hay copias disponibles
+        result = await apiClient.call("reservations", {
+          user: user.id,
+          book: book.id,
+          reservationDate: new Date().toISOString(),
+        });
+      }
 
       if (result && typeof result === "object" && "error" in result) {
         setMessage(`Error: ${result.error}`);
       } else {
+        const action = isAvailable ? "préstamo" : "reserva";
         setMessage(
-          "¡Reserva creada exitosamente! Te notificaremos cuando el libro esté disponible."
+          `¡${action.charAt(0).toUpperCase() + action.slice(1)} creada exitosamente! Redirigiendo a tus ${action}s...`,
         );
+        // Redirigir a la página correspondiente
+        const path = isAvailable ? "/my/loans" : "/my/reservations";
+        setTimeout(() => navigate(path), 2000);
       }
     } catch (error) {
       console.error("Error requesting book:", error);
@@ -107,24 +123,31 @@ const BookDetailPage = () => {
             </div>
 
             {/* Información de disponibilidad */}
-            <div className={`rounded-lg shadow-sm border-2 p-6 space-y-4 ${
-              isAvailable
-                ? "bg-green-50 border-green-200"
-                : "bg-red-50 border-red-200"
-            }`}>
+            <div
+              className={`rounded-lg shadow-sm border-2 p-6 space-y-4 ${
+                isAvailable
+                  ? "bg-green-50 border-green-200"
+                  : "bg-red-50 border-red-200"
+              }`}
+            >
               <div className="flex items-center justify-between">
                 <span className="text-lg font-semibold text-gray-900">
                   Estado del libro
                 </span>
-                <Badge variant={isAvailable ? "success" : "destructive"} className="text-sm px-3 py-1">
+                <Badge
+                  variant={isAvailable ? "success" : "destructive"}
+                  className="text-sm px-3 py-1"
+                >
                   {isAvailable ? "📚 Disponible" : "❌ No disponible"}
                 </Badge>
               </div>
 
               <div className="text-center py-4">
-                <div className={`text-4xl font-bold mb-2 ${
-                  isAvailable ? "text-green-600" : "text-red-600"
-                }`}>
+                <div
+                  className={`text-4xl font-bold mb-2 ${
+                    isAvailable ? "text-green-600" : "text-red-600"
+                  }`}
+                >
                   {availableCopies}
                 </div>
                 <div className="text-base text-gray-700 font-medium">
@@ -137,20 +160,26 @@ const BookDetailPage = () => {
               </div>
 
               {/* Indicador visual adicional */}
-              <div className={`flex items-center justify-center gap-2 p-3 rounded-lg ${
-                isAvailable
-                  ? "bg-green-100 text-green-800"
-                  : "bg-red-100 text-red-800"
-              }`}>
+              <div
+                className={`flex items-center justify-center gap-2 p-3 rounded-lg ${
+                  isAvailable
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
+                }`}
+              >
                 {isAvailable ? (
                   <>
                     <span className="text-2xl">✅</span>
-                    <span className="font-medium">¡Puedes solicitar este libro ahora!</span>
+                    <span className="font-medium">
+                      ¡Puedes solicitar este libro ahora!
+                    </span>
                   </>
                 ) : (
                   <>
-                    <span className="text-2xl">⏳</span>
-                    <span className="font-medium">Libro actualmente prestado</span>
+                    <span className="text-2xl">📅</span>
+                    <span className="font-medium">
+                      Puedes reservar este libro
+                    </span>
                   </>
                 )}
               </div>
@@ -158,18 +187,18 @@ const BookDetailPage = () => {
               {/* Botón de acción */}
               <Button
                 onClick={handleRequestBook}
-                disabled={!isAvailable || isRequesting}
+                disabled={isRequesting}
                 className={`w-full py-3 text-base font-semibold ${
                   isAvailable
                     ? "!bg-emerald-600 !text-white hover:!bg-emerald-700 !shadow-lg"
-                    : "!bg-gray-400 !text-gray-200 !cursor-not-allowed"
+                    : "!bg-blue-600 !text-white hover:!bg-blue-700 !shadow-lg"
                 } disabled:!opacity-50`}
               >
                 {isRequesting
                   ? "⏳ Procesando solicitud..."
                   : isAvailable
                     ? "📖 Solicitar préstamo"
-                    : "❌ No disponible actualmente"}
+                    : "📅 Reservar libro"}
               </Button>
 
               {!user && (

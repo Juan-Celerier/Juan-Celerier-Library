@@ -12,4 +12,4 @@ export interface User {
   createdAt: Date;
 }
 
-export type UserRole = "BORROWER" | "LIBRARIAN";
+export type UserRole = "BORROWER" | "LIBRARIAN" | "ADMIN" | "MEMBER";

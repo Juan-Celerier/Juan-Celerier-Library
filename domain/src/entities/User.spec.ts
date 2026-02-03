@@ -45,7 +45,7 @@ describe("User Entity", () => {
   });
 
   test("UserRole should be one of the valid values", () => {
-    const roles: UserRole[] = ["BORROWER", "LIBRARIAN"];
+    const roles: UserRole[] = ["BORROWER", "LIBRARIAN", "ADMIN", "MEMBER"];
 
     roles.forEach((role) => {
       const user: User = {

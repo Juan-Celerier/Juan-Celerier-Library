@@ -1,10 +1,14 @@
 import { Loan, CreateLoanDTO } from "domain/src/entities/Loan.js";
-import { createInvalidDataError } from "domain/src/errors/error.js";
+import { UserRole } from "domain/src/entities/User.js";
+import { RoleService } from "domain/src/services/role-service.js";
+import {
+  createInvalidDataError,
+  createUnauthorizedError,
+} from "domain/src/errors/error.js";
 import { LoanRepository } from "domain/src/repositories/loan-repository.js";
 
-
 export interface CreateLoanRequest {
-  bookId: string;
+  bookCopyId: string;
   borrowerId: string;
 }
 
@@ -19,9 +23,13 @@ export interface CreateLoanDependencies {
   loanRepository: LoanRepository;
 }
 
+export interface CreateLoanWithUserRequest extends CreateLoanRequest {
+  userRole: UserRole;
+}
+
 export const createLoan = async (
   request: CreateLoanRequest,
-  dependencies: CreateLoanDependencies
+  dependencies: CreateLoanDependencies,
 ): Promise<CreateLoanResponse> => {
   const { loanRepository } = dependencies;
 
@@ -37,7 +45,8 @@ export const createLoan = async (
   dueDate.setDate(loanDate.getDate() + 14); // +14 días
 
   const createLoanDTO: CreateLoanDTO = {
-    bookId: request.bookId.trim(),
+    bookCopyId: request.bookCopyId.trim(),
+    bookId: request.bookCopyId.trim(), // Using bookCopyId as bookId for now
     borrowerId: request.borrowerId.trim(),
     loanDate,
     dueDate,
@@ -54,8 +63,8 @@ export const createLoan = async (
 };
 
 const validateCreateLoanRequest = (request: CreateLoanRequest) => {
-  if (!request.bookId || request.bookId.trim().length === 0) {
-    return createInvalidDataError("Book ID is required");
+  if (!request.bookCopyId || request.bookCopyId.trim().length === 0) {
+    return createInvalidDataError("Book copy ID is required");
   }
 
   if (!request.borrowerId || request.borrowerId.trim().length === 0) {
@@ -63,4 +72,20 @@ const validateCreateLoanRequest = (request: CreateLoanRequest) => {
   }
 
   return null;
+};
+
+/**
+ * Create loan with role validation
+ */
+export const createLoanWithRoleValidation = async (
+  request: CreateLoanWithUserRequest,
+  dependencies: CreateLoanDependencies,
+): Promise<CreateLoanResponse> => {
+  // Validate user role first
+  if (!RoleService.canCreateLoans(request.userRole)) {
+    return { success: false, error: createUnauthorizedError("User role not authorized to create loans").message };
+  }
+
+  // If authorized, proceed with normal loan creation
+  return createLoan(request, dependencies);
 };

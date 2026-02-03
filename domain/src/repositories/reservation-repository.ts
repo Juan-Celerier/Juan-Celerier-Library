@@ -9,7 +9,7 @@ export interface ReservationRepository {
     reservation: Partial<CreateReservationDTO>
   ): Promise<Reservation>;
   delete(id: string): Promise<void>;
-  findByBookId(bookId: string): Promise<Reservation[]>;
+  findByBookCopyId(bookCopyId: string): Promise<Reservation[]>;
   findByBorrowerId(borrowerId: string): Promise<Reservation[]>;
   cancelReservation(id: string): Promise<Reservation>;
 }

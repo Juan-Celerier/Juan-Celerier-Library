@@ -26,6 +26,7 @@ describe("getAllLoans Use Case", () => {
     const loans: Loan[] = [
       {
         id: "loan-1",
+        bookCopyId: "bookCopy-1",
         bookId: "book-1",
         borrowerId: "borrower-1",
         loanDate: new Date(),
@@ -35,6 +36,7 @@ describe("getAllLoans Use Case", () => {
       },
       {
         id: "loan-2",
+        bookCopyId: "bookCopy-2",
         bookId: "book-2",
         borrowerId: "borrower-2",
         loanDate: new Date(),

@@ -9,6 +9,7 @@ import publisherRoutes from "./publisher.routes.js";
 import reservationRoutes from "./reservation.routes.js";
 import userRoutes from "./user.routes.js";
 import loanRoutes from "./loan.routes.js";
+import favoriteRoutes from "./favorite.routes.js";
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use("/publishers", publisherRoutes);
 router.use("/reservations", reservationRoutes);
 router.use("/users", userRoutes);
 router.use("/loans", loanRoutes);
+router.use("/favorites", favoriteRoutes);
 
 export default router;

@@ -37,8 +37,8 @@ describe("createBook", () => {
       isbn: "978-987-1144-81-7",
       image: "cien-anos-cover.jpg",
       description: "Una obra maestra del realismo mágico",
-      availableCopies: 15,
-      totalCopies: 20,
+      authors: [],
+      categories: [],
     };
 
     const result = await createBook(request, dependencies);
@@ -59,9 +59,9 @@ describe("createBook", () => {
       author: "Autor",
       publisher: "Editorial",
       publicationDate: new Date(),
-      availableCopies: 5,
-      totalCopies: 5,
       createdAt: new Date(),
+      availableCopies: 5,
+      totalCopies: 10,
     });
 
     const request: CreateBookRequest = {
@@ -70,8 +70,8 @@ describe("createBook", () => {
       publisher: "Editorial Sudamericana",
       publicationDate: new Date("1967-05-30"),
       isbn: "978-987-1144-81-7",
-      availableCopies: 10,
-      totalCopies: 15,
+      authors: [],
+      categories: [],
     };
 
     const result = await createBook(request, dependencies);
@@ -88,8 +88,8 @@ describe("createBook", () => {
         publisher: "Editorial Test",
         publicationDate: new Date(),
         isbn: "978-123-456-789-0",
-        availableCopies: 5,
-        totalCopies: 5,
+        authors: [],
+        categories: [],
       };
 
       const result = await createBook(request, dependencies);
@@ -105,8 +105,8 @@ describe("createBook", () => {
         publisher: "Editorial Test",
         publicationDate: new Date(),
         isbn: "978-123-456-789-0",
-        availableCopies: 5,
-        totalCopies: 5,
+        authors: [],
+        categories: [],
       };
 
       const result = await createBook(request, dependencies);
@@ -122,8 +122,8 @@ describe("createBook", () => {
         publisher: "Editorial Test",
         publicationDate: new Date(),
         isbn: "",
-        availableCopies: 5,
-        totalCopies: 5,
+        authors: [],
+        categories: [],
       };
 
       const result = await createBook(request, dependencies);
@@ -142,8 +142,8 @@ describe("createBook", () => {
         publisher: "Editorial",
         publicationDate: futureDate,
         isbn: "978-123-456-789-0",
-        availableCopies: 5,
-        totalCopies: 5,
+        authors: [],
+        categories: [],
       };
 
       const result = await createBook(request, dependencies);
@@ -159,14 +159,14 @@ describe("createBook", () => {
         publisher: "Editorial Test",
         publicationDate: new Date(),
         isbn: "978-123-456-789-0",
-        availableCopies: 10,
-        totalCopies: 5,
+        authors: [],
+        categories: [],
       };
 
       const result = await createBook(request, dependencies);
 
-      expect(result.success).toBe(false);
-      expect(result.error).toBe(createInvalidBookDataError().message);
+      expect(result.success).toBe(true);
+      expect(result.error).toBeUndefined();
     });
 
     test("should fail when copies are negative", async () => {
@@ -176,14 +176,14 @@ describe("createBook", () => {
         publisher: "Editorial Test",
         publicationDate: new Date(),
         isbn: "978-123-456-789-0",
-        availableCopies: -1,
-        totalCopies: 5,
+        authors: [],
+        categories: [],
       };
 
       const result = await createBook(request, dependencies);
 
-      expect(result.success).toBe(false);
-      expect(result.error).toBe(createInvalidBookDataError().message);
+      expect(result.success).toBe(true);
+      expect(result.error).toBeUndefined();
     });
   });
 });

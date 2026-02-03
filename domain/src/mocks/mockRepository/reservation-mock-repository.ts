@@ -6,7 +6,7 @@ import {
 export interface ReservationRepository {
   findAll(): Promise<Reservation[]>;
   findById(reservationId: string): Promise<Reservation | null>;
-  findByBookId(bookId: string): Promise<Reservation[]>;
+  findByBookCopyId(bookCopyId: string): Promise<Reservation[]>;
   findByBorrowerId(borrowerId: string): Promise<Reservation[]>;
   create(reservation: Omit<Reservation, "id">): Promise<Reservation>;
   update(
@@ -35,8 +35,8 @@ export function createReservationRepositoryMock(
       return this.reservations.find((r) => r.id === reservationId) || null;
     },
 
-    async findByBookId(bookId: string) {
-      return this.reservations.filter((r) => r.bookId === bookId);
+    async findByBookCopyId(bookCopyId: string) {
+      return this.reservations.filter((r) => r.bookCopyId === bookCopyId);
     },
 
     async findByBorrowerId(borrowerId: string) {

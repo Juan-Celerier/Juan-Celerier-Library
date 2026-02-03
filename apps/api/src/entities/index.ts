@@ -2,6 +2,7 @@
 import { AuthorEntity } from "./author.entity.js";
 import { BookEntity } from "./book.entity.js";
 import { CategoryEntity } from "./category.entity.js";
+import { FavoriteEntity } from "./favorite.entity.js";
 
 import { UserEntity } from "./user.entity.js";
 import { LoanEntity } from "./loan.entity.js";
@@ -16,4 +17,5 @@ export const entities = [
   UserEntity,
   LoanEntity,
   ReservationEntity,
+  FavoriteEntity,
 ];

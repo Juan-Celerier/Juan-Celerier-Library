@@ -3,6 +3,7 @@ import { Entity, Column, OneToMany } from "typeorm";
 import { BaseEntity } from "./base.entity.js";
 import { LoanEntity } from "./loan.entity.js";
 import { ReservationEntity } from "./reservation.entity.js";
+import { FavoriteEntity } from "./favorite.entity.js";
 
 @Entity("users")
 export class UserEntity extends BaseEntity {
@@ -23,4 +24,7 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => ReservationEntity, (reservation) => reservation.user)
   reservations!: ReservationEntity[];
+
+  @OneToMany(() => FavoriteEntity, (favorite) => favorite.user)
+  favorites!: FavoriteEntity[];
 }

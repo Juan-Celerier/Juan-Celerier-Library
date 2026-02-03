@@ -49,6 +49,10 @@ export function createLoanRepositoryMock(
       return this.loans.filter((l) => l.borrowerId === borrowerId);
     },
 
+    async findByBookCopyId(bookCopyId: string) {
+      return this.loans.find((l) => l.bookCopyId === bookCopyId) || null;
+    },
+
     async returnBook(id) {
       const loan = this.loans.find((l) => l.id === id);
       if (!loan) throw new Error("Loan not found");
@@ -59,8 +63,14 @@ export function createLoanRepositoryMock(
     async renewLoan(id) {
       const loan = this.loans.find((l) => l.id === id);
       if (!loan) throw new Error("Loan not found");
-      loan.dueDate = new Date(loan.dueDate.getTime() + 7 * 24 * 60 * 60 * 1000);
-      return loan;
+
+      // Import the renew function from the Loan entity
+      const { renew } = await import("../../entities/Loan.js");
+
+      const renewedLoan = renew(loan);
+      const index = this.loans.findIndex((l) => l.id === id);
+      this.loans[index] = renewedLoan;
+      return renewedLoan;
     },
   };
 }

@@ -280,21 +280,26 @@ export const apiClient = {
 
       if (!res.ok) {
         try {
-          const json = await res.json();
-          console.log('API Error Response:', json);
-          if (json && json.error) {
-            const error = json.error;
-            const message =
-              typeof error === "string"
-                ? error
-                : error?.message || `API error: ${res.status}`;
-            return { error: message };
-          }
-          return { error: `API error: ${res.status}` };
-        } catch (e) {
-          console.log('Error parsing response:', e);
           const text = await res.text();
+          console.log('API Error Response:', text);
+          try {
+            const json = JSON.parse(text);
+            if (json && json.error) {
+              const error = json.error;
+              const message =
+                typeof error === "string"
+                  ? error
+                  : error?.message || `API error: ${res.status}`;
+              return { error: message };
+            }
+          } catch (parseError) {
+            // If it's not JSON, just return the text
+            return { error: `API error: ${res.status} ${text}` };
+          }
           return { error: `API error: ${res.status} ${text}` };
+        } catch (e) {
+          console.log('Error reading response:', e);
+          return { error: `API error: ${res.status}` };
         }
       }
 

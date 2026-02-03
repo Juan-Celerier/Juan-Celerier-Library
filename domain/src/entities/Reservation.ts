@@ -1,6 +1,6 @@
 export interface Reservation {
   id: string;
-  bookId: string;
+  bookCopyId: string;
   borrowerId: string;
   reservationDate: Date;
   expirationDate: Date;

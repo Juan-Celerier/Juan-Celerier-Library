@@ -3,6 +3,7 @@ import { AppDataSource } from "../config/data.js";
 import { BookEntity } from "../entities/book.entity.js";
 import { UserEntity } from "../entities/user.entity.js";
 import { LoanEntity } from "../entities/loan.entity.js";
+import { FavoriteEntity } from "../entities/favorite.entity.js";
 import { asyncHandler } from "../middlewares/error-handler.js";
 
 export const dashboardController = () => {
@@ -17,6 +18,8 @@ export const dashboardController = () => {
       const activeLoans = await loanRepo.count({
         where: { status: "active" },
       });
+      const totalFavorites =
+        await AppDataSource.getRepository(FavoriteEntity).count();
 
       const stats = [
         {
@@ -45,7 +48,7 @@ export const dashboardController = () => {
         },
         {
           title: "Favoritos",
-          value: "12",
+          value: totalFavorites.toString(),
           change: "+5%",
           changeType: "positive",
           color: "text-red-500",

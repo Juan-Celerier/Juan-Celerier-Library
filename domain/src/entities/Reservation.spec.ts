@@ -9,7 +9,7 @@ describe("Reservation Entity", () => {
   test("Reservation should have all required fields", () => {
     const reservation: Reservation = {
       id: "reservation-1",
-      bookId: "book-1",
+      bookCopyId: "book-copy-1",
       borrowerId: "borrower-1",
       reservationDate: new Date(),
       expirationDate: new Date(),
@@ -18,7 +18,7 @@ describe("Reservation Entity", () => {
     };
 
     expect(reservation).toHaveProperty("id");
-    expect(reservation).toHaveProperty("bookId");
+    expect(reservation).toHaveProperty("bookCopyId");
     expect(reservation).toHaveProperty("borrowerId");
     expect(reservation).toHaveProperty("reservationDate");
     expect(reservation).toHaveProperty("expirationDate");
@@ -28,7 +28,7 @@ describe("Reservation Entity", () => {
 
   test("CreateReservationDTO should exclude id and createdAt", () => {
     const reservationData: CreateReservationDTO = {
-      bookId: "book-1",
+      bookCopyId: "book-copy-1",
       borrowerId: "borrower-1",
       reservationDate: new Date(),
       expirationDate: new Date(),
@@ -50,7 +50,7 @@ describe("Reservation Entity", () => {
     validStatuses.forEach((status) => {
       const reservation: Reservation = {
         id: "reservation-1",
-        bookId: "book-1",
+        bookCopyId: "book-copy-1",
         borrowerId: "borrower-1",
         reservationDate: new Date(),
         expirationDate: new Date(),

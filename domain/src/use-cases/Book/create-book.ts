@@ -1,7 +1,10 @@
 import { Book, CreateBookDTO } from "domain/src/entities/Book.js";
+import { UserRole } from "domain/src/entities/User.js";
+import { RoleService } from "domain/src/services/role-service.js";
 import {
   createBookAlreadyExistsError,
   createInvalidBookDataError,
+  createUnauthorizedError,
 } from "domain/src/errors/error.js";
 import { BookRepository } from "domain/src/repositories/book-repository.js";
 
@@ -13,8 +16,8 @@ export interface CreateBookRequest {
   isbn: string;
   image?: string;
   description?: string;
-  availableCopies: number;
-  totalCopies: number;
+  authors?: string[];
+  categories?: string[];
 }
 
 export interface CreateBookResponse {
@@ -28,9 +31,13 @@ export interface CreateBookDependencies {
   bookRepository: BookRepository;
 }
 
+export interface CreateBookWithUserRequest extends CreateBookRequest {
+  userRole: UserRole;
+}
+
 export const createBook = async (
   request: CreateBookRequest,
-  dependencies: CreateBookDependencies
+  dependencies: CreateBookDependencies,
 ): Promise<CreateBookResponse> => {
   const { bookRepository } = dependencies;
 
@@ -53,14 +60,14 @@ export const createBook = async (
     title: request.title.trim(),
     author: request.author.trim(),
     publisher: request.publisher.trim(),
-    authors: [],
-    categories: [],
+    authors: request.authors || [],
+    categories: request.categories || [],
     publicationDate: request.publicationDate,
     isbn: request.isbn.trim(),
     image: request.image?.trim(),
     description: request.description?.trim(),
-    availableCopies: request.availableCopies,
-    totalCopies: request.totalCopies,
+    availableCopies: 1, // Default value
+    totalCopies: 1, // Default value
   };
 
   // Crear el libro
@@ -80,10 +87,22 @@ const validateCreateBookRequest = (request: CreateBookRequest) => {
   if (!request.isbn?.trim()) return createInvalidBookDataError();
   if (request.publicationDate && request.publicationDate > new Date())
     return createInvalidBookDataError();
-  if (request.availableCopies < 0 || request.totalCopies < 0)
-    return createInvalidBookDataError();
-  if (request.availableCopies > request.totalCopies)
-    return createInvalidBookDataError();
 
   return null;
+};
+
+/**
+ * Create book with role validation
+ */
+export const createBookWithRoleValidation = async (
+  request: CreateBookWithUserRequest,
+  dependencies: CreateBookDependencies,
+): Promise<CreateBookResponse> => {
+  // Validate user role first
+  if (!RoleService.canCreateBooks(request.userRole)) {
+    return { success: false, error: createUnauthorizedError("User role not authorized to create books").message };
+  }
+
+  // If authorized, proceed with normal book creation
+  return createBook(request, dependencies);
 };

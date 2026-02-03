@@ -8,6 +8,7 @@ export interface LoanRepository {
   delete(id: string): Promise<void>;
 
   findByBorrowerId(borrowerId: string): Promise<Loan[]>;
+  findByBookCopyId(bookCopyId: string): Promise<Loan | null>;
   returnBook(id: string): Promise<Loan>;
   renewLoan(id: string): Promise<Loan>;
 }

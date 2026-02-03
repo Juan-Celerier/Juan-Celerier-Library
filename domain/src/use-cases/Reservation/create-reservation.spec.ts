@@ -12,7 +12,7 @@ describe("createReservation", () => {
   test("crea una reserva con estado PENDING si no se pasa", async () => {
     const repo = createReservationRepositoryMock();
     const reservationDTO: CreateReservationDTO = {
-      bookId: "book-123",
+      bookCopyId: "book-copy-123",
       borrowerId: "user-456",
       reservationDate: new Date("2025-01-01"),
       expirationDate: new Date("2025-01-08"),
@@ -33,7 +33,7 @@ describe("createReservation", () => {
   test("usa valores propios del DTO si se proveen", async () => {
     const repo = createReservationRepositoryMock();
     const reservationDTO: CreateReservationDTO = {
-      bookId: "book-999",
+      bookCopyId: "book-copy-999",
       borrowerId: "user-999",
       reservationDate: new Date("2025-02-01"),
       expirationDate: new Date("2025-02-10"),
@@ -57,7 +57,7 @@ describe("createReservation", () => {
   test("asigna reservationDate automáticamente si no se pasa", async () => {
     const repo = createReservationRepositoryMock();
     const reservationDTO = {
-      bookId: "book-auto-date",
+      bookCopyId: "book-copy-auto-date",
       borrowerId: "user-auto",
       expirationDate: new Date("2025-03-01"),
       status: "PENDING",
@@ -74,7 +74,7 @@ describe("createReservation", () => {
   test("asigna expirationDate automáticamente (+7 días) si no se pasa", async () => {
     const repo = createReservationRepositoryMock();
     const reservationDTO = {
-      bookId: "book-auto-exp",
+      bookCopyId: "book-copy-auto-exp",
       borrowerId: "user-auto-exp",
       reservationDate: new Date("2025-04-01"),
       status: "PENDING",
@@ -96,7 +96,7 @@ describe("createReservation", () => {
   test("asigna status=PENDING si no se pasa", async () => {
     const repo = createReservationRepositoryMock();
     const reservationDTO = {
-      bookId: "book-auto-status",
+      bookCopyId: "book-copy-auto-status",
       borrowerId: "user-auto-status",
       reservationDate: new Date("2025-05-01"),
       expirationDate: new Date("2025-05-08"),
@@ -118,19 +118,19 @@ describe("createReservation", () => {
         { reservationRepository: repo },
         {} as CreateReservationDTO
       )
-    ).rejects.toEqual(createInvalidDataError("Missing bookId or borrowerId"));
+    ).rejects.toEqual(createInvalidDataError("Missing bookCopyId or borrowerId"));
   });
 
   test("lanza ReservationAlreadyExistsError si ya existe una reserva activa para el libro", async () => {
     const reservation = createReservationMock({
-      bookId: "book-dup",
+      bookCopyId: "book-copy-dup",
       borrowerId: "user-1",
       status: "PENDING",
     });
     const repo = createReservationRepositoryMock([reservation]);
 
     const dto: CreateReservationDTO = {
-      bookId: "book-dup",
+      bookCopyId: "book-copy-dup",
       borrowerId: "user-2",
       reservationDate: new Date(),
       expirationDate: new Date(),
@@ -139,6 +139,6 @@ describe("createReservation", () => {
 
     await expect(
       createReservation({ reservationRepository: repo }, dto)
-    ).rejects.toEqual(createReservationAlreadyExistsError("book-dup"));
+    ).rejects.toEqual(createReservationAlreadyExistsError("book-copy-dup"));
   });
 });

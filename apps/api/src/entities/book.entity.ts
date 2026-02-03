@@ -6,6 +6,7 @@ import { CategoryEntity } from "./category.entity.js";
 import { LoanEntity } from "./loan.entity.js";
 import { ReservationEntity } from "./reservation.entity.js";
 import { PublisherEntity } from "./publisher-entity.js";
+import { FavoriteEntity } from "./favorite.entity.js";
 
 @Entity("books")
 export class BookEntity extends BaseEntity {
@@ -33,6 +34,9 @@ export class BookEntity extends BaseEntity {
 
   @OneToMany(() => ReservationEntity, (reservation) => reservation.book)
   reservations!: ReservationEntity[];
+
+  @OneToMany(() => FavoriteEntity, (favorite) => favorite.book)
+  favorites!: FavoriteEntity[];
 
   @Column("varchar", { length: 500, nullable: true })
   image?: string;
