@@ -1,7 +1,5 @@
-// apps/api/src/repositories/user-repository-impl.ts
-
 import { User } from "domain/src/entities/User.js";
-import { UserRepository } from "../../domain/src/repositories/user-repository";
+import { UserRepository, CreateUserDTO } from "domain/src/index.js";
 
 import { v4 as uuidv4 } from "uuid";
 
