@@ -4,7 +4,7 @@ import { BorrowerRepository } from "domain/src/repositories/borrower-repository.
 
 export async function getBorrowersByRole(
   repository: BorrowerRepository,
-  role: BorrowerRole
+  role: BorrowerRole,
 ): Promise<Borrower[]> {
   const validRoles: BorrowerRole[] = ["STUDENT", "TEACHER"];
   if (!validRoles.includes(role)) {

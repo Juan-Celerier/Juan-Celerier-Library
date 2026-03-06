@@ -25,7 +25,7 @@ describe("Update Borrower Use Case", () => {
     const repository = createBorrowerRepositoryMock([]);
 
     await expect(
-      updateBorrower(repository, { id: "non-existent", name: "Name" })
+      updateBorrower(repository, { id: "non-existent", name: "Name" }),
     ).rejects.toThrow(BorrowerNotFoundError("non-existent").message);
   });
 
@@ -35,7 +35,7 @@ describe("Update Borrower Use Case", () => {
     const repository = createBorrowerRepositoryMock([borrower1, borrower2]);
 
     await expect(
-      updateBorrower(repository, { id: "1", email: "b@example.com" })
+      updateBorrower(repository, { id: "1", email: "b@example.com" }),
     ).rejects.toThrow(BorrowerAlreadyExistsError("b@example.com").message);
   });
 });

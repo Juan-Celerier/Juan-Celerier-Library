@@ -18,7 +18,7 @@ describe("Delete Borrower Use Case", () => {
     const repository = createBorrowerRepositoryMock([]);
 
     await expect(deleteBorrower(repository, "non-existent")).rejects.toEqual(
-      BorrowerNotFoundError("non-existent")
+      BorrowerNotFoundError("non-existent"),
     );
   });
 });

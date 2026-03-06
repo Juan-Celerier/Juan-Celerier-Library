@@ -8,7 +8,7 @@ interface CancelReservationDeps {
 
 export async function cancelReservation(
   deps: CancelReservationDeps,
-  id: string
+  id: string,
 ): Promise<Reservation> {
   const { reservationRepository } = deps;
 

@@ -3,7 +3,7 @@ import { createInternalServerError } from "domain/src/errors/error.js";
 import { PublisherRepository } from "domain/src/repositories/publisher-repository.js";
 
 export async function getAllPublishers(
-  repository: PublisherRepository
+  repository: PublisherRepository,
 ): Promise<Publisher[]> {
   try {
     return await repository.findAll();

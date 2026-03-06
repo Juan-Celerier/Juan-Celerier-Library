@@ -64,7 +64,9 @@ export async function createReservationWithRoleValidation(
 ): Promise<Reservation> {
   // Validate user role first
   if (!RoleService.canCreateReservations(request.userRole)) {
-    throw createUnauthorizedError("User role not authorized to create reservations");
+    throw createUnauthorizedError(
+      "User role not authorized to create reservations",
+    );
   }
 
   // If authorized, proceed with normal reservation creation

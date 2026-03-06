@@ -7,7 +7,7 @@ export interface GetAllCategoriesResponse {
 }
 
 export async function getAllCategories(
-  repository: CategoryRepository
+  repository: CategoryRepository,
 ): Promise<GetAllCategoriesResponse> {
   const categories = await repository.findAll();
 

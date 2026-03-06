@@ -9,7 +9,7 @@ export interface MockedPublisherRepository extends PublisherRepository {
 }
 
 export function createPublisherRepositoryMock(
-  publishers: Publisher[] = []
+  publishers: Publisher[] = [],
 ): MockedPublisherRepository {
   return {
     publishers,

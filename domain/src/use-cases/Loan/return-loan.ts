@@ -1,7 +1,10 @@
 import { Loan } from "domain/src/entities/Loan.js";
-import { createInvalidDataError, createLoanNotFoundError, createLoanAlreadyReturnedError } from "domain/src/errors/error.js";
+import {
+  createInvalidDataError,
+  createLoanNotFoundError,
+  createLoanAlreadyReturnedError,
+} from "domain/src/errors/error.js";
 import { LoanRepository } from "domain/src/repositories/loan-repository.js";
-
 
 export interface ReturnLoanRequest {
   id: string;
@@ -13,7 +16,7 @@ export interface ReturnLoanDependencies {
 
 export const returnLoan = async (
   request: ReturnLoanRequest,
-  { loanRepository }: ReturnLoanDependencies
+  { loanRepository }: ReturnLoanDependencies,
 ): Promise<Loan> => {
   const loanId = request.id?.trim();
   if (!loanId) throw createInvalidDataError("Loan ID is required");

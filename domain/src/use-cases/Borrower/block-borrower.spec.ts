@@ -22,7 +22,7 @@ describe("Block Borrower Use Case", () => {
     const repository = createBorrowerRepositoryMock([]);
 
     await expect(blockBorrower(repository, "non-existent")).rejects.toEqual(
-      BorrowerNotFoundError("non-existent")
+      BorrowerNotFoundError("non-existent"),
     );
   });
 
@@ -31,7 +31,7 @@ describe("Block Borrower Use Case", () => {
     const repository = createBorrowerRepositoryMock([borrower]);
 
     await expect(blockBorrower(repository, "borrower-2")).rejects.toEqual(
-      createBorrowerAlreadyLockedError("borrower-2")
+      createBorrowerAlreadyLockedError("borrower-2"),
     );
   });
 });

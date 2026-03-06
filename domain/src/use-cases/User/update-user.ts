@@ -15,7 +15,7 @@ export interface UpdateUserDTO {
 
 export async function updateUser(
   repo: UserRepository,
-  input: UpdateUserDTO
+  input: UpdateUserDTO,
 ): Promise<User> {
   const existingUser = await repo.findById(input.id);
 

@@ -7,7 +7,7 @@ export interface MockedCategoryRepository extends CategoryRepository {
 }
 
 export function createCategoryRepositoryMock(
-  categories: Category[] = []
+  categories: Category[] = [],
 ): MockedCategoryRepository {
   return {
     categories,
@@ -50,7 +50,7 @@ export function createCategoryRepositoryMock(
     async findByName(name: string) {
       return (
         this.categories.find(
-          (c) => c.name.toLowerCase() === name.toLowerCase()
+          (c) => c.name.toLowerCase() === name.toLowerCase(),
         ) || null
       );
     },

@@ -2,7 +2,7 @@ import type { Reservation } from "app-domain/entities/Reservation";
 import { useState, useEffect } from "react";
 
 export const useReservations = (
-  status?: "PENDING" | "EXPIRED" | "CANCELLED" | "FULFILLED"
+  status?: "PENDING" | "EXPIRED" | "CANCELLED" | "FULFILLED",
 ) => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -12,7 +12,7 @@ export const useReservations = (
       let filteredReservations = reservations;
       if (status) {
         filteredReservations = reservations.filter(
-          (res) => res.status === status
+          (res) => res.status === status,
         );
       }
       setReservations(filteredReservations);

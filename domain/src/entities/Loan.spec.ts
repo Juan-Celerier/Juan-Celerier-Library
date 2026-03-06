@@ -1,5 +1,12 @@
 import { describe, test, expect } from "vitest";
-import { Loan, CreateLoanDTO, canBeRenewed, renew, isOverdue, calculateFine } from "./Loan.js";
+import {
+  Loan,
+  CreateLoanDTO,
+  canBeRenewed,
+  renew,
+  isOverdue,
+  calculateFine,
+} from "./Loan.js";
 
 describe("Loan Entity", () => {
   test("Loan should have all required fields", () => {
@@ -283,7 +290,7 @@ describe("Loan Fine Calculation Functionality", () => {
 
   test("calculateFine should handle edge case of just over 1 day overdue", () => {
     const dueDate = new Date("2023-12-15");
-    const currentDate = new Date(dueDate.getTime() + (24 * 60 * 60 * 1000) + 1); // 1 day + 1ms
+    const currentDate = new Date(dueDate.getTime() + 24 * 60 * 60 * 1000 + 1); // 1 day + 1ms
 
     const loan: Loan = {
       ...baseLoan,

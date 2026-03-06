@@ -86,7 +86,7 @@ const AdminPublishersPage = () => {
         setMessage(
           editingPublisher
             ? "Editor actualizado exitosamente!"
-            : "Editor creado exitosamente!"
+            : "Editor creado exitosamente!",
         );
         setIsModalOpen(false);
         resetForm();

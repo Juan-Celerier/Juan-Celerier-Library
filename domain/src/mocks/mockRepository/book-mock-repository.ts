@@ -7,7 +7,7 @@ export interface MockedBookRepository extends BookRepository {
 }
 
 export function createBookRepositoryMock(
-  books: Book[] = []
+  books: Book[] = [],
 ): MockedBookRepository {
   return {
     books,

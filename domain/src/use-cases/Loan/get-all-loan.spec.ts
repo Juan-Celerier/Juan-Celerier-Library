@@ -4,7 +4,6 @@ import { LoanRepository } from "domain/src/repositories/loan-repository.js";
 import { describe, beforeEach, test, expect } from "vitest";
 import { GetAllLoansDependencies, getAllLoans } from "./get-all-loan.js";
 
-
 const createMockDependencies = (): GetAllLoansDependencies => {
   const mockLoanRepository: Partial<LoanRepository> = {
     findAll: async () => [],

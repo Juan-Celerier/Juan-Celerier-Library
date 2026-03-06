@@ -34,7 +34,7 @@ describe("assignAuthorToBook", () => {
   test("assigns an author to a book", async () => {
     const result = await assignAuthorToBook(
       { bookRepository: bookRepo, authorRepository: authorRepo },
-      { bookId: "book-1", authorIds: ["author-1"] }
+      { bookId: "book-1", authorIds: ["author-1"] },
     );
 
     expect(result.authors).toContain("author-1");
@@ -46,8 +46,8 @@ describe("assignAuthorToBook", () => {
     await expect(
       assignAuthorToBook(
         { bookRepository: bookRepo, authorRepository: authorRepo },
-        { bookId: "book-99", authorIds: ["author-1"] }
-      )
+        { bookId: "book-99", authorIds: ["author-1"] },
+      ),
     ).rejects.toMatchObject({ name: "BookNotFoundError" });
   });
 
@@ -55,8 +55,8 @@ describe("assignAuthorToBook", () => {
     await expect(
       assignAuthorToBook(
         { bookRepository: bookRepo, authorRepository: authorRepo },
-        { bookId: "book-1", authorIds: ["author-99"] }
-      )
+        { bookId: "book-1", authorIds: ["author-99"] },
+      ),
     ).rejects.toMatchObject({ name: "AuthorNotFoundError" });
   });
 });

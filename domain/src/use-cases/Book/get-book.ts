@@ -13,7 +13,7 @@ export interface GetBooksDependencies {
 }
 
 export const getBooks = async (
-  dependencies: GetBooksDependencies
+  dependencies: GetBooksDependencies,
 ): Promise<GetBooksResponse> => {
   const { bookRepository } = dependencies;
 

@@ -3,7 +3,14 @@ import { useLoaderData } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import AdminNavigation from "../../components/AdminNavigation";
 import { apiClient } from "../../utils/api-client";
-import { BookOpen, Users, Clock, AlertTriangle, TrendingUp, Calendar } from "lucide-react";
+import {
+  BookOpen,
+  Users,
+  Clock,
+  AlertTriangle,
+  TrendingUp,
+  Calendar,
+} from "lucide-react";
 
 export const adminIndexLoader = async () => {
   try {
@@ -22,15 +29,21 @@ export const adminIndexLoader = async () => {
     const stats = {
       totalBooks: books.length,
       totalUsers: users.length,
-      activeLoans: loans.filter((loan: any) => loan.status === 'active').length,
-      overdueLoans: loans.filter((loan: any) => loan.status === 'overdue').length,
-      availableBooks: books.filter((book: any) => book.availableCopies > 0).length,
-      unavailableBooks: books.filter((book: any) => book.availableCopies <= 0).length,
+      activeLoans: loans.filter((loan: any) => loan.status === "active").length,
+      overdueLoans: loans.filter((loan: any) => loan.status === "overdue")
+        .length,
+      availableBooks: books.filter((book: any) => book.availableCopies > 0)
+        .length,
+      unavailableBooks: books.filter((book: any) => book.availableCopies <= 0)
+        .length,
     };
 
     // Actividad reciente (últimos 5 préstamos)
     const recentLoans = loans
-      .sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+      .sort(
+        (a: any, b: any) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      )
       .slice(0, 5);
 
     return { stats, recentLoans, error: null };
@@ -46,7 +59,7 @@ export const adminIndexLoader = async () => {
         unavailableBooks: 0,
       },
       recentLoans: [],
-      error: "Error al cargar las estadísticas"
+      error: "Error al cargar las estadísticas",
     };
   }
 };
@@ -89,36 +102,54 @@ const AdminIndexPage = () => {
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Total Libros</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalBooks}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Total Libros
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {stats.totalBooks}
+                </p>
               </div>
               <BookOpen className="h-8 w-8 text-blue-600" />
             </div>
             <div className="mt-4 flex text-sm">
-              <span className="text-green-600">{stats.availableBooks} disponibles</span>
+              <span className="text-green-600">
+                {stats.availableBooks} disponibles
+              </span>
               <span className="mx-2 text-gray-400">•</span>
-              <span className="text-red-600">{stats.unavailableBooks} agotados</span>
+              <span className="text-red-600">
+                {stats.unavailableBooks} agotados
+              </span>
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Usuarios Registrados</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalUsers}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Usuarios Registrados
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {stats.totalUsers}
+                </p>
               </div>
               <Users className="h-8 w-8 text-green-600" />
             </div>
             <div className="mt-4">
-              <span className="text-sm text-gray-600">Usuarios activos en el sistema</span>
+              <span className="text-sm text-gray-600">
+                Usuarios activos en el sistema
+              </span>
             </div>
           </div>
 
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Préstamos Activos</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.activeLoans}</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Préstamos Activos
+                </p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {stats.activeLoans}
+                </p>
               </div>
               <Clock className="h-8 w-8 text-yellow-600" />
             </div>
@@ -126,7 +157,9 @@ const AdminIndexPage = () => {
               {stats.overdueLoans > 0 && (
                 <>
                   <AlertTriangle className="h-4 w-4 text-red-500 mr-1" />
-                  <span className="text-red-600">{stats.overdueLoans} vencidos</span>
+                  <span className="text-red-600">
+                    {stats.overdueLoans} vencidos
+                  </span>
                 </>
               )}
             </div>
@@ -135,9 +168,16 @@ const AdminIndexPage = () => {
           <div className="bg-white rounded-lg shadow-sm border p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">Disponibilidad</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Disponibilidad
+                </p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {stats.totalBooks > 0 ? Math.round((stats.availableBooks / stats.totalBooks) * 100) : 0}%
+                  {stats.totalBooks > 0
+                    ? Math.round(
+                        (stats.availableBooks / stats.totalBooks) * 100,
+                      )
+                    : 0}
+                  %
                 </p>
               </div>
               <TrendingUp className="h-8 w-8 text-purple-600" />
@@ -162,34 +202,51 @@ const AdminIndexPage = () => {
               {recentLoans.length > 0 ? (
                 <div className="space-y-4">
                   {recentLoans.map((loan: any) => (
-                    <div key={loan.id} className="flex items-center justify-between py-2">
+                    <div
+                      key={loan.id}
+                      className="flex items-center justify-between py-2"
+                    >
                       <div className="flex items-center space-x-3">
-                        <div className={`w-2 h-2 rounded-full ${
-                          loan.status === 'active' ? 'bg-green-500' :
-                          loan.status === 'overdue' ? 'bg-red-500' : 'bg-gray-500'
-                        }`} />
+                        <div
+                          className={`w-2 h-2 rounded-full ${
+                            loan.status === "active"
+                              ? "bg-green-500"
+                              : loan.status === "overdue"
+                                ? "bg-red-500"
+                                : "bg-gray-500"
+                          }`}
+                        />
                         <div>
                           <p className="text-sm font-medium text-gray-900">
-                            {loan.book?.title || 'Libro desconocido'}
+                            {loan.book?.title || "Libro desconocido"}
                           </p>
                           <p className="text-xs text-gray-600">
                             Usuario: {loan.borrower?.name || loan.borrowerId}
                           </p>
                         </div>
                       </div>
-                      <span className={`text-xs px-2 py-1 rounded-full ${
-                        loan.status === 'active' ? 'bg-green-100 text-green-800' :
-                        loan.status === 'overdue' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {loan.status === 'active' ? 'Activo' :
-                         loan.status === 'overdue' ? 'Vencido' : 'Devuelto'}
+                      <span
+                        className={`text-xs px-2 py-1 rounded-full ${
+                          loan.status === "active"
+                            ? "bg-green-100 text-green-800"
+                            : loan.status === "overdue"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {loan.status === "active"
+                          ? "Activo"
+                          : loan.status === "overdue"
+                            ? "Vencido"
+                            : "Devuelto"}
                       </span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 text-center py-4">No hay actividad reciente</p>
+                <p className="text-gray-500 text-center py-4">
+                  No hay actividad reciente
+                </p>
               )}
             </div>
           </div>
@@ -197,7 +254,9 @@ const AdminIndexPage = () => {
           {/* Gestión del sistema */}
           <div className="bg-white rounded-lg shadow-sm border">
             <div className="p-6 border-b">
-              <h3 className="text-lg font-semibold text-gray-900">Gestión del Sistema</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Gestión del Sistema
+              </h3>
             </div>
             <div className="p-6 space-y-4">
               <Link
@@ -208,7 +267,9 @@ const AdminIndexPage = () => {
                   <BookOpen className="h-6 w-6 text-blue-600 mr-3" />
                   <div>
                     <p className="font-medium text-gray-900">Libros</p>
-                    <p className="text-sm text-gray-600">Gestionar catálogo completo</p>
+                    <p className="text-sm text-gray-600">
+                      Gestionar catálogo completo
+                    </p>
                   </div>
                 </div>
                 <span className="text-blue-600">→</span>
@@ -238,7 +299,9 @@ const AdminIndexPage = () => {
                   <Users className="h-6 w-6 text-purple-600 mr-3" />
                   <div>
                     <p className="font-medium text-gray-900">Autores</p>
-                    <p className="text-sm text-gray-600">Gestionar información de autores</p>
+                    <p className="text-sm text-gray-600">
+                      Gestionar información de autores
+                    </p>
                   </div>
                 </div>
                 <span className="text-purple-600">→</span>
@@ -254,7 +317,9 @@ const AdminIndexPage = () => {
                   </div>
                   <div>
                     <p className="font-medium text-gray-900">Editores</p>
-                    <p className="text-sm text-gray-600">Administrar editoriales</p>
+                    <p className="text-sm text-gray-600">
+                      Administrar editoriales
+                    </p>
                   </div>
                 </div>
                 <span className="text-orange-600">→</span>
@@ -273,8 +338,9 @@ const AdminIndexPage = () => {
                   Alertas Importantes
                 </h3>
                 <p className="text-red-700 mt-1">
-                  Hay {stats.overdueLoans} préstamo(s) vencido(s) que requieren atención inmediata.
-                  Revisa la sección de préstamos para gestionar las devoluciones.
+                  Hay {stats.overdueLoans} préstamo(s) vencido(s) que requieren
+                  atención inmediata. Revisa la sección de préstamos para
+                  gestionar las devoluciones.
                 </p>
               </div>
             </div>

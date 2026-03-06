@@ -1,6 +1,8 @@
-import { createInvalidDataError, CategoryNotFoundError } from "domain/src/errors/error.js";
+import {
+  createInvalidDataError,
+  CategoryNotFoundError,
+} from "domain/src/errors/error.js";
 import { CategoryRepository } from "domain/src/repositories/category-repository.js";
-
 
 export interface DeleteCategoryRequest {
   id: string;
@@ -8,7 +10,7 @@ export interface DeleteCategoryRequest {
 
 export async function deleteCategory(
   repository: CategoryRepository,
-  request: DeleteCategoryRequest
+  request: DeleteCategoryRequest,
 ): Promise<void> {
   // Validar ID
   if (!request.id || request.id.trim().length === 0) {

@@ -42,7 +42,7 @@ describe("createUser", () => {
     };
 
     await expect(createUser({ userRepository: repo }, dto)).rejects.toEqual(
-      createInvalidDataError("Invalid email")
+      createInvalidDataError("Invalid email"),
     );
   });
 
@@ -59,7 +59,7 @@ describe("createUser", () => {
     };
 
     await expect(createUser({ userRepository: repo }, dto)).rejects.toEqual(
-      createInvalidDataError("Name and surname are required")
+      createInvalidDataError("Name and surname are required"),
     );
   });
 
@@ -80,7 +80,7 @@ describe("createUser", () => {
 
     // intentar crear duplicado
     await expect(createUser({ userRepository: repo }, dto)).rejects.toEqual(
-      createEmailAlreadyExistsError(dto.email)
+      createEmailAlreadyExistsError(dto.email),
     );
   });
 });

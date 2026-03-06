@@ -4,7 +4,6 @@ import { createUserMock } from "domain/src/mocks/userMocks.js";
 import { describe, test, expect } from "vitest";
 import { assignUserRole } from "./user-role.js";
 
-
 describe("assignUserRole", () => {
   test("should assign a new role to an existing user", async () => {
     const user = createUserMock({
@@ -37,7 +36,7 @@ describe("assignUserRole", () => {
       assignUserRole(repo, {
         userId: "999",
         role: "LIBRARIAN",
-      })
+      }),
     ).rejects.toEqual(createUserNotFoundError("999"));
   });
 });

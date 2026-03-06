@@ -15,7 +15,7 @@ interface UpdateCategoryInput {
 
 export async function updateCategory(
   repository: CategoryRepository,
-  input: UpdateCategoryInput
+  input: UpdateCategoryInput,
 ): Promise<Category> {
   const existingCategory = await repository.findById(input.id);
   if (!existingCategory) {

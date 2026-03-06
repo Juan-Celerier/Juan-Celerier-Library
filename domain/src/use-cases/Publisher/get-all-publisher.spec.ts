@@ -4,7 +4,6 @@ import { createPublisherMock } from "domain/src/mocks/publisher-mock.js";
 import { describe, beforeEach, test, expect } from "vitest";
 import { getAllPublishers } from "./get-all-publisher.js";
 
-
 describe("Get All Publishers Use Case", () => {
   let repository: ReturnType<typeof createPublisherRepositoryMock>;
 
@@ -36,7 +35,7 @@ describe("Get All Publishers Use Case", () => {
     };
 
     await expect(getAllPublishers(repository)).rejects.toEqual(
-      createInternalServerError("Failed to retrieve publishers")
+      createInternalServerError("Failed to retrieve publishers"),
     );
   });
 });

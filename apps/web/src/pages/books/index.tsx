@@ -13,7 +13,7 @@ const BooksPage = () => {
   const [books, setBooks] = useState<BookDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(
-    searchParams.get("search") || ""
+    searchParams.get("search") || "",
   );
   const [availabilityFilter, setAvailabilityFilter] = useState<
     "all" | "available" | "unavailable"
@@ -35,8 +35,8 @@ const BooksPage = () => {
           if (typeof book.author === "string") return book.author;
           return (book.author as any)?.name || "";
         })
-        .filter(Boolean)
-    )
+        .filter(Boolean),
+    ),
   ).sort();
 
   // Actualizar searchTerm cuando cambie el parámetro de URL
@@ -92,7 +92,7 @@ const BooksPage = () => {
             ? book.author.toLowerCase().includes(searchTerm.toLowerCase())
             : ((book.author as any)?.name
                 ?.toLowerCase()
-                .includes(searchTerm.toLowerCase()) ?? false))
+                .includes(searchTerm.toLowerCase()) ?? false)),
       );
     }
 
@@ -148,7 +148,7 @@ const BooksPage = () => {
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
   const paginatedBooks = filteredBooks.slice(
     (currentPage - 1) * booksPerPage,
-    currentPage * booksPerPage
+    currentPage * booksPerPage,
   );
 
   const handlePageChange = (page: number) => {
@@ -366,7 +366,7 @@ const BooksPage = () => {
                         : (book.author as any)?.name || "Autor desconocido"
                     }
                     isAvailable={Boolean(
-                      book.availableCopies && book.availableCopies > 0
+                      book.availableCopies && book.availableCopies > 0,
                     )}
                     imageUrl={book.imageUrl}
                   />

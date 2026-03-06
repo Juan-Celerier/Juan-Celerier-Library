@@ -40,14 +40,12 @@ export const categoryController = {
     if (!name) throw createDomainError("Category name is required");
     const category = categoryRepository.create({ name });
     await categoryRepository.save(category);
-    res
-      .status(201)
-      .json({
-        success: true,
-        data: category,
-        message: "Category created",
-        timestamp: new Date().toISOString(),
-      });
+    res.status(201).json({
+      success: true,
+      data: category,
+      message: "Category created",
+      timestamp: new Date().toISOString(),
+    });
   }),
 
   delete: asyncHandler(async (req: Request, res: Response) => {

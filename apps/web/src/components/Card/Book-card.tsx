@@ -29,7 +29,7 @@ export const BookCard = ({
     <article
       className={`relative flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-neutral-100 bg-paper shadow-subtle transition-transform duration-smooth hover:scale-[1.02] hover:shadow-medium focus-within:ring-2 focus-within:ring-emerald-500 focus-within:ring-offset-2 ${className}`}
       role="article"
-      aria-labelledby={`book-title-${title?.replace(/\s+/g, '-').toLowerCase()}`}
+      aria-labelledby={`book-title-${title?.replace(/\s+/g, "-").toLowerCase()}`}
     >
       {/* Indicador de Disponibilidad */}
       <div
@@ -55,18 +55,25 @@ export const BookCard = ({
       {/* Contenido de Texto */}
       <div className="mt-4 px-5 pb-5">
         <h3
-          id={`book-title-${title?.replace(/\s+/g, '-').toLowerCase()}`}
+          id={`book-title-${title?.replace(/\s+/g, "-").toLowerCase()}`}
           className="truncate text-xl font-semibold tracking-tight text-neutral-900"
         >
           {title}
         </h3>
-        <p className="mt-1 truncate text-sm text-neutral-500" aria-label={`Autor: ${author}`}>
+        <p
+          className="mt-1 truncate text-sm text-neutral-500"
+          aria-label={`Autor: ${author}`}
+        >
           {author}
         </p>
 
         {/* Slot para Acciones (botones) */}
         {actions && (
-          <div className="mt-4 flex items-center justify-center space-x-2" role="group" aria-label="Acciones del libro">
+          <div
+            className="mt-4 flex items-center justify-center space-x-2"
+            role="group"
+            aria-label="Acciones del libro"
+          >
             {actions}
           </div>
         )}

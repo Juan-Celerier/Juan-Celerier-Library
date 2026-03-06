@@ -15,7 +15,7 @@ export interface MockedBookCopyRepository extends BookCopyRepository {
 }
 
 export function createBookCopyRepositoryMock(
-  bookCopies: BookCopy[] = []
+  bookCopies: BookCopy[] = [],
 ): MockedBookCopyRepository {
   return {
     bookCopies,
@@ -41,7 +41,7 @@ export function createBookCopyRepositoryMock(
 
     async findAvailableByBookId(bookId: string) {
       return this.bookCopies.filter(
-        (bc) => bc.bookId === bookId && bc.status === "AVAILABLE"
+        (bc) => bc.bookId === bookId && bc.status === "AVAILABLE",
       );
     },
 
@@ -68,7 +68,7 @@ export function createBookCopyRepositoryMock(
 
     async countAvailableByBookId(bookId: string) {
       return this.bookCopies.filter(
-        (bc) => bc.bookId === bookId && bc.status === "AVAILABLE"
+        (bc) => bc.bookId === bookId && bc.status === "AVAILABLE",
       ).length;
     },
   };

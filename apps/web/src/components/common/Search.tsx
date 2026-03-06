@@ -2,7 +2,6 @@ import React from "react";
 import { Input } from "../Input/input";
 import { Search } from "lucide-react";
 
-
 export interface SearchBoxProps {
   placeholder?: string;
   onSearchChange?: (value: string) => void;
@@ -29,7 +28,9 @@ export const SearchBox = ({
         placeholder={placeholder}
         aria-label={ariaLabel || "Buscar en el catálogo de libros"}
         // Icono de lupa
-        icon={<Search className="h-4 w-4 text-neutral-400" aria-hidden="true" />}
+        icon={
+          <Search className="h-4 w-4 text-neutral-400" aria-hidden="true" />
+        }
         iconPosition="start"
         onChange={handleChange}
         // Ocultamos el label visualmente pero lo dejamos para accesibilidad

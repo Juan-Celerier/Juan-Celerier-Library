@@ -1,7 +1,9 @@
 import { Loan } from "domain/src/entities/Loan.js";
-import { createInvalidDataError, BorrowerNotFoundError } from "domain/src/errors/error.js";
+import {
+  createInvalidDataError,
+  BorrowerNotFoundError,
+} from "domain/src/errors/error.js";
 import { LoanRepository } from "domain/src/repositories/loan-repository.js";
-
 
 export interface GetActiveLoansByUserRequest {
   borrowerId: string;
@@ -19,7 +21,7 @@ export interface GetActiveLoansByUserDependencies {
 
 export async function getActiveLoansByUser(
   request: GetActiveLoansByUserRequest,
-  dependencies: GetActiveLoansByUserDependencies
+  dependencies: GetActiveLoansByUserDependencies,
 ): Promise<GetActiveLoansByUserResponse> {
   const { borrowerId } = request;
   const { loanRepository } = dependencies;

@@ -1,8 +1,10 @@
-import { BookAuthor, CreateBookAuthorDTO } from "domain/src/entities/BookAuthor.js";
+import {
+  BookAuthor,
+  CreateBookAuthorDTO,
+} from "domain/src/entities/BookAuthor.js";
 import { BookAuthorRepository } from "domain/src/repositories/author-repository.js";
 import { describe, beforeEach, test, expect } from "vitest";
 import { createBookAuthor } from "./Create-bookauthor.js";
-
 
 const makeMockRepo = (): BookAuthorRepository => {
   return {

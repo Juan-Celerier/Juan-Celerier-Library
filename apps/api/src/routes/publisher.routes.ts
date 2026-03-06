@@ -14,6 +14,11 @@ router.get("/:id", authMiddleware, publisherController.getById);
 // Rutas administrativas - solo bibliotecarios pueden modificar
 router.post("/", authMiddleware, librarianOnly, publisherController.create);
 router.put("/:id", authMiddleware, librarianOnly, publisherController.update);
-router.delete("/:id", authMiddleware, librarianOnly, publisherController.delete);
+router.delete(
+  "/:id",
+  authMiddleware,
+  librarianOnly,
+  publisherController.delete,
+);
 
 export default router;

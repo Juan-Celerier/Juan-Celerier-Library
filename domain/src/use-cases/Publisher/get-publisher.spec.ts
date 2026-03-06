@@ -18,7 +18,7 @@ describe("Get Publisher By ID Use Case", () => {
     const repository = createPublisherRepositoryMock();
 
     await expect(
-      getPublisherById(repository, "non-existent-id")
+      getPublisherById(repository, "non-existent-id"),
     ).rejects.toEqual(createPublisherNotFoundError("non-existent-id"));
   });
 });

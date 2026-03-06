@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import { UUID } from "crypto";
 import { CryptoService } from "domain/src/index.js";
 
-
 export class CryptoServiceImplementation implements CryptoService {
   async hashPassword(password: string): Promise<string> {
     return bcrypt.hash(password, 12);
@@ -10,7 +9,7 @@ export class CryptoServiceImplementation implements CryptoService {
 
   async comparePassword(
     password: string,
-    hashedPassword: string
+    hashedPassword: string,
   ): Promise<boolean> {
     return bcrypt.compare(password, hashedPassword);
   }
@@ -24,4 +23,3 @@ export class CryptoServiceImplementation implements CryptoService {
   }
 }
 export { CryptoService };
-

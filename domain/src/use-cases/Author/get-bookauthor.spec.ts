@@ -95,7 +95,7 @@ describe("getAllBookAuthors (integration with mock repo)", () => {
     const request: GetAllBookAuthorsRequest = {};
 
     await expect(getAllBookAuthors(request, dependencies)).rejects.toThrow(
-      "Database connection failed"
+      "Database connection failed",
     );
   });
 

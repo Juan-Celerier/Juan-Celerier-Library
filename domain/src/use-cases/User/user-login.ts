@@ -17,7 +17,7 @@ export interface UserLoginOutput {
 
 export async function userLogin(
   repo: UserRepository,
-  input: UserLoginInput
+  input: UserLoginInput,
 ): Promise<UserLoginOutput> {
   const { email, password } = input;
 

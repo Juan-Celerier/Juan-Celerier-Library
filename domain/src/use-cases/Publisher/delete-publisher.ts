@@ -3,7 +3,7 @@ import { PublisherRepository } from "domain/src/repositories/publisher-repositor
 
 export async function deletePublisher(
   repository: PublisherRepository,
-  id: string
+  id: string,
 ): Promise<void> {
   const publisher = await repository.findById(id);
   if (!publisher) {

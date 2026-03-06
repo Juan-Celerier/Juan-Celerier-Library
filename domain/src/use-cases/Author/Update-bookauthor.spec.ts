@@ -46,7 +46,7 @@ describe("updateBookAuthor", () => {
       name: "New Name",
     };
     await expect(updateBookAuthor(request, dependencies)).rejects.toMatchObject(
-      createAuthorNotFoundError("unknown-id")
+      createAuthorNotFoundError("unknown-id"),
     );
   });
 
@@ -61,7 +61,7 @@ describe("updateBookAuthor", () => {
 
     const request: UpdateBookAuthorRequest = { id: "author-2", name: "" };
     await expect(updateBookAuthor(request, dependencies)).rejects.toMatchObject(
-      createInvalidDataError("Name cannot be empty")
+      createInvalidDataError("Name cannot be empty"),
     );
   });
 
@@ -76,7 +76,7 @@ describe("updateBookAuthor", () => {
 
     const request: UpdateBookAuthorRequest = { id: "author-3", surname: "" };
     await expect(updateBookAuthor(request, dependencies)).rejects.toMatchObject(
-      createInvalidDataError("Surname cannot be empty")
+      createInvalidDataError("Surname cannot be empty"),
     );
   });
 
@@ -97,7 +97,7 @@ describe("updateBookAuthor", () => {
       birthDate: futureDate,
     };
     await expect(updateBookAuthor(request, dependencies)).rejects.toMatchObject(
-      createInvalidDataError("Birth date cannot be in the future")
+      createInvalidDataError("Birth date cannot be in the future"),
     );
   });
 
@@ -118,7 +118,7 @@ describe("updateBookAuthor", () => {
       name: "Mario José",
     };
     await expect(updateBookAuthor(request, dependencies)).rejects.toMatchObject(
-      createInternalServerError("Failed to update author")
+      createInternalServerError("Failed to update author"),
     );
   });
 

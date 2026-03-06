@@ -7,7 +7,7 @@ import { PublisherRepository } from "domain/src/repositories/publisher-repositor
 
 export async function createPublisher(
   repository: PublisherRepository,
-  input: CreatePublisherDTO
+  input: CreatePublisherDTO,
 ): Promise<Publisher> {
   const existing = await repository.findByName(input.name);
   if (existing) {

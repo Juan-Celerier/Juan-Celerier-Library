@@ -15,7 +15,7 @@ describe("getReservationsByUser", () => {
 
     const result = await getReservationsByUser(
       { reservationRepository: repo },
-      userId
+      userId,
     );
 
     expect(result).toHaveLength(2);
@@ -29,7 +29,7 @@ describe("getReservationsByUser", () => {
 
     const result = await getReservationsByUser(
       { reservationRepository: repo },
-      "no-reservations-user"
+      "no-reservations-user",
     );
 
     expect(result).toEqual([]);

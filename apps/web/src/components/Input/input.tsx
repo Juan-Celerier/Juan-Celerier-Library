@@ -27,7 +27,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       type = "text",
       ...props
     },
-    ref
+    ref,
   ) => {
     // Genera un ID único si no se proporciona uno, para conectar el label y el input.
     const inputId = id || React.useId();
@@ -74,7 +74,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

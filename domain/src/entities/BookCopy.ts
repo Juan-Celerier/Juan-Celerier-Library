@@ -8,5 +8,8 @@ export interface BookCopy {
   updatedAt: Date;
 }
 
-export type CreateBookCopyDTO = Omit<BookCopy, "id" | "createdAt" | "updatedAt">;
+export type CreateBookCopyDTO = Omit<
+  BookCopy,
+  "id" | "createdAt" | "updatedAt"
+>;
 export type UpdateBookCopyDTO = Omit<BookCopy, "createdAt">;

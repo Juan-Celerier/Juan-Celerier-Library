@@ -6,7 +6,7 @@ export interface CategoryRepository {
   findAll(): Promise<Category[]>;
   update(
     id: string,
-    category: Partial<CreateCategoryDTO>
+    category: Partial<CreateCategoryDTO>,
   ): Promise<Category | null>;
   delete(id: string): Promise<boolean>;
   findByName(name: string): Promise<Category | null>;

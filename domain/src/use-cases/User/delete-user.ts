@@ -3,7 +3,7 @@ import { UserRepository } from "domain/src/repositories/user-repository.js";
 
 export async function deleteUser(
   repo: UserRepository,
-  userId: string
+  userId: string,
 ): Promise<void> {
   const existingUser = await repo.findById(userId);
 

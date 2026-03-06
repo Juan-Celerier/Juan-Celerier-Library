@@ -6,7 +6,7 @@ export interface BookAuthorRepository {
   create(data: CreateBookAuthorDTO): Promise<BookAuthor>;
   update(
     id: string,
-    data: Partial<CreateBookAuthorDTO>
+    data: Partial<CreateBookAuthorDTO>,
   ): Promise<BookAuthor | null>;
   delete(id: string): Promise<boolean>;
   searchByName(term: string): Promise<BookAuthor[]>;

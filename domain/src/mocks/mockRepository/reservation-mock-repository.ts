@@ -11,7 +11,7 @@ export interface ReservationRepository {
   create(reservation: Omit<Reservation, "id">): Promise<Reservation>;
   update(
     id: string,
-    reservation: Partial<CreateReservationDTO>
+    reservation: Partial<CreateReservationDTO>,
   ): Promise<Reservation>;
   delete(reservationId: string): Promise<void>;
   cancelReservation(id: string): Promise<Reservation>;
@@ -22,7 +22,7 @@ export interface MockedReservationRepository extends ReservationRepository {
 }
 
 export function createReservationRepositoryMock(
-  reservations: Reservation[] = []
+  reservations: Reservation[] = [],
 ): MockedReservationRepository {
   return {
     reservations,
@@ -68,7 +68,7 @@ export function createReservationRepositoryMock(
 
     async delete(reservationId: string) {
       this.reservations = this.reservations.filter(
-        (r) => r.id !== reservationId
+        (r) => r.id !== reservationId,
       );
     },
 

@@ -63,7 +63,7 @@ describe("getBooks", () => {
 
     expect(response.success).toBe(false);
     expect(response.error).toBe(
-      createInternalServerError("Failed to fetch books").message
+      createInternalServerError("Failed to fetch books").message,
     );
   });
 });

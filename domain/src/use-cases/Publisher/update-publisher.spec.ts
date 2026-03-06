@@ -1,9 +1,11 @@
-import { createPublisherNotFoundError, createPublisherAlreadyExistsError } from "domain/src/errors/error.js";
+import {
+  createPublisherNotFoundError,
+  createPublisherAlreadyExistsError,
+} from "domain/src/errors/error.js";
 import { createPublisherRepositoryMock } from "domain/src/mocks/mockRepository/publisher-mock-repository.js";
 import { createPublisherMock } from "domain/src/mocks/publisher-mock.js";
 import { describe, test, expect } from "vitest";
 import { updatePublisher } from "./update-publisher.js";
-
 
 describe("Update Publisher Use Case", () => {
   test("should update an existing publisher", async () => {
@@ -25,7 +27,9 @@ describe("Update Publisher Use Case", () => {
     const repository = createPublisherRepositoryMock();
 
     await expect(
-      updatePublisher(repository, "non-existent-id", { name: "Doesn't Matter" })
+      updatePublisher(repository, "non-existent-id", {
+        name: "Doesn't Matter",
+      }),
     ).rejects.toEqual(createPublisherNotFoundError("non-existent-id"));
   });
 
@@ -35,7 +39,7 @@ describe("Update Publisher Use Case", () => {
     const repository = createPublisherRepositoryMock([publisher1, publisher2]);
 
     await expect(
-      updatePublisher(repository, publisher1.id, { name: "Second Publisher" })
+      updatePublisher(repository, publisher1.id, { name: "Second Publisher" }),
     ).rejects.toEqual(createPublisherAlreadyExistsError("Second Publisher"));
   });
 });

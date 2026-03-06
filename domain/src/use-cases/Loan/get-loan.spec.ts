@@ -18,7 +18,7 @@ describe("getLoan Use Case", () => {
     const nonExistentId = "not-found";
 
     await expect(
-      getLoan({ loanRepository: repo }, nonExistentId)
+      getLoan({ loanRepository: repo }, nonExistentId),
     ).rejects.toMatchObject({
       name: "LoanNotFoundError",
       message: `Loan with id ${nonExistentId} not found`,

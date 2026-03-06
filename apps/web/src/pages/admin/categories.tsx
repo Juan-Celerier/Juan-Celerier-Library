@@ -78,7 +78,7 @@ const AdminCategoriesPage = () => {
         setMessage(
           editingCategory
             ? "Categoría actualizada exitosamente!"
-            : "Categoría creada exitosamente!"
+            : "Categoría creada exitosamente!",
         );
         setIsModalOpen(false);
         resetForm();

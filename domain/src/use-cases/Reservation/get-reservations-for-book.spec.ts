@@ -37,12 +37,19 @@ describe("getReservationsForBook", () => {
     const reservationRepo = createReservationRepositoryMock(reservations);
 
     const result = await getReservationsForBook(
-      { reservationRepository: reservationRepo, bookCopyRepository: bookCopyRepo },
-      bookId
+      {
+        reservationRepository: reservationRepo,
+        bookCopyRepository: bookCopyRepo,
+      },
+      bookId,
     );
 
     expect(result).toHaveLength(2);
-    expect(result.every((r) => r.bookCopyId === bookCopyId1 || r.bookCopyId === bookCopyId2)).toBe(true);
+    expect(
+      result.every(
+        (r) => r.bookCopyId === bookCopyId1 || r.bookCopyId === bookCopyId2,
+      ),
+    ).toBe(true);
   });
 
   test("lanza AppError si el libro no tiene reservas", async () => {
@@ -56,9 +63,12 @@ describe("getReservationsForBook", () => {
 
     await expect(
       getReservationsForBook(
-        { reservationRepository: reservationRepo, bookCopyRepository: bookCopyRepo },
-        bookId
-      )
+        {
+          reservationRepository: reservationRepo,
+          bookCopyRepository: bookCopyRepo,
+        },
+        bookId,
+      ),
     ).rejects.toEqual(createReservationNotFoundError(bookId));
   });
 });

@@ -14,20 +14,20 @@ interface NotificationContextType {
   showNotification: (
     message: string,
     type: ToastType,
-    duration?: number
+    duration?: number,
   ) => void;
   hideNotification: (id: string) => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const useNotifications = () => {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error(
-      "useNotifications must be used within a NotificationProvider"
+      "useNotifications must be used within a NotificationProvider",
     );
   }
   return context;
@@ -45,7 +45,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   const showNotification = (
     message: string,
     type: ToastType,
-    duration = 5000
+    duration = 5000,
   ) => {
     const id = Date.now().toString();
     const notification: Notification = {
@@ -67,7 +67,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
   const hideNotification = (id: string) => {
     setNotifications((prev) =>
-      prev.filter((notification) => notification.id !== id)
+      prev.filter((notification) => notification.id !== id),
     );
   };
 

@@ -9,12 +9,12 @@ import {
 
 // Helper para mock de repo
 const createMockDependencies = (
-  authors: BookAuthor[] = []
+  authors: BookAuthor[] = [],
 ): SearchBookAuthorsDependencies => ({
   bookAuthorRepository: {
     searchByName: async (term: string): Promise<BookAuthor[]> =>
       authors.filter((author) =>
-        author.name.toLowerCase().includes(term.toLowerCase())
+        author.name.toLowerCase().includes(term.toLowerCase()),
       ),
     findAll: async (): Promise<BookAuthor[]> => authors,
   },
@@ -56,7 +56,7 @@ describe("searchBookAuthors", () => {
     const result = await searchBookAuthors(request, dependencies);
 
     const expectedAuthors = authorsData.filter((a) =>
-      a.name.toLowerCase().includes("garcía")
+      a.name.toLowerCase().includes("garcía"),
     );
 
     expect(result.success).toBe(true);
@@ -95,7 +95,7 @@ describe("searchBookAuthors", () => {
     const result = await searchBookAuthors(request, dependencies);
 
     const expectedAuthors = authorsData.filter((a) =>
-      a.name.toLowerCase().includes("gabriel")
+      a.name.toLowerCase().includes("gabriel"),
     );
 
     expect(result.success).toBe(true);
@@ -117,9 +117,9 @@ describe("searchBookAuthors", () => {
     };
 
     await expect(
-      searchBookAuthors(request, failingDependencies)
+      searchBookAuthors(request, failingDependencies),
     ).rejects.toThrowError(
-      createInternalServerError("fail searchByName").message
+      createInternalServerError("fail searchByName").message,
     );
   });
 });

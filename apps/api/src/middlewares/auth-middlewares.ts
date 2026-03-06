@@ -5,7 +5,7 @@ import { createDomainError } from "./error-handler.js";
 export const authMiddleware = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
@@ -35,7 +35,7 @@ export const roleMiddleware = (allowedRoles: string[]) => {
       return res.status(403).json({
         message: "Insufficient permissions",
         requiredRoles: allowedRoles,
-        userRole: req.user.role
+        userRole: req.user.role,
       });
     }
 

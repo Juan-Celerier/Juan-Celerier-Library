@@ -20,7 +20,7 @@ const getDynamicStats = () => {
   const totalBooks = mockBooks.length;
   // Filtramos préstamos que estén activos (tus mocks usan 'active' o 'overdue')
   const activeLoans = mockLoans.filter(
-    (l) => l.status === "active" || l.status === "overdue"
+    (l) => l.status === "active" || l.status === "overdue",
   ).length;
   const totalUsers = mockUsers.length;
 
@@ -95,7 +95,7 @@ const MOCK_REGISTRY: Record<string, any> = {
   "auth/login": async ({ email }: { email: string; password: string }) => {
     // Very simple mock auth: any password is accepted if email exists in mockUsers
     const user = mockUsers.find(
-      (u: any) => u.email === email || u.email === email?.toLowerCase()
+      (u: any) => u.email === email || u.email === email?.toLowerCase(),
     );
     if (!user) return { error: "Usuario o contraseña inválidos" };
     return {
@@ -119,7 +119,7 @@ const MOCK_REGISTRY: Record<string, any> = {
   }) => {
     // Simple register mock: create a new user with incremental id
     const exists = mockUsers.find(
-      (u: any) => u.email === email || u.email === email?.toLowerCase()
+      (u: any) => u.email === email || u.email === email?.toLowerCase(),
     );
     if (exists) return { error: "El usuario ya existe" };
     const newId = String(mockUsers.length + 1);
@@ -223,7 +223,7 @@ const MOCK_REGISTRY: Record<string, any> = {
 export const apiClient = {
   call: async <T = any>(
     endpoint: string,
-    _params: Record<string, any> = {}
+    _params: Record<string, any> = {},
   ): Promise<RemoteResult<T>> => {
     if (USE_MOCKS) {
       // Simula delay de red
@@ -260,7 +260,10 @@ export const apiClient = {
         method = params._method;
         delete params._method;
       }
-      const body = method !== "GET" && method !== "DELETE" ? JSON.stringify(params) : undefined;
+      const body =
+        method !== "GET" && method !== "DELETE"
+          ? JSON.stringify(params)
+          : undefined;
 
       // Get token from localStorage
       const token =
@@ -281,7 +284,7 @@ export const apiClient = {
       if (!res.ok) {
         try {
           const text = await res.text();
-          console.log('API Error Response:', text);
+          console.log("API Error Response:", text);
           try {
             const json = JSON.parse(text);
             if (json && json.error) {
@@ -298,7 +301,7 @@ export const apiClient = {
           }
           return { error: `API error: ${res.status} ${text}` };
         } catch (e) {
-          console.log('Error reading response:', e);
+          console.log("Error reading response:", e);
           return { error: `API error: ${res.status}` };
         }
       }

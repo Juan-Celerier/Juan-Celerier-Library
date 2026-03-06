@@ -1,7 +1,7 @@
 import { Reservation, ReservationStatus } from "../entities/Reservation.js";
 
 export function createReservationMock(
-  opts: Partial<Reservation> = {}
+  opts: Partial<Reservation> = {},
 ): Reservation {
   return {
     id: "any-id",

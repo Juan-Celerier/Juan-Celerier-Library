@@ -4,7 +4,6 @@ import { createPublisherMock } from "domain/src/mocks/publisher-mock.js";
 import { describe, beforeEach, test, expect } from "vitest";
 import { deletePublisher } from "./delete-publisher.js";
 
-
 describe("Delete Publisher Use Case", () => {
   let repository: ReturnType<typeof createPublisherRepositoryMock>;
 
@@ -25,7 +24,7 @@ describe("Delete Publisher Use Case", () => {
     const nonExistentId = "non-existent-id";
 
     await expect(deletePublisher(repository, nonExistentId)).rejects.toEqual(
-      createPublisherNotFoundError(nonExistentId)
+      createPublisherNotFoundError(nonExistentId),
     );
   });
 });

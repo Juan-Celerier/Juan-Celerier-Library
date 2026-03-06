@@ -1,9 +1,11 @@
-import { createInvalidDataError, CategoryNotFoundError } from "domain/src/errors/error.js";
+import {
+  createInvalidDataError,
+  CategoryNotFoundError,
+} from "domain/src/errors/error.js";
 import { createCategoryMock } from "domain/src/mocks/category-mock.js";
 import { createCategoryRepositoryMock } from "domain/src/mocks/mockRepository/category-mock-repository.js";
 import { describe, test, expect } from "vitest";
 import { deleteCategory } from "./delete-category.js";
-
 
 describe("deleteCategory", () => {
   test("should delete a category successfully", async () => {
@@ -19,7 +21,7 @@ describe("deleteCategory", () => {
     const repository = createCategoryRepositoryMock();
 
     await expect(deleteCategory(repository, { id: "" })).rejects.toEqual(
-      createInvalidDataError()
+      createInvalidDataError(),
     );
   });
 
@@ -27,7 +29,7 @@ describe("deleteCategory", () => {
     const repository = createCategoryRepositoryMock();
 
     await expect(
-      deleteCategory(repository, { id: "non-existent-id" })
+      deleteCategory(repository, { id: "non-existent-id" }),
     ).rejects.toEqual(CategoryNotFoundError("non-existent-id"));
   });
 });

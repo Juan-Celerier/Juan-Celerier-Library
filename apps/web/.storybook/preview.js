@@ -1,11 +1,11 @@
 // apps/web/.storybook/preview.js
 
-import '../src/index.css';
+import "../src/index.css";
 
 /** @type { import('@storybook/react-vite').Preview } */
 const preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
+    actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,

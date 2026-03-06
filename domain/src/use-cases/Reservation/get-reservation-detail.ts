@@ -8,7 +8,7 @@ interface GetReservationDetailDeps {
 
 export async function getReservationDetail(
   deps: GetReservationDetailDeps,
-  id: string
+  id: string,
 ): Promise<Reservation> {
   const { reservationRepository } = deps;
 

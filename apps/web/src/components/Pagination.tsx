@@ -10,7 +10,7 @@ interface PaginationProps {
 // Lógica auxiliar para generar un rango de páginas
 const generatePageRange = (
   current: number,
-  total: number
+  total: number,
 ): (number | "...")[] => {
   if (total <= 7) {
     return Array.from({ length: total }, (_, i) => i + 1);

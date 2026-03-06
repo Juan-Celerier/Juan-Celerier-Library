@@ -22,7 +22,7 @@ describe("deleteUser", () => {
 
   test("lanza error si el usuario no existe", async () => {
     await expect(deleteUser(repo, "non-existent")).rejects.toEqual(
-      createUserNotFoundError("non-existent")
+      createUserNotFoundError("non-existent"),
     );
   });
 });

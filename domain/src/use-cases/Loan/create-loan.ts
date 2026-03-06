@@ -83,7 +83,11 @@ export const createLoanWithRoleValidation = async (
 ): Promise<CreateLoanResponse> => {
   // Validate user role first
   if (!RoleService.canCreateLoans(request.userRole)) {
-    return { success: false, error: createUnauthorizedError("User role not authorized to create loans").message };
+    return {
+      success: false,
+      error: createUnauthorizedError("User role not authorized to create loans")
+        .message,
+    };
   }
 
   // If authorized, proceed with normal loan creation

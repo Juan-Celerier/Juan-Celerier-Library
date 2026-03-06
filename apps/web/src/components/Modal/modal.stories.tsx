@@ -6,7 +6,7 @@ import Modal from "./modal";
 
 // --- Componente "controlador" para manejar el estado del modal en Storybook ---
 const ModalWithHooks = (
-  props: Omit<React.ComponentProps<typeof Modal>, "isOpen" | "onClose">
+  props: Omit<React.ComponentProps<typeof Modal>, "isOpen" | "onClose">,
 ) => {
   const [isOpen, setIsOpen] = useState(false);
   return (

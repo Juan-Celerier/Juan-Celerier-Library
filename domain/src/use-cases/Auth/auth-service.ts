@@ -13,7 +13,7 @@ export interface AuthService {
     email: string,
     password: string,
     name: string,
-    surname: string
+    surname: string,
   ): Promise<string>; // verification token
   login(email: string, password: string): Promise<string>; // jwt token
   verifyAccount(token: string): Promise<void>;
@@ -22,7 +22,7 @@ export interface AuthService {
 export function createAuthService(
   userRepo: UserRepository,
   cryptoRepo: CryptoRepository,
-  verificationRepo: VerificationTokenRepository
+  verificationRepo: VerificationTokenRepository,
 ): AuthService {
   return {
     async register(email, password, name, surname) {
@@ -67,7 +67,7 @@ export function createAuthService(
 
       const match = await cryptoRepo.comparePassword(
         password,
-        user.passwordHash
+        user.passwordHash,
       );
       if (!match) {
         throw createInvalidCredentialsError();
@@ -75,7 +75,7 @@ export function createAuthService(
 
       const token = cryptoRepo.generateToken(
         { userId: user.id, role: user.role },
-        "1h"
+        "1h",
       );
       return token;
     },

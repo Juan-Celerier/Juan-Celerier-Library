@@ -1,13 +1,12 @@
 import { Reservation } from "domain/src/entities/Reservation.js";
 import { ReservationRepository } from "domain/src/repositories/reservation-repository.js";
 
-
 interface ExpireReservationsDeps {
   reservationRepository: ReservationRepository;
 }
 
 export async function expireReservations(
-  deps: ExpireReservationsDeps
+  deps: ExpireReservationsDeps,
 ): Promise<Reservation[]> {
   const { reservationRepository } = deps;
 

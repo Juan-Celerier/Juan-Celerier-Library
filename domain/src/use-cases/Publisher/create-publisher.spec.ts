@@ -41,7 +41,7 @@ describe("Create Publisher Use Case", () => {
     };
 
     await expect(createPublisher(repository, input)).rejects.toEqual(
-      createPublisherAlreadyExistsError(input.name)
+      createPublisherAlreadyExistsError(input.name),
     );
   });
 });

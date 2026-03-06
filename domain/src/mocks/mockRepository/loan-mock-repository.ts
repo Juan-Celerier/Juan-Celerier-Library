@@ -1,13 +1,12 @@
 import { Loan, CreateLoanDTO } from "domain/src/entities/Loan.js";
 import { LoanRepository } from "domain/src/repositories/loan-repository.js";
 
-
 export interface MockedLoanRepository extends LoanRepository {
   loans: Loan[];
 }
 
 export function createLoanRepositoryMock(
-  loans: Loan[] = []
+  loans: Loan[] = [],
 ): MockedLoanRepository {
   return {
     loans,

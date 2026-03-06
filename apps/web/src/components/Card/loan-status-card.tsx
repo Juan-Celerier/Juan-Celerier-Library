@@ -17,7 +17,7 @@ export interface LoanStatusCardProps {
 
 // Helper to map status to Badge variant
 const getBadgeVariant = (
-  status: LoanStatusCardProps["status"]
+  status: LoanStatusCardProps["status"],
 ): BadgeVariant => {
   switch (status) {
     case "active":

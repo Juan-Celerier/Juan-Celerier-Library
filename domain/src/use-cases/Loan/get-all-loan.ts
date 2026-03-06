@@ -2,7 +2,6 @@ import { Loan } from "domain/src/entities/Loan.js";
 import { createInternalServerError } from "domain/src/errors/error.js";
 import { LoanRepository } from "domain/src/repositories/loan-repository.js";
 
-
 export interface GetAllLoansResponse {
   success: boolean;
   loans?: Loan[];
@@ -14,7 +13,7 @@ export interface GetAllLoansDependencies {
 }
 
 export const getAllLoans = async (
-  dependencies: GetAllLoansDependencies
+  dependencies: GetAllLoansDependencies,
 ): Promise<GetAllLoansResponse> => {
   const { loanRepository } = dependencies;
 

@@ -10,7 +10,7 @@ export interface MockedAuthorRepository extends BookAuthorRepository {
 }
 
 export function createBookAuthorRepositoryMock(
-  authors: BookAuthor[] = []
+  authors: BookAuthor[] = [],
 ): MockedAuthorRepository {
   return {
     authors,

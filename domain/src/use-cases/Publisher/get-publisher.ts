@@ -4,7 +4,7 @@ import { PublisherRepository } from "domain/src/repositories/publisher-repositor
 
 export async function getPublisherById(
   repository: PublisherRepository,
-  id: string
+  id: string,
 ): Promise<Publisher> {
   const publisher = await repository.findById(id);
   if (!publisher) {

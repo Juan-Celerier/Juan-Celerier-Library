@@ -21,7 +21,7 @@ describe("createReservation", () => {
 
     const reservation = await createReservation(
       { reservationRepository: repo },
-      reservationDTO
+      reservationDTO,
     );
 
     expect(reservation).toBeDefined();
@@ -42,14 +42,14 @@ describe("createReservation", () => {
 
     const reservation = await createReservation(
       { reservationRepository: repo },
-      reservationDTO
+      reservationDTO,
     );
 
     expect(reservation.reservationDate.toISOString()).toBe(
-      reservationDTO.reservationDate.toISOString()
+      reservationDTO.reservationDate.toISOString(),
     );
     expect(reservation.expirationDate.toISOString()).toBe(
-      reservationDTO.expirationDate.toISOString()
+      reservationDTO.expirationDate.toISOString(),
     );
     expect(reservation.status).toBe("FULFILLED");
   });
@@ -65,7 +65,7 @@ describe("createReservation", () => {
 
     const reservation = await createReservation(
       { reservationRepository: repo },
-      reservationDTO
+      reservationDTO,
     );
 
     expect(reservation.reservationDate).toBeInstanceOf(Date);
@@ -82,7 +82,7 @@ describe("createReservation", () => {
 
     const reservation = await createReservation(
       { reservationRepository: repo },
-      reservationDTO
+      reservationDTO,
     );
 
     const diff =
@@ -104,7 +104,7 @@ describe("createReservation", () => {
 
     const reservation = await createReservation(
       { reservationRepository: repo },
-      reservationDTO
+      reservationDTO,
     );
 
     expect(reservation.status).toBe("PENDING");
@@ -116,9 +116,11 @@ describe("createReservation", () => {
     await expect(
       createReservation(
         { reservationRepository: repo },
-        {} as CreateReservationDTO
-      )
-    ).rejects.toEqual(createInvalidDataError("Missing bookCopyId or borrowerId"));
+        {} as CreateReservationDTO,
+      ),
+    ).rejects.toEqual(
+      createInvalidDataError("Missing bookCopyId or borrowerId"),
+    );
   });
 
   test("lanza ReservationAlreadyExistsError si ya existe una reserva activa para el libro", async () => {
@@ -138,7 +140,7 @@ describe("createReservation", () => {
     };
 
     await expect(
-      createReservation({ reservationRepository: repo }, dto)
+      createReservation({ reservationRepository: repo }, dto),
     ).rejects.toEqual(createReservationAlreadyExistsError("book-copy-dup"));
   });
 });

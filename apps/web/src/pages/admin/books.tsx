@@ -100,7 +100,7 @@ const AdminBooksPage = () => {
         setMessage(
           editingBook
             ? "Libro actualizado exitosamente!"
-            : "Libro creado exitosamente!"
+            : "Libro creado exitosamente!",
         );
         setIsModalOpen(false);
         resetForm();

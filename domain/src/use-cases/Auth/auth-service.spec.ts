@@ -28,7 +28,7 @@ describe("AuthService", () => {
       "john.doe@mail.com",
       "secret",
       "John",
-      "Doe"
+      "Doe",
     );
 
     expect(token).toContain("verification-");
@@ -40,7 +40,7 @@ describe("AuthService", () => {
     await authService.register("john@mail.com", "1234", "John", "Doe");
 
     await expect(
-      authService.register("john@mail.com", "1234", "John", "Doe")
+      authService.register("john@mail.com", "1234", "John", "Doe"),
     ).rejects.toEqual(createEmailAlreadyExistsError("john@mail.com"));
   });
 
@@ -49,7 +49,7 @@ describe("AuthService", () => {
       "mary@mail.com",
       "pass",
       "Mary",
-      "Jane"
+      "Jane",
     );
     const user = userRepo.users[0];
 
@@ -64,7 +64,7 @@ describe("AuthService", () => {
       "peter@mail.com",
       "secret",
       "Peter",
-      "Parker"
+      "Parker",
     );
     const user = userRepo.users[0];
 
@@ -80,7 +80,7 @@ describe("AuthService", () => {
     await authService.register("bruce@mail.com", "batman", "Bruce", "Wayne");
 
     await expect(
-      authService.login("bruce@mail.com", "wrongpass")
+      authService.login("bruce@mail.com", "wrongpass"),
     ).rejects.toEqual(createInvalidCredentialsError());
   });
   //   test("should fail login when user is locked", async () => {
@@ -112,7 +112,7 @@ describe("AuthService", () => {
 
   test("should fail verifyAccount with invalid token", async () => {
     await expect(
-      authService.verifyAccount("invalid-token")
+      authService.verifyAccount("invalid-token"),
     ).rejects.toMatchObject({
       name: "InvalidCredentialsError",
     });

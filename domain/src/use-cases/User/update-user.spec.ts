@@ -4,7 +4,6 @@ import { createUserMock } from "domain/src/mocks/userMocks.js";
 import { describe, beforeEach, test, expect } from "vitest";
 import { updateUser } from "./update-user.js";
 
-
 describe("updateUser", () => {
   let repo: ReturnType<typeof createUserRepositoryMock>;
 
@@ -24,7 +23,7 @@ describe("updateUser", () => {
 
   test("lanza error si el usuario no existe", async () => {
     await expect(
-      updateUser(repo, { id: "non-existent", name: "Jane" })
+      updateUser(repo, { id: "non-existent", name: "Jane" }),
     ).rejects.toEqual(createUserNotFoundError("non-existent"));
   });
 });

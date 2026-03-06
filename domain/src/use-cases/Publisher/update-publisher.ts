@@ -1,7 +1,9 @@
 import { Publisher } from "domain/src/entities/Publisher.js";
-import { createPublisherNotFoundError, createPublisherAlreadyExistsError } from "domain/src/errors/error.js";
+import {
+  createPublisherNotFoundError,
+  createPublisherAlreadyExistsError,
+} from "domain/src/errors/error.js";
 import { PublisherRepository } from "domain/src/repositories/publisher-repository.js";
-
 
 interface UpdatePublisherInput {
   name?: string;
@@ -14,7 +16,7 @@ interface UpdatePublisherInput {
 export async function updatePublisher(
   repository: PublisherRepository,
   id: string,
-  input: UpdatePublisherInput
+  input: UpdatePublisherInput,
 ): Promise<Publisher> {
   const publisher = await repository.findById(id);
   if (!publisher) {

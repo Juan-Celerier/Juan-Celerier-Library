@@ -22,7 +22,7 @@ export interface UpdateBookAuthorDependencies {
 
 export const updateBookAuthor = async (
   request: UpdateBookAuthorRequest,
-  { bookAuthorRepository }: UpdateBookAuthorDependencies
+  { bookAuthorRepository }: UpdateBookAuthorDependencies,
 ): Promise<BookAuthor> => {
   try {
     // Buscar autor existente
@@ -68,7 +68,7 @@ export const updateBookAuthor = async (
 };
 
 const validateUpdateBookAuthorRequest = (
-  request: UpdateBookAuthorRequest
+  request: UpdateBookAuthorRequest,
 ): string | null => {
   if (request.name !== undefined && request.name.trim().length === 0)
     return "Name cannot be empty";

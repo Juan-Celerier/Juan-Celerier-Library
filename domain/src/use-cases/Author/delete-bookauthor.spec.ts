@@ -1,9 +1,16 @@
-import { createAuthorNotFoundError, createInvalidDataError, createInternalServerError } from "domain/src/errors/error.js";
+import {
+  createAuthorNotFoundError,
+  createInvalidDataError,
+  createInternalServerError,
+} from "domain/src/errors/error.js";
 import { createAuthorMock } from "domain/src/mocks/bookauthor-mock.js";
 import { createBookAuthorRepositoryMock } from "domain/src/mocks/mockRepository/author-mock-repository.js";
 import { describe, test, expect } from "vitest";
-import { DeleteBookAuthorDependencies, DeleteBookAuthorRequest, deleteBookAuthor } from "./delete-bookauthor.js";
-
+import {
+  DeleteBookAuthorDependencies,
+  DeleteBookAuthorRequest,
+  deleteBookAuthor,
+} from "./delete-bookauthor.js";
 
 describe("deleteBookAuthor (integration with mock repo)", () => {
   test("should delete author successfully", async () => {

@@ -39,7 +39,7 @@ describe("assignCategoryToBook", () => {
   test("assigns a category to a book", async () => {
     const result = await assignCategoryToBook(
       { bookRepository: bookRepo, categoryRepository: categoryRepo },
-      { bookId: "book-1", categoryIds: ["cat-1"] }
+      { bookId: "book-1", categoryIds: ["cat-1"] },
     );
 
     expect(result.categories).toContain("cat-1");
@@ -51,8 +51,8 @@ describe("assignCategoryToBook", () => {
     await expect(
       assignCategoryToBook(
         { bookRepository: bookRepo, categoryRepository: categoryRepo },
-        { bookId: "book-99", categoryIds: ["cat-1"] }
-      )
+        { bookId: "book-99", categoryIds: ["cat-1"] },
+      ),
     ).rejects.toMatchObject({ name: "BookNotFoundError" });
   });
 
@@ -60,8 +60,8 @@ describe("assignCategoryToBook", () => {
     await expect(
       assignCategoryToBook(
         { bookRepository: bookRepo, categoryRepository: categoryRepo },
-        { bookId: "book-1", categoryIds: ["cat-99"] }
-      )
+        { bookId: "book-1", categoryIds: ["cat-99"] },
+      ),
     ).rejects.toMatchObject({ name: "CategoryNotFoundError" });
   });
   test("throwscreateInternalServerError if update fails", async () => {
@@ -71,8 +71,8 @@ describe("assignCategoryToBook", () => {
     await expect(
       assignCategoryToBook(
         { bookRepository: bookRepo, categoryRepository: categoryRepo },
-        { bookId: "book-1", categoryIds: ["cat-1"] }
-      )
+        { bookId: "book-1", categoryIds: ["cat-1"] },
+      ),
     ).rejects.toMatchObject({ name: "InternalServerError" });
   });
   test("adds multiple categories, keeping existing ones", async () => {
@@ -86,7 +86,7 @@ describe("assignCategoryToBook", () => {
 
     const result = await assignCategoryToBook(
       { bookRepository: bookRepo, categoryRepository: categoryRepo },
-      { bookId: "book-1", categoryIds: ["cat-2"] }
+      { bookId: "book-1", categoryIds: ["cat-2"] },
     );
 
     expect(result.categories).toContain("cat-1");
@@ -103,8 +103,8 @@ describe("assignCategoryToBook", () => {
     await expect(
       assignCategoryToBook(
         { bookRepository: bookRepo, categoryRepository: categoryRepo },
-        { bookId: "book-1", categoryIds: ["cat-2", "cat-99"] }
-      )
+        { bookId: "book-1", categoryIds: ["cat-2", "cat-99"] },
+      ),
     ).rejects.toMatchObject({ name: "CategoryNotFoundError" });
   });
   test("does not duplicate existing categories when adding same category again", async () => {
@@ -118,7 +118,7 @@ describe("assignCategoryToBook", () => {
 
     const result = await assignCategoryToBook(
       { bookRepository: bookRepo, categoryRepository: categoryRepo },
-      { bookId: "book-1", categoryIds: ["cat-1"] }
+      { bookId: "book-1", categoryIds: ["cat-1"] },
     );
 
     // La categoría no se duplica

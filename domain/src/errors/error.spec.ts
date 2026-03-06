@@ -45,7 +45,7 @@ function expectError(
   error: AppError,
   expectedName: string,
   expectedStatus: number,
-  expectedMessage: string
+  expectedMessage: string,
 ) {
   expect(error.name).toBe(expectedName);
   expect(error.httpStatus).toBe(expectedStatus);
@@ -60,7 +60,7 @@ describe("Error factories", () => {
       error,
       "InternalServerError",
       500,
-      "An unexpected internal server error occurred"
+      "An unexpected internal server error occurred",
     );
   });
 
@@ -118,7 +118,7 @@ describe("Error factories", () => {
       error,
       "BookAlreadyExistsError",
       409,
-      "Book with ISBN 978-1234567890 already exists"
+      "Book with ISBN 978-1234567890 already exists",
     );
   });
 
@@ -134,7 +134,7 @@ describe("Error factories", () => {
       error,
       "AuthorNotFoundError",
       404,
-      "Author with id 42 not found"
+      "Author with id 42 not found",
     );
   });
 
@@ -144,7 +144,7 @@ describe("Error factories", () => {
       error,
       "AuthorAlreadyExistsError",
       409,
-      "Author J.K. Rowling already exists"
+      "Author J.K. Rowling already exists",
     );
   });
 
@@ -155,7 +155,7 @@ describe("Error factories", () => {
       error,
       "CategoryNotFoundError",
       404,
-      "Category with id 10 not found"
+      "Category with id 10 not found",
     );
   });
 
@@ -165,7 +165,7 @@ describe("Error factories", () => {
       error,
       "CategoryAlreadyExistsError",
       409,
-      "Category Fantasy already exists"
+      "Category Fantasy already exists",
     );
   });
 
@@ -176,7 +176,7 @@ describe("Error factories", () => {
       error,
       "PublisherNotFoundError",
       404,
-      "Publisher with id 7 not found"
+      "Publisher with id 7 not found",
     );
   });
 
@@ -186,7 +186,7 @@ describe("Error factories", () => {
       error,
       "PublisherAlreadyExistsError",
       409,
-      "Publisher Penguin already exists"
+      "Publisher Penguin already exists",
     );
   });
 
@@ -197,7 +197,7 @@ describe("Error factories", () => {
       error,
       "BorrowerNotFoundError",
       404,
-      "Borrower with id 55 not found"
+      "Borrower with id 55 not found",
     );
   });
 
@@ -207,7 +207,7 @@ describe("Error factories", () => {
       error,
       "BorrowerAccountLockedError",
       403,
-      "Borrower with id 55 account is locked"
+      "Borrower with id 55 account is locked",
     );
   });
 
@@ -223,7 +223,7 @@ describe("Error factories", () => {
       error,
       "LoanAlreadyReturnedError",
       409,
-      "Loan with id 99 is already returned"
+      "Loan with id 99 is already returned",
     );
   });
 
@@ -233,7 +233,7 @@ describe("Error factories", () => {
       error,
       "LoanLimitExceededError",
       403,
-      "Borrower exceeded loan limit of 3"
+      "Borrower exceeded loan limit of 3",
     );
   });
 
@@ -244,7 +244,7 @@ describe("Error factories", () => {
       error,
       "ReservationNotFoundError",
       404,
-      "Reservation with id 888 not found"
+      "Reservation with id 888 not found",
     );
   });
 
@@ -254,7 +254,7 @@ describe("Error factories", () => {
       error,
       "ReservationAlreadyExistsError",
       409,
-      "Reservation for book 123 already exists"
+      "Reservation for book 123 already exists",
     );
   });
 
@@ -264,7 +264,7 @@ describe("Error factories", () => {
       error,
       "ReservationExpiredError",
       409,
-      "Reservation with id 999 has expired"
+      "Reservation with id 999 has expired",
     );
   });
 
@@ -280,7 +280,7 @@ describe("Error factories", () => {
       error,
       "EmailAlreadyExistsError",
       409,
-      "User with email test@example.com already exists"
+      "User with email test@example.com already exists",
     );
   });
 

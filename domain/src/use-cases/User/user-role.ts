@@ -15,7 +15,7 @@ export interface AssignUserRoleOutput {
 
 export async function assignUserRole(
   repo: UserRepository,
-  input: AssignUserRoleInput
+  input: AssignUserRoleInput,
 ): Promise<AssignUserRoleOutput> {
   const user = await repo.findById(input.userId);
 

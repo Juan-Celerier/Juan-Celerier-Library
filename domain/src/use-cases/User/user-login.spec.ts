@@ -39,7 +39,7 @@ describe("userLogin", () => {
       userLogin(repo, {
         email: "nope@example.com",
         password,
-      })
+      }),
     ).rejects.toEqual(createUserNotFoundError("nope@example.com"));
   });
 
@@ -49,7 +49,7 @@ describe("userLogin", () => {
       userLogin(repo, {
         email: "test@example.com",
         password: "wrong",
-      })
+      }),
     ).rejects.toEqual(createInvalidCredentialsError());
   });
 });

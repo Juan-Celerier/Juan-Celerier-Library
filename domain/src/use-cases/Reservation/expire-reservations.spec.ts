@@ -3,7 +3,6 @@ import { createReservationMock } from "domain/src/mocks/reservationMocks.js";
 import { describe, test, expect } from "vitest";
 import { expireReservations } from "./expire-reservations.js";
 
-
 describe("expireReservations", () => {
   test("expira reservas PENDING con fecha pasada", async () => {
     const pastDate = new Date("2025-01-01");

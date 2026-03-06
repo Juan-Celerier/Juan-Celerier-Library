@@ -20,7 +20,7 @@ interface UpdateBorrowerInput {
 
 export async function updateBorrower(
   repository: BorrowerRepository,
-  input: UpdateBorrowerInput
+  input: UpdateBorrowerInput,
 ): Promise<Borrower> {
   const borrower = await repository.findById(input.id);
   if (!borrower) {

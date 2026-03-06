@@ -15,7 +15,7 @@ interface UpdateReservationDeps {
 export async function updateReservation(
   deps: UpdateReservationDeps,
   id: string,
-  updates: Partial<CreateReservationDTO>
+  updates: Partial<CreateReservationDTO>,
 ): Promise<Reservation> {
   const { reservationRepository } = deps;
 

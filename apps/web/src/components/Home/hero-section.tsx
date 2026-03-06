@@ -42,7 +42,7 @@ export const HeroSection = () => {
             className="block w-full pl-12 pr-4 py-4 rounded-full border-gray-200 bg-white text-gray-900 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all placeholder-gray-400"
             placeholder="Buscar por título, autor o género..."
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleSearch((e.target as HTMLInputElement).value);
               }
             }}
@@ -50,7 +50,9 @@ export const HeroSection = () => {
           <div className="absolute inset-y-1 right-1">
             <button
               onClick={() => {
-                const input = document.querySelector('input[placeholder="Buscar por título, autor o género..."]') as HTMLInputElement;
+                const input = document.querySelector(
+                  'input[placeholder="Buscar por título, autor o género..."]',
+                ) as HTMLInputElement;
                 if (input) {
                   handleSearch(input.value);
                 }

@@ -4,7 +4,7 @@ import { BorrowerRepository } from "domain/src/repositories/borrower-repository.
 
 export async function registerBorrower(
   repository: BorrowerRepository,
-  input: CreateBorrowerDTO
+  input: CreateBorrowerDTO,
 ): Promise<Borrower> {
   const existing = await repository.findByEmail(input.email);
   if (existing) {

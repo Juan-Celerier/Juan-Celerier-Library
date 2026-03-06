@@ -4,7 +4,7 @@ import { BorrowerRepository } from "domain/src/repositories/borrower-repository.
 
 export async function validateBorrower(
   repository: BorrowerRepository,
-  id: string
+  id: string,
 ): Promise<Borrower> {
   const borrower = await repository.findById(id);
   if (!borrower) {

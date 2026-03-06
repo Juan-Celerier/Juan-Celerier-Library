@@ -44,7 +44,7 @@ describe("Register Borrower Use Case", () => {
     };
 
     await expect(registerBorrower(repository, input)).rejects.toThrow(
-      BorrowerAlreadyExistsError(input.email).message
+      BorrowerAlreadyExistsError(input.email).message,
     );
   });
 });

@@ -33,7 +33,7 @@ describe("Update Category Use Case", () => {
     const input = { id: "non-existent", name: "Updated Name" };
 
     await expect(updateCategory(repository, input)).rejects.toThrow(
-      CategoryNotFoundError("non-existent").message
+      CategoryNotFoundError("non-existent").message,
     );
   });
 
@@ -45,7 +45,7 @@ describe("Update Category Use Case", () => {
     const input = { id: category1.id, name: "Category Two" };
 
     await expect(updateCategory(repository, input)).rejects.toThrow(
-      CategoryAlreadyExistsError("Category Two").message
+      CategoryAlreadyExistsError("Category Two").message,
     );
   });
 
@@ -57,7 +57,7 @@ describe("Update Category Use Case", () => {
     const input = { id: category.id, name: "New Name" };
 
     await expect(updateCategory(repository, input)).rejects.toThrow(
-      createInternalServerError("Failed to update category").message
+      createInternalServerError("Failed to update category").message,
     );
   });
 });

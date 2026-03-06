@@ -12,7 +12,7 @@ describe("updateReservation", () => {
     const result = await updateReservation(
       { reservationRepository: repo },
       original.id,
-      { status: "FULFILLED" }
+      { status: "FULFILLED" },
     );
 
     expect(result.status).toBe("FULFILLED");
@@ -27,7 +27,7 @@ describe("updateReservation", () => {
     await expect(
       updateReservation({ reservationRepository: repo }, "non-existent-id", {
         status: "CANCELLED",
-      })
+      }),
     ).rejects.toEqual(createReservationNotFoundError("non-existent-id"));
   });
 });

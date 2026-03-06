@@ -6,7 +6,7 @@ export interface MockedUserRepository extends UserRepository {
 }
 
 export function createUserRepositoryMock(
-  users: User[] = []
+  users: User[] = [],
 ): MockedUserRepository {
   return {
     users,

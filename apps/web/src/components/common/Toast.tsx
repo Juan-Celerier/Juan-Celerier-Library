@@ -49,7 +49,9 @@ const Toast = ({ message, type, onClose, duration = 5000 }: ToastProps) => {
   };
 
   return (
-    <div className={`fixed top-4 right-4 z-50 max-w-md w-full ${getBackgroundColor()} border rounded-lg shadow-lg p-4 flex items-start gap-3`}>
+    <div
+      className={`fixed top-4 right-4 z-50 max-w-md w-full ${getBackgroundColor()} border rounded-lg shadow-lg p-4 flex items-start gap-3`}
+    >
       {getIcon()}
       <div className="flex-1">
         <p className="text-sm font-medium text-gray-900">{message}</p>

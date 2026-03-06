@@ -4,7 +4,6 @@ import { LoanRepository } from "domain/src/repositories/loan-repository.js";
 import { describe, test, expect } from "vitest";
 import { getActiveLoansByUser } from "./get-active-loans-by-user.js";
 
-
 describe("getActiveLoansByUser", () => {
   test("should return active loans when they exist", async () => {
     const loan = createLoanMock({ id: "loan-1" });
@@ -12,7 +11,7 @@ describe("getActiveLoansByUser", () => {
 
     const response = await getActiveLoansByUser(
       { borrowerId: loan.borrowerId },
-      { loanRepository }
+      { loanRepository },
     );
 
     expect(response.success).toBe(true);
@@ -25,12 +24,12 @@ describe("getActiveLoansByUser", () => {
 
     const response = await getActiveLoansByUser(
       { borrowerId: "non-existent-borrower" },
-      { loanRepository }
+      { loanRepository },
     );
 
     expect(response.success).toBe(false);
     expect(response.error).toBe(
-      "Borrower with id non-existent-borrower not found"
+      "Borrower with id non-existent-borrower not found",
     );
     expect(response.loans).toBeUndefined();
   });
@@ -40,7 +39,7 @@ describe("getActiveLoansByUser", () => {
 
     const response = await getActiveLoansByUser(
       { borrowerId: "" },
-      { loanRepository }
+      { loanRepository },
     );
 
     expect(response.success).toBe(false);

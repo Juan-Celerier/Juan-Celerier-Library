@@ -17,7 +17,7 @@ async function seedProdDB() {
       email: "admin@library.com",
       hashedPassword: "$2b$12$dummy.hash.for.production", // Hash dummy para producción
       role: "LIBRARIAN",
-    })
+    }),
   );
 
   console.log("✅ Seed de producción completado");

@@ -100,7 +100,11 @@ export const createBookWithRoleValidation = async (
 ): Promise<CreateBookResponse> => {
   // Validate user role first
   if (!RoleService.canCreateBooks(request.userRole)) {
-    return { success: false, error: createUnauthorizedError("User role not authorized to create books").message };
+    return {
+      success: false,
+      error: createUnauthorizedError("User role not authorized to create books")
+        .message,
+    };
   }
 
   // If authorized, proceed with normal book creation

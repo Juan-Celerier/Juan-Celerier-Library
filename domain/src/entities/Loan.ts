@@ -1,4 +1,8 @@
-import { MAX_LOAN_RENEWALS, DAILY_FINE_RATE, MAX_FINE_AMOUNT } from "../constants.js";
+import {
+  MAX_LOAN_RENEWALS,
+  DAILY_FINE_RATE,
+  MAX_FINE_AMOUNT,
+} from "../constants.js";
 
 export interface Loan {
   id: string;
@@ -16,7 +20,10 @@ export interface Loan {
 
 export type CreateLoanDTO = Omit<Loan, "id" | "createdAt" | "renewalCount">;
 
-export function canBeRenewed(loan: Loan, hasActiveReservations: boolean): boolean {
+export function canBeRenewed(
+  loan: Loan,
+  hasActiveReservations: boolean,
+): boolean {
   // Check if loan is not overdue
   if (loan.status === "overdue") {
     return false;
@@ -61,9 +68,7 @@ export function isOverdue(loan: Loan, currentDate: Date): boolean {
   // 2. Current date is after due date
   // 3. Status is not "returned"
   return (
-    !loan.returnDate &&
-    loan.status !== "returned" &&
-    currentDate > loan.dueDate
+    !loan.returnDate && loan.status !== "returned" && currentDate > loan.dueDate
   );
 }
 
@@ -74,7 +79,7 @@ export function calculateFine(loan: Loan, currentDate: Date): number {
 
   // Calculate days overdue
   const daysOverdue = Math.floor(
-    (currentDate.getTime() - loan.dueDate.getTime()) / (1000 * 60 * 60 * 24)
+    (currentDate.getTime() - loan.dueDate.getTime()) / (1000 * 60 * 60 * 24),
   );
 
   // Calculate fine amount

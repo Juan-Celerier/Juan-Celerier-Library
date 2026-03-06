@@ -54,7 +54,7 @@ export const errorHandler = (
   error: ApiError,
   req: Request,
   res: Response,
-  _next: NextFunction
+  _next: NextFunction,
 ) => {
   let statusCode = error.statusCode || 500;
   const message = error.message || "Internal Server Error";
@@ -75,7 +75,7 @@ export const errorHandler = (
     });
   } else {
     console.error(
-      `${statusCode} - ${message} - ${req.method} ${req.url} - IP: ${req.ip}`
+      `${statusCode} - ${message} - ${req.method} ${req.url} - IP: ${req.ip}`,
     );
   }
 

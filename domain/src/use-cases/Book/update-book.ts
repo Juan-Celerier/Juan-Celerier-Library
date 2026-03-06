@@ -32,7 +32,7 @@ export interface UpdateBookDependencies {
 
 export const updateBook = async (
   request: UpdateBookRequest,
-  dependencies: UpdateBookDependencies
+  dependencies: UpdateBookDependencies,
 ): Promise<UpdateBookResponse> => {
   const { bookRepository } = dependencies;
 
@@ -71,13 +71,13 @@ export const updateBook = async (
   try {
     const updatedBook = await bookRepository.update(
       request.id,
-      updatedBookData
+      updatedBookData,
     );
     if (!updatedBook) {
       return {
         success: false,
         error: createInternalServerError(
-          `Failed to update book with id ${request.id}`
+          `Failed to update book with id ${request.id}`,
         ).message,
       };
     }
@@ -87,14 +87,14 @@ export const updateBook = async (
     return {
       success: false,
       error: createInternalServerError(
-        `Failed to update book with id ${request.id}`
+        `Failed to update book with id ${request.id}`,
       ).message,
     };
   }
 };
 
 const validateUpdateBookRequest = (
-  request: UpdateBookRequest
+  request: UpdateBookRequest,
 ): string | null => {
   if (!request.title || request.title.trim().length === 0) return "title";
   if (!request.author || request.author.trim().length === 0) return "author";

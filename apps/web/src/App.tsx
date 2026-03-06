@@ -23,11 +23,11 @@ const BookDetailPage = React.lazy(() => import("./pages/books/[id]"));
 const AdminIndexPage = React.lazy(() => import("./pages/admin/index"));
 const AdminBooksPage = React.lazy(() => import("./pages/admin/books"));
 const AdminCategoriesPage = React.lazy(
-  () => import("./pages/admin/categories")
+  () => import("./pages/admin/categories"),
 );
 const AdminAuthorsPage = React.lazy(() => import("./pages/admin/authors"));
 const AdminPublishersPage = React.lazy(
-  () => import("./pages/admin/publishers")
+  () => import("./pages/admin/publishers"),
 );
 const MyLoansPage = React.lazy(() => import("./pages/my/loans"));
 const MyReservationsPage = React.lazy(() => import("./pages/my/reservations"));

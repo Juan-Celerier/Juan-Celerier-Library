@@ -11,7 +11,7 @@ export interface MockedBorrowerRepository extends BorrowerRepository {
 }
 
 export function createBorrowerRepositoryMock(
-  borrowers: Borrower[] = [createBorrowerMock()]
+  borrowers: Borrower[] = [createBorrowerMock()],
 ): MockedBorrowerRepository {
   return {
     borrowers,

@@ -1,6 +1,9 @@
-import { createInvalidBookDataError, createBookNotFoundError, createInternalServerError } from "domain/src/errors/error.js";
+import {
+  createInvalidBookDataError,
+  createBookNotFoundError,
+  createInternalServerError,
+} from "domain/src/errors/error.js";
 import { BookRepository } from "domain/src/repositories/book-repository.js";
-
 
 export interface DeleteBookRequest {
   id: string;
@@ -18,7 +21,7 @@ export interface DeleteBookDependencies {
 
 export const deleteBook = async (
   request: DeleteBookRequest,
-  dependencies: DeleteBookDependencies
+  dependencies: DeleteBookDependencies,
 ): Promise<DeleteBookResponse> => {
   const { bookRepository } = dependencies;
 
@@ -42,7 +45,7 @@ export const deleteBook = async (
     return {
       success: false,
       error: createInternalServerError(
-        `Failed to delete book with id ${request.id}`
+        `Failed to delete book with id ${request.id}`,
       ).message,
     };
   }

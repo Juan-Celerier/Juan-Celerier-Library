@@ -18,7 +18,7 @@ export interface AssignCategoryToBookDTO {
 
 export async function assignCategoryToBook(
   { bookRepository, categoryRepository }: AssignCategoryToBookDeps,
-  { bookId, categoryIds }: AssignCategoryToBookDTO
+  { bookId, categoryIds }: AssignCategoryToBookDTO,
 ) {
   const book = await bookRepository.findById(bookId);
   if (!book) throw createBookNotFoundError(bookId);

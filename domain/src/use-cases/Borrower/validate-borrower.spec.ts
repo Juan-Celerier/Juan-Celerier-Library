@@ -19,7 +19,7 @@ describe("Validate Borrower Use Case", () => {
     const repository = createBorrowerRepositoryMock([]);
 
     await expect(validateBorrower(repository, "non-existent")).rejects.toThrow(
-      BorrowerNotFoundError("non-existent").message
+      BorrowerNotFoundError("non-existent").message,
     );
   });
 });

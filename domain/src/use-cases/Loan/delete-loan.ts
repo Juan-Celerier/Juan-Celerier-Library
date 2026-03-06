@@ -12,7 +12,7 @@ export interface DeleteLoanResponse {
 
 export async function deleteLoan(
   repository: LoanRepository,
-  input: DeleteLoanInput
+  input: DeleteLoanInput,
 ): Promise<DeleteLoanResponse> {
   // Validar ID
   if (!input.id || input.id.trim().length === 0) {

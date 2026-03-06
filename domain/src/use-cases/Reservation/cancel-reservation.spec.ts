@@ -11,7 +11,7 @@ describe("cancelReservation", () => {
 
     const cancelled = await cancelReservation(
       { reservationRepository: repo },
-      reservation.id
+      reservation.id,
     );
 
     expect(cancelled.status).toBe("CANCELLED");
@@ -23,7 +23,7 @@ describe("cancelReservation", () => {
     const reservationId = "nonexistent-id";
 
     await expect(
-      cancelReservation({ reservationRepository: repo }, reservationId)
+      cancelReservation({ reservationRepository: repo }, reservationId),
     ).rejects.toEqual(createReservationNotFoundError(reservationId));
   });
 
@@ -33,7 +33,7 @@ describe("cancelReservation", () => {
 
     const result = await cancelReservation(
       { reservationRepository: repo },
-      reservation.id
+      reservation.id,
     );
 
     expect(result.status).toBe("CANCELLED");

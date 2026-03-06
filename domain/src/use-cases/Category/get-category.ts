@@ -14,7 +14,7 @@ export interface GetCategoryResponse {
 
 export async function getCategory(
   repository: CategoryRepository,
-  request: GetCategoryRequest
+  request: GetCategoryRequest,
 ): Promise<GetCategoryResponse> {
   // Validación de ID
   if (!request.id || request.id.trim().length === 0) {

@@ -1,7 +1,9 @@
 import { Category } from "domain/src/entities/Category.js";
-import { createInvalidCategoryDataError, CategoryAlreadyExistsError } from "domain/src/errors/error.js";
+import {
+  createInvalidCategoryDataError,
+  CategoryAlreadyExistsError,
+} from "domain/src/errors/error.js";
 import { CategoryRepository } from "domain/src/repositories/category-repository.js";
-
 
 interface CreateCategoryInput {
   name: string;
@@ -11,7 +13,7 @@ interface CreateCategoryInput {
 
 export async function createCategory(
   repository: CategoryRepository,
-  input: CreateCategoryInput
+  input: CreateCategoryInput,
 ): Promise<Category> {
   if (!input.name || !input.description) {
     throw createInvalidCategoryDataError();

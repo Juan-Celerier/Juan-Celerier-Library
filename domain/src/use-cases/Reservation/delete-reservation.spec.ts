@@ -20,7 +20,7 @@ describe("deleteReservation", () => {
     const repo = createReservationRepositoryMock();
 
     await expect(
-      deleteReservation({ reservationRepository: repo }, "not-found-id")
+      deleteReservation({ reservationRepository: repo }, "not-found-id"),
     ).rejects.toEqual(createReservationNotFoundError("not-found-id"));
   });
 });

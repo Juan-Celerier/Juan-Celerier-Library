@@ -19,7 +19,7 @@ export interface GetAllBookAuthorsDependencies {
 
 export const getAllBookAuthors = async (
   request: GetAllBookAuthorsRequest,
-  dependencies: GetAllBookAuthorsDependencies
+  dependencies: GetAllBookAuthorsDependencies,
 ): Promise<GetAllBookAuthorsResponse> => {
   const { bookAuthorRepository } = dependencies;
 

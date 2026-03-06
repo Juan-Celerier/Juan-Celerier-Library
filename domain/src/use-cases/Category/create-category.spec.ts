@@ -34,7 +34,7 @@ describe("Create Category Use Case", () => {
     };
 
     await expect(createCategory(repository, input)).rejects.toEqual(
-      CategoryAlreadyExistsError("Duplicate")
+      CategoryAlreadyExistsError("Duplicate"),
     );
   });
 
@@ -46,7 +46,7 @@ describe("Create Category Use Case", () => {
     };
 
     await expect(createCategory(repository, input)).rejects.toEqual(
-      createInvalidCategoryDataError()
+      createInvalidCategoryDataError(),
     );
   });
 });

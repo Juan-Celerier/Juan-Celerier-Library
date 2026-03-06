@@ -4,7 +4,6 @@ import { createLoanRepositoryMock } from "domain/src/mocks/mockRepository/loan-m
 import { describe, test, expect } from "vitest";
 import { UpdateLoanInput, updateLoan } from "./update-loan.js";
 
-
 describe("updateLoan Use Case", () => {
   test("debe actualizar un préstamo existente", async () => {
     const loan = createLoanMock({ id: "loan-1", status: "active" });
@@ -29,7 +28,7 @@ describe("updateLoan Use Case", () => {
     };
 
     await expect(updateLoan(repository, input)).rejects.toEqual(
-      createLoanNotFoundError("non-existent")
+      createLoanNotFoundError("non-existent"),
     );
   });
 });

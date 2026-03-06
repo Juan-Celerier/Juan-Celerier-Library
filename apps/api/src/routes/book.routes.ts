@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { bookController } from "../controllers/book.controller.js";
-import { authMiddleware, librarianOnly } from "../middlewares/auth-middlewares.js";
+import {
+  authMiddleware,
+  librarianOnly,
+} from "../middlewares/auth-middlewares.js";
 
 const router = Router();
 const controller = bookController();

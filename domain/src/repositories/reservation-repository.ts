@@ -6,7 +6,7 @@ export interface ReservationRepository {
   findAll(): Promise<Reservation[]>;
   update(
     id: string,
-    reservation: Partial<CreateReservationDTO>
+    reservation: Partial<CreateReservationDTO>,
   ): Promise<Reservation>;
   delete(id: string): Promise<void>;
   findByBookCopyId(bookCopyId: string): Promise<Reservation[]>;

@@ -33,7 +33,7 @@ describe("updateBook", () => {
   });
 
   const buildRequest = (
-    overrides: Partial<UpdateBookDTO> = {}
+    overrides: Partial<UpdateBookDTO> = {},
   ): UpdateBookDTO => ({
     id: existingBook.id,
     title: "Libro",
@@ -73,7 +73,7 @@ describe("updateBook", () => {
 
     expect(response.success).toBe(false);
     expect(response.error).toBe(
-      createBookNotFoundError("non-existent-id").message
+      createBookNotFoundError("non-existent-id").message,
     );
   });
 
@@ -121,7 +121,7 @@ describe("updateBook", () => {
 
     expect(response.success).toBe(false);
     expect(response.error).toBe(
-      `Failed to update book with id ${existingBook.id}`
+      `Failed to update book with id ${existingBook.id}`,
     );
   });
 
@@ -136,7 +136,7 @@ describe("updateBook", () => {
 
     expect(response.success).toBe(false);
     expect(response.error).toBe(
-      `Failed to update book with id ${existingBook.id}`
+      `Failed to update book with id ${existingBook.id}`,
     );
   });
 });

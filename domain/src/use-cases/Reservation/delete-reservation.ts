@@ -7,7 +7,7 @@ interface DeleteReservationDeps {
 
 export async function deleteReservation(
   deps: DeleteReservationDeps,
-  id: string
+  id: string,
 ): Promise<void> {
   const { reservationRepository } = deps;
 

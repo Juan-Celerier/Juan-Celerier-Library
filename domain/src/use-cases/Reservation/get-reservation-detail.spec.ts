@@ -11,7 +11,7 @@ describe("GetReservationDetail Use Case", () => {
 
     const result = await getReservationDetail(
       { reservationRepository: repo },
-      "res-2"
+      "res-2",
     );
 
     expect(result).toEqual(reservation2);
@@ -22,7 +22,7 @@ describe("GetReservationDetail Use Case", () => {
     const repo = createReservationRepositoryMock();
 
     await expect(
-      getReservationDetail({ reservationRepository: repo }, "non-existent-id")
+      getReservationDetail({ reservationRepository: repo }, "non-existent-id"),
     ).rejects.toMatchObject({
       name: "ReservationNotFoundError",
       httpStatus: 404,

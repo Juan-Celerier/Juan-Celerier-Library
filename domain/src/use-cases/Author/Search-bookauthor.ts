@@ -21,7 +21,7 @@ export interface SearchBookAuthorsResponse {
 
 export async function searchBookAuthors(
   request: SearchBookAuthorsRequest,
-  { bookAuthorRepository }: SearchBookAuthorsDependencies
+  { bookAuthorRepository }: SearchBookAuthorsDependencies,
 ): Promise<SearchBookAuthorsResponse> {
   const searchTerm = (request.searchTerm ?? "").trim();
 

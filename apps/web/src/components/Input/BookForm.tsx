@@ -51,7 +51,7 @@ const BookForm: React.FC<BookFormProps> = ({ onSubmit }) => {
     onSubmit(formData);
   };
 
-    return (
+  return (
     <div className="bg-white rounded-lg shadow-md p-6">
       <h2 className="text-2xl font-bold text-gray-900 mb-6">Nuevo Libro</h2>
       <form onSubmit={handleSubmit} className="space-y-4">

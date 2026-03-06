@@ -4,7 +4,6 @@ import { createBorrowerRepositoryMock } from "domain/src/mocks/mockRepository/bo
 import { describe, test, expect } from "vitest";
 import { getBorrowersByRole } from "./get-borrowers-by-role.js";
 
-
 describe("Get Borrowers By Role Use Case", () => {
   test("should return borrowers with specified role", async () => {
     const borrower1 = createBorrowerMock({ id: "b1", role: "STUDENT" });
@@ -35,7 +34,7 @@ describe("Get Borrowers By Role Use Case", () => {
     const repository = createBorrowerRepositoryMock([]);
 
     await expect(
-      getBorrowersByRole(repository, "ADMIN" as any)
+      getBorrowersByRole(repository, "ADMIN" as any),
     ).rejects.toThrowError(createInvalidBorrowerRoleError("ADMIN").message);
   });
 });

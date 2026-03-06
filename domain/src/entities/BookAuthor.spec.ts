@@ -7,7 +7,7 @@ describe("BookAuthor Entity", () => {
       id: "author-1",
       name: "Gabriel",
       surname: "García Márquez",
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     expect(author).toHaveProperty("id");
@@ -21,7 +21,7 @@ describe("BookAuthor Entity", () => {
       id: "author-1",
       name: "Gabriel",
       surname: "García Márquez",
-      createdAt: new Date()
+      createdAt: new Date(),
       // biography, birthDate, nationality, and image are optional
     };
 
@@ -40,7 +40,7 @@ describe("BookAuthor Entity", () => {
       birthDate: new Date("1927-03-06"),
       nationality: "Colombian",
       image: "https://example.com/gabriel.jpg",
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     expect(author).toHaveProperty("biography");
@@ -52,7 +52,7 @@ describe("BookAuthor Entity", () => {
   test("CreateBookAuthorDTO should exclude id and createdAt", () => {
     const authorData: CreateBookAuthorDTO = {
       name: "Isabel",
-      surname: "Allende"
+      surname: "Allende",
     };
 
     expect(authorData).not.toHaveProperty("id");

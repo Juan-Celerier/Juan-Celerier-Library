@@ -13,7 +13,7 @@ interface CreateBookAuthorResult {
 
 export async function createBookAuthor(
   input: CreateBookAuthorDTO,
-  repo: BookAuthorRepository
+  repo: BookAuthorRepository,
 ): Promise<CreateBookAuthorResult> {
   if (!input.name || input.name.trim() === "") {
     return { success: false, error: "Name is required" };
@@ -31,7 +31,7 @@ export async function createBookAuthor(
   if (
     existing.some(
       (a: BookAuthor, index: number, authors: BookAuthor[]) =>
-        a.surname.toLowerCase() === input.surname.trim().toLowerCase()
+        a.surname.toLowerCase() === input.surname.trim().toLowerCase(),
     )
   ) {
     return {

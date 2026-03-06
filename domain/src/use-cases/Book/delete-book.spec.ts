@@ -1,9 +1,12 @@
 import { Book } from "domain/src/entities/Book.js";
-import { createBookNotFoundError, createInvalidBookDataError, createInternalServerError } from "domain/src/errors/error.js";
+import {
+  createBookNotFoundError,
+  createInvalidBookDataError,
+  createInternalServerError,
+} from "domain/src/errors/error.js";
 import { createBookRepositoryMock } from "domain/src/mocks/mockRepository/book-mock-repository.js";
 import { describe, beforeEach, test, expect } from "vitest";
 import { deleteBook } from "./delete-book.js";
-
 
 describe("deleteBook", () => {
   let bookRepository: ReturnType<typeof createBookRepositoryMock>;
@@ -30,7 +33,7 @@ describe("deleteBook", () => {
   test("debe borrar un libro con éxito", async () => {
     const response = await deleteBook(
       { id: existingBook.id },
-      { bookRepository }
+      { bookRepository },
     );
 
     expect(response.success).toBe(true);
@@ -43,12 +46,12 @@ describe("deleteBook", () => {
   test("debe fallar si el libro no existe", async () => {
     const response = await deleteBook(
       { id: "non-existent-id" },
-      { bookRepository }
+      { bookRepository },
     );
 
     expect(response.success).toBe(false);
     expect(response.error).toBe(
-      createBookNotFoundError("non-existent-id").message
+      createBookNotFoundError("non-existent-id").message,
     );
   });
 
@@ -65,14 +68,14 @@ describe("deleteBook", () => {
 
     const response = await deleteBook(
       { id: existingBook.id },
-      { bookRepository }
+      { bookRepository },
     );
 
     expect(response.success).toBe(false);
     expect(response.error).toBe(
       createInternalServerError(
-        `Failed to delete book with id ${existingBook.id}`
-      ).message
+        `Failed to delete book with id ${existingBook.id}`,
+      ).message,
     );
   });
 });

@@ -22,7 +22,7 @@ export interface DeleteBookAuthorDependencies {
 
 export const deleteBookAuthor = async (
   request: DeleteBookAuthorRequest,
-  dependencies: DeleteBookAuthorDependencies
+  dependencies: DeleteBookAuthorDependencies,
 ): Promise<DeleteBookAuthorResponse> => {
   const { authorId } = request;
   const { bookAuthorRepository } = dependencies;

@@ -12,7 +12,7 @@ describe("Borrower Entity", () => {
       validated: false,
       locked: false,
       role: "STUDENT",
-      createdAt: new Date()
+      createdAt: new Date(),
     };
 
     expect(borrower).toHaveProperty("id");
@@ -36,7 +36,7 @@ describe("Borrower Entity", () => {
       validated: false,
       locked: false,
       role: "STUDENT",
-      createdAt: new Date()
+      createdAt: new Date(),
       // image and token are optional
     };
 
@@ -47,7 +47,7 @@ describe("Borrower Entity", () => {
   test("BorrowerRole should be one of the valid values", () => {
     const roles: BorrowerRole[] = ["STUDENT", "TEACHER"];
 
-    roles.forEach(role => {
+    roles.forEach((role) => {
       const borrower: Borrower = {
         id: "borrower-1",
         name: "Test",
@@ -57,7 +57,7 @@ describe("Borrower Entity", () => {
         validated: true,
         locked: false,
         role: role,
-        createdAt: new Date()
+        createdAt: new Date(),
       };
 
       expect(borrower.role).toBe(role);
@@ -72,7 +72,7 @@ describe("Borrower Entity", () => {
       passwordHash: "hashed-password",
       validated: false,
       locked: false,
-      role: "TEACHER"
+      role: "TEACHER",
     };
 
     expect(borrowerData).not.toHaveProperty("id");

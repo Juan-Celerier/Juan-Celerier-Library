@@ -24,7 +24,7 @@ describe("getUserDetail", () => {
 
   test("lanza error si el usuario no existe", async () => {
     await expect(getUserDetail(repo, "non-existent")).rejects.toEqual(
-      createUserNotFoundError("non-existent")
+      createUserNotFoundError("non-existent"),
     );
   });
 });
