@@ -1,31 +1,71 @@
+version: '3.8'
+
 services:
-  web:
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
-    container_name: web
-    ports:
-      - "5173:5173"
-    depends_on:
-      - api
-    networks:
-      - booklend-network
+  # Base de datos SQLite (opcional, si quieres usar PostgreSQL, descomenta abajo)
+  # Para SQLite, usa volúmenes en el servicio API
 
   api:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
-    container_name: api
+    container_name: library-api
     ports:
-      - "3000:3000"
+      - "${API_PORT:-3000}:3000"
     environment:
-      NODE_ENV: development
-      JWT_SECRET: your-secret-key-change-in-production
+      NODE_ENV: ${NODE_ENV:-development}
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+      API_HOST: ${API_HOST:-0.0.0.0}
+      API_PORT: 3000
     volumes:
-      - ./apps/api/data:/app/data
+      # Persiste la base de datos SQLite
+      - ./apps/api/data:/app/apps/api/data
+      # Para desarrollo: permite cambios en el código sin rebuild
+      # - ./apps/api/src:/app/apps/api/src
     networks:
-      - booklend-network
+      - library-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/api/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: library-web
+    ports:
+      - "${WEB_PORT:-4173}:4173"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://api:3000}
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - library-network
+    restart: unless-stopped
+
+  # Servicio nginx (opcional) para producción
+  # Descomenta esta sección si quieres usar Nginx como proxy inverso
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: library-nginx
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./ssl:/etc/nginx/ssl:ro
+  #   depends_on:
+  #     - api
+  #     - web
+  #   networks:
+  #     - library-network
+  #   restart: unless-stopped
 
 networks:
-  booklend-network:
+  library-network:
     driver: bridge
