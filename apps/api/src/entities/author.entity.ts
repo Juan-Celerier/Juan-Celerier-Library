@@ -1,5 +1,5 @@
 // api/src/entities/author.entity.ts
-import { Entity, Column, OneToMany } from "typeorm";
+import { Entity, Column, OneToMany, Relation } from "typeorm";
 import { BaseEntity } from "./base.entity.js";
 import { BookEntity } from "./book.entity.js";
 
@@ -33,5 +33,5 @@ export class AuthorEntity extends BaseEntity {
   isPopular!: boolean;
 
   @OneToMany(() => BookEntity, (book) => book.author)
-  books!: BookEntity[];
+  books!: Relation<BookEntity[]>;
 }

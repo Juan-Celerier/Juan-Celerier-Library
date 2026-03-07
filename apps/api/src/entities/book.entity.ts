@@ -1,5 +1,12 @@
 // api/src/entities/book.entity.ts
-import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  OneToMany,
+  JoinColumn,
+  Relation,
+} from "typeorm";
 import { BaseEntity } from "./base.entity.js";
 import { AuthorEntity } from "./author.entity.js";
 import { CategoryEntity } from "./category.entity.js";
@@ -15,28 +22,28 @@ export class BookEntity extends BaseEntity {
 
   @ManyToOne(() => AuthorEntity, (author) => author.books, { nullable: false })
   @JoinColumn({ name: "author_id" })
-  author!: AuthorEntity;
+  author!: Relation<AuthorEntity>;
 
   @ManyToOne(() => CategoryEntity, (category) => category.books, {
     nullable: true,
   })
   @JoinColumn({ name: "category_id" })
-  category?: CategoryEntity | null;
+  category?: Relation<CategoryEntity> | null;
 
   @ManyToOne(() => PublisherEntity, (publisher) => publisher.books, {
     nullable: true,
   })
   @JoinColumn({ name: "publisher_id" })
-  publisher?: PublisherEntity | null;
+  publisher?: Relation<PublisherEntity> | null;
 
   @OneToMany(() => LoanEntity, (loan) => loan.book)
-  loans!: LoanEntity[];
+  loans!: Relation<LoanEntity[]>;
 
   @OneToMany(() => ReservationEntity, (reservation) => reservation.book)
-  reservations!: ReservationEntity[];
+  reservations!: Relation<ReservationEntity[]>;
 
   @OneToMany(() => FavoriteEntity, (favorite) => favorite.book)
-  favorites!: FavoriteEntity[];
+  favorites!: Relation<FavoriteEntity[]>;
 
   @Column("varchar", { length: 500, nullable: true })
   image?: string;

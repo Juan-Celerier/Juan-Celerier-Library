@@ -1,9 +1,8 @@
-// api/src/entities/user.entity.ts
-import { Entity, Column, OneToMany } from "typeorm";
+import { Entity, Column, OneToMany, Relation } from "typeorm";
 import { BaseEntity } from "./base.entity.js";
 import { LoanEntity } from "./loan.entity.js";
-import { ReservationEntity } from "./reservation.entity.js";
 import { FavoriteEntity } from "./favorite.entity.js";
+import { ReservationEntity } from "./reservation.entity.js";
 
 @Entity("users")
 export class UserEntity extends BaseEntity {
@@ -20,11 +19,11 @@ export class UserEntity extends BaseEntity {
   role!: "BORROWER" | "LIBRARIAN";
 
   @OneToMany(() => LoanEntity, (loan) => loan.user)
-  loans!: LoanEntity[];
+  loans!: Relation<LoanEntity[]>;
 
   @OneToMany(() => ReservationEntity, (reservation) => reservation.user)
-  reservations!: ReservationEntity[];
+  reservations!: Relation<ReservationEntity[]>;
 
   @OneToMany(() => FavoriteEntity, (favorite) => favorite.user)
-  favorites!: FavoriteEntity[];
+  favorites!: Relation<FavoriteEntity[]>;
 }
