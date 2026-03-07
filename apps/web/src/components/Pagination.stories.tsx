@@ -5,7 +5,7 @@ import Pagination from "./Pagination";
 const meta: Meta<typeof Pagination> = {
   title: "Design System/Generics/Pagination",
   component: Pagination,
-  tags: ["autodocs"],
+  tags: ["autodoc"],
   argTypes: {
     onPageChange: { action: "page changed" },
   },
@@ -24,7 +24,6 @@ export const StartPage: Story = {
   },
 };
 
-// 2. Paginación en una Página Intermedia (Muestra los '...')
 export const MiddlePage: Story = {
   args: {
     currentPage: 10,

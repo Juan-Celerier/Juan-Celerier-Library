@@ -53,7 +53,9 @@ export const WithValue: Story = {
  * Input de email
  */
 export const Email: Story = {
-  render: () => <Input type="email" placeholder="correo@ejemplo.com" label={""} />,
+  render: () => (
+    <Input type="email" placeholder="correo@ejemplo.com" label={""} />
+  ),
 };
 
 /**
@@ -67,7 +69,9 @@ export const Password: Story = {
  * Input deshabilitado
  */
 export const Disabled: Story = {
-  render: () => <Input placeholder="Este input está deshabilitado" disabled label={""} />,
+  render: () => (
+    <Input placeholder="Este input está deshabilitado" disabled label={""} />
+  ),
 };
 
 /**
@@ -76,7 +80,12 @@ export const Disabled: Story = {
 export const WithError: Story = {
   render: () => (
     <div className="space-y-2">
-      <Input type="email" placeholder="correo@ejemplo.com" error="error" label={""} />
+      <Input
+        type="email"
+        placeholder="correo@ejemplo.com"
+        error="error"
+        label={""}
+      />
       <p className="text-sm text-red-600">Por favor ingresa un email válido</p>
     </div>
   ),
@@ -106,30 +115,36 @@ export const RegisterForm: Story = {
         <div>
           <label className="block text-sm font-medium mb-1">Nombre</label>
           <Input
-                    name="name"
-                    placeholder="Tu nombre completo"
-                    value={formData.name}
-                    onChange={handleChange} label={""}          />
+            name="name"
+            placeholder="Tu nombre completo"
+            value={formData.name}
+            onChange={handleChange}
+            label={""}
+          />
         </div>
 
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
           <Input
-                    type="email"
-                    name="email"
-                    placeholder="tu@email.com"
-                    value={formData.email}
-                    onChange={handleChange} label={""}          />
+            type="email"
+            name="email"
+            placeholder="tu@email.com"
+            value={formData.email}
+            onChange={handleChange}
+            label={""}
+          />
         </div>
 
         <div>
           <label className="block text-sm font-medium mb-1">Contraseña</label>
           <Input
-                    type="password"
-                    name="password"
-                    placeholder="Contraseña segura"
-                    value={formData.password}
-                    onChange={handleChange} label={""}          />
+            type="password"
+            name="password"
+            placeholder="Contraseña segura"
+            value={formData.password}
+            onChange={handleChange}
+            label={""}
+          />
         </div>
 
         <div>
@@ -137,11 +152,13 @@ export const RegisterForm: Story = {
             Confirmar Contraseña
           </label>
           <Input
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Confirma tu contraseña"
-                    value={formData.confirmPassword}
-                    onChange={handleChange} label={""}          />
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirma tu contraseña"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            label={""}
+          />
         </div>
 
         <button
@@ -162,9 +179,11 @@ export const Search: Story = {
   render: () => (
     <div className="relative">
       <Input
-                type="text"
-                placeholder="Buscar libros, autores..."
-                className="pl-10" label={""}      />
+        type="text"
+        placeholder="Buscar libros, autores..."
+        className="pl-10"
+        label={""}
+      />
       <svg
         className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
         fill="none"
@@ -190,7 +209,11 @@ export const Sizes: Story = {
     <div className="space-y-3">
       <Input placeholder="Input pequeño" className="text-sm" label={""} />
       <Input placeholder="Input normal" label={""} />
-      <Input placeholder="Input grande" className="text-lg px-4 py-3" label={""} />
+      <Input
+        placeholder="Input grande"
+        className="text-lg px-4 py-3"
+        label={""}
+      />
     </div>
   ),
 };

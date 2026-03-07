@@ -2,9 +2,7 @@ import { BookAuthor } from "domain/src/entities/BookAuthor.js";
 import { createInternalServerError } from "domain/src/errors/error.js";
 import { BookAuthorRepository } from "domain/src/repositories/author-repository.js";
 
-export interface GetAllBookAuthorsRequest {
-  // vacío por ahora, preparado para filtros futuros
-}
+export interface GetAllBookAuthorsRequest {}
 
 export interface GetAllBookAuthorsResponse {
   success: boolean;
@@ -32,7 +30,6 @@ export const getAllBookAuthors = async (
       count: authors.length,
     };
   } catch (err: any) {
-    // Lanzamos error para que el test con `rejects.toThrow` pase
     throw createInternalServerError(err?.message || "Unexpected error");
   }
 };

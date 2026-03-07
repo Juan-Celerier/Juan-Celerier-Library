@@ -3,6 +3,7 @@
 Una **plataforma de gestión de bibliotecas** moderna y modular construida con **TypeScript**, siguiendo **Clean Architecture** y **Test Driven Development (TDD)**.
 
 El sistema proporciona una experiencia completa con:
+
 - ✅ **Backend REST API** con Express
 - ✅ **Frontend moderno** con React + Vite + Storybook
 - ✅ **Docker Compose** para despliegue con un solo comando
@@ -61,6 +62,7 @@ yarn workspace web dev
 ## ✨ Características
 
 ### 📖 Gestión de Libros
+
 - Crear, actualizar y eliminar libros
 - Listar libros disponibles
 - Buscar y filtrar por categoría/autor
@@ -68,12 +70,14 @@ yarn workspace web dev
 - Agregar a favoritos
 
 ### 👤 Usuarios y Autenticación
+
 - Registro e inicio de sesión
 - Roles: BORROWER (usuario) y LIBRARIAN (administrador)
 - Gestión de perfiles
 - Autenticación JWT
 
 ### 📦 Préstamos y Devoluciones
+
 - Solicitar préstamos de libros
 - Devolver libros
 - Renovar préstamos
@@ -81,12 +85,14 @@ yarn workspace web dev
 - Historial de préstamos
 
 ### 📌 Reservas
+
 - Reservar libros no disponibles
 - Cancelar reservas
 - Listar mis reservas
 - Notificación cuando estén listos
 
 ### 🏷️ Administración
+
 - Panel administrativo (LIBRARIAN)
 - Gestionar libros, autores, editoriales
 - Gestionar categorías
@@ -134,19 +140,22 @@ project-root/
 
 ### Capas de Arquitectura
 
-**Domain Layer** 
+**Domain Layer**
+
 - Entidades y reglas de negocio
 - Use cases independientes del framework
 - Definición de repositorios
 - Errores del dominio
 
 **Application Layer**
+
 - Orquestación de use cases
 - Inyección de dependencias
 - Asignación de rutas
 - Autenticación y autorización
 
 **Infrastructure Layer**
+
 - Controladores HTTP
 - Implementación de repositorios
 - Servicios externos
@@ -196,6 +205,7 @@ yarn workspace web storybook
 ```
 
 Componentes principales:
+
 - `Header` - Barra de navegación
 - `Footer` - Pie de página
 - `Button` - Botones reutilizables
@@ -290,6 +300,7 @@ DELETE /reservations/:id
 ```
 
 Todos los endpoints requieren encabezado:
+
 ```
 Authorization: Bearer <JWT_TOKEN>
 ```
@@ -302,15 +313,16 @@ El frontend consume la API real del backend usando un cliente HTTP optimizado:
 
 ```typescript
 // En src/utils/api.ts
-import { api } from '@/utils/api';
+import { api } from "@/utils/api";
 
 // Usar en componentes
 const books = await api.books.getAll();
-const book = await api.books.getById('123');
-const newBook = await api.books.create({ title: '...' });
+const book = await api.books.getById("123");
+const newBook = await api.books.create({ title: "..." });
 ```
 
 Variables de entorno en `.env`:
+
 ```
 VITE_API_BASE_URL=http://localhost:3000  # Desarrollo
 VITE_API_BASE_URL=https://api.prod.com   # Producción
@@ -374,6 +386,7 @@ Para hostear en un servidor, ver [DEPLOYMENT.md](./DEPLOYMENT.md).
 6. **Seguridad** - Rates limiting, CORS, headers
 
 Plataformas recomendadas:
+
 - AWS ECS / Fargate
 - DigitalOcean App Platform
 - Google Cloud Run
@@ -396,6 +409,7 @@ yarn verify
 ```
 
 Reglas aplicadas:
+
 - **ESLint** - Estilo y errores comunes
 - **Prettier** - Formateo consistente
 - **TypeScript strict** - Tipado seguro
@@ -405,6 +419,7 @@ Reglas aplicadas:
 ## 📚 Tecnologías Utilizadas
 
 ### Backend
+
 - **Node.js** 20 + Express
 - **TypeScript** - Tipado estático
 - **SQLite** - Base de datos
@@ -412,6 +427,7 @@ Reglas aplicadas:
 - **Vitest** - Testing
 
 ### Frontend
+
 - **React** 18 + Vite
 - **React Router** - Routing
 - **TypeScript** - Tipado estático
@@ -421,6 +437,7 @@ Reglas aplicadas:
 - **Vitest** - Testing
 
 ### DevOps
+
 - **Docker** & **Docker Compose** - Containerización
 - **Nginx** - Reverse proxy
 - **Let's Encrypt** - SSL/TLS
@@ -432,6 +449,7 @@ Reglas aplicadas:
 Ver [.env.example](./.env.example) para todas las opciones.
 
 **Entrada mínima:**
+
 ```
 NODE_ENV=development
 JWT_SECRET=<valor-aleatorio>
@@ -531,6 +549,7 @@ kill -9 <PID>
 ## 📞 Soporte
 
 Para problemas, abre un issue en el repositorio incluyendo:
+
 - Logs (`docker-compose logs`)
 - Versión de Docker
 - Sistema operativo

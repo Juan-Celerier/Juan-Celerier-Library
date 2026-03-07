@@ -8,7 +8,7 @@ The project demonstrates how to design a scalable backend with strong domain mod
 
 # ✨ Features
 
-Core library functionality implemented through domain use cases:
+Core library functionality implemented through domain use cases
 
 ### 📖 Books
 
