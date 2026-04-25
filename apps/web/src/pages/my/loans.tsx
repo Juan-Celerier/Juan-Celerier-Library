@@ -90,8 +90,10 @@ const MyLoansPage = () => {
       <MainLayout>
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Cargando tus préstamos...</p>
+            <div className="animate-spin rounded-full h-3xl w-3xl border-b-2 border-primary mx-auto mb-lg"></div>
+            <p className="text-body-md text-neutral-600">
+              Cargando tus préstamos...
+            </p>
           </div>
         </div>
       </MainLayout>
@@ -100,26 +102,28 @@ const MyLoansPage = () => {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="space-y-xl">
         <header>
-          <h1 className="text-2xl font-bold text-gray-900">Mis préstamos</h1>
-          <p className="text-gray-600 mt-1">
+          <h1 className="text-heading-lg font-bold text-neutral-900">
+            Mis préstamos
+          </h1>
+          <p className="text-body-md text-neutral-600 mt-sm">
             Gestiona tus préstamos de libros y fechas de devolución
           </p>
         </header>
 
         {loans.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">📚</div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <div className="text-center py-3xl">
+            <div className="text-6xl mb-lg">📚</div>
+            <h3 className="text-heading-md font-medium text-neutral-900 mb-md">
               No tienes préstamos activos
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-body-md text-neutral-600 mb-xl">
               Cuando tomes prestados libros, aparecerán aquí.
             </p>
             <Button
               onClick={() => (window.location.href = "/books")}
-              className="!bg-emerald-600 !text-white hover:!bg-emerald-700"
+              className="!bg-primary !text-primary-foreground hover:!bg-primary/90 !shadow-subtle hover:!shadow-medium transition-all duration-200"
             >
               Explorar catálogo
             </Button>

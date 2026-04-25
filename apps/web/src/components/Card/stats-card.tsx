@@ -27,25 +27,27 @@ export const StatCard = ({
     .replace("500", "100");
 
   return (
-    <div className="rounded-xl bg-white p-6 shadow-sm border border-neutral-100 hover:shadow-md transition-shadow">
-      <div className="flex items-center justify-between mb-4">
-        <div className={`rounded-full p-3 ${bgClass} bg-opacity-20`}>
+    <div className="rounded-lg bg-white px-lg py-md shadow-subtle border border-neutral-200 hover:shadow-medium transition-all duration-200">
+      <div className="flex items-center justify-between gap-md mb-md">
+        <div className={`rounded-base p-md ${bgClass} bg-opacity-20`}>
           <Icon className={`h-6 w-6 ${color}`} />
         </div>
         <div
-          className={`flex items-center text-sm font-medium ${isPositive ? "text-emerald-600" : "text-red-600"}`}
+          className={`flex items-center text-body-sm font-medium gap-xs ${isPositive ? "text-success" : "text-error"}`}
         >
           {isPositive ? (
-            <TrendingUp className="mr-1 h-4 w-4" />
+            <TrendingUp className="h-4 w-4" />
           ) : (
-            <TrendingDown className="mr-1 h-4 w-4" />
+            <TrendingDown className="h-4 w-4" />
           )}
           {change}
         </div>
       </div>
       <div>
-        <p className="text-sm font-medium text-neutral-500">{title}</p>
-        <h3 className="text-2xl font-bold text-neutral-900 mt-1">{value}</h3>
+        <p className="text-body-sm font-medium text-neutral-500">{title}</p>
+        <h3 className="text-heading-md font-bold text-neutral-900 mt-md">
+          {value}
+        </h3>
       </div>
     </div>
   );

@@ -34,9 +34,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     // Clases base y condicionales para el input
     const baseInputClasses =
-      "flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
-    const errorClasses = "border-red-500 focus-visible:ring-red-500";
-    const defaultClasses = "border-input";
+      "flex h-10 w-full rounded-base border bg-background px-md py-2 text-body-sm ring-offset-background file:border-0 file:bg-transparent file:text-body-sm file:font-medium placeholder:text-neutral-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200";
+    const errorClasses = "border-error focus-visible:ring-error shadow-xs";
+    const defaultClasses = "border-input hover:border-neutral-300";
     const iconPaddingClasses = icon
       ? iconPosition === "start"
         ? "pl-10"
@@ -47,14 +47,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className={`w-full ${className}`}>
         <label
           htmlFor={inputId}
-          className="block text-sm font-medium text-neutral-900 mb-1"
+          className="block text-body-sm font-medium text-neutral-900 mb-sm transition-colors duration-200"
         >
           {label}
         </label>
-        <div className="relative">
+        <div className="relative group">
           {icon && (
             <div
-              className={`pointer-events-none absolute inset-y-0 flex items-center ${
+              className={`pointer-events-none absolute inset-y-0 flex items-center transition-colors duration-200 group-focus-within:text-primary ${
                 iconPosition === "start" ? "left-0 pl-3" : "right-0 pr-3"
               }`}
             >
@@ -70,7 +70,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           />
         </div>
         {error && (
-          <p className="mt-1 text-sm font-medium text-red-600">{error}</p>
+          <p className="mt-sm text-body-sm font-medium text-error animate-in fade-in duration-200">
+            {error}
+          </p>
         )}
       </div>
     );

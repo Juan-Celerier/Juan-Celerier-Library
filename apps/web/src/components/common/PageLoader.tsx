@@ -21,9 +21,9 @@ export const PageLoader = ({
     <div
       className={`flex flex-col items-center justify-center ${containerClasses} ${className}`}
     >
-      <Loader2 className="h-10 w-10 animate-spin text-academy-blue mb-4" />
+      <Loader2 className="h-10 w-10 animate-spin text-primary mb-md transition-all duration-300" />
       {text && (
-        <p className="text-sm font-medium text-neutral-500 animate-pulse">
+        <p className="text-body-sm font-medium text-neutral-500 animate-pulse">
           {text}
         </p>
       )}

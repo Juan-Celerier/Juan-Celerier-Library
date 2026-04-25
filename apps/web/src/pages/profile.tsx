@@ -8,37 +8,68 @@ const ProfilePage = () => {
   return (
     <MainLayout>
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Mi perfil</h1>
-        <div className="bg-white p-4 rounded shadow mb-6">
-          <p className="mb-2">Nombre: {user?.name || "-"}</p>
-          <p className="mb-2">Email: {user?.email || "-"}</p>
-          <p className="mb-4">Role: {user?.role || "-"}</p>
+        <h1 className="text-heading-lg font-bold mb-xl text-neutral-900">
+          Mi Perfil
+        </h1>
+        <div className="bg-white px-lg py-lg rounded-lg shadow-medium border border-neutral-200 mb-xl">
+          <div className="space-y-md">
+            <div>
+              <label className="text-neutral-700 text-body-sm font-semibold">
+                Nombre:
+              </label>
+              <p className="text-neutral-600 text-body-md mt-xs">
+                {user?.name || "-"}
+              </p>
+            </div>
+            <div>
+              <label className="text-neutral-700 text-body-sm font-semibold">
+                Email:
+              </label>
+              <p className="text-neutral-600 text-body-md mt-xs">
+                {user?.email || "-"}
+              </p>
+            </div>
+            <div>
+              <label className="text-neutral-700 text-body-sm font-semibold">
+                Rol:
+              </label>
+              <p className="text-neutral-600 text-body-md mt-xs">
+                {user?.role || "-"}
+              </p>
+            </div>
+          </div>
           <button
-            className="bg-red-500 text-white px-3 py-2 rounded"
+            className="mt-lg w-full bg-error text-white px-lg py-sm rounded-base font-medium transition-all duration-200 shadow-subtle hover:shadow-medium hover:bg-error/90"
             onClick={() => logout()}
           >
-            Cerrar sesión
+            Cerrar Sesión
           </button>
         </div>
 
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="text-lg font-semibold mb-4">Mis actividades</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white px-lg py-lg rounded-lg shadow-medium border border-neutral-200">
+          <h2 className="text-heading-md font-bold mb-lg text-neutral-900">
+            Mis Actividades
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-lg">
             <Link
               to="/my/loans"
-              className="bg-blue-50 hover:bg-blue-100 p-4 rounded-lg transition-colors"
+              className="bg-info/5 hover:bg-info/10 px-lg py-lg rounded-base border border-info/20 transition-all duration-200 hover:shadow-subtle"
             >
-              <h3 className="font-medium text-blue-900">Mis Préstamos</h3>
-              <p className="text-sm text-blue-700">
+              <h3 className="font-semibold text-info mb-sm text-body-md">
+                Mis Préstamos
+              </h3>
+              <p className="text-body-sm text-neutral-600">
                 Ver y gestionar mis libros prestados
               </p>
             </Link>
             <Link
               to="/my/reservations"
-              className="bg-green-50 hover:bg-green-100 p-4 rounded-lg transition-colors"
+              className="bg-success/5 hover:bg-success/10 px-lg py-lg rounded-base border border-success/20 transition-all duration-200 hover:shadow-subtle"
             >
-              <h3 className="font-medium text-green-900">Mis Reservas</h3>
-              <p className="text-sm text-green-700">
+              <h3 className="font-semibold text-success mb-sm text-body-md">
+                Mis Reservas
+              </h3>
+              <p className="text-body-sm text-neutral-600">
                 Ver y gestionar mis reservas de libros
               </p>
             </Link>

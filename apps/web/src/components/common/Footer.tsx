@@ -11,16 +11,16 @@ export const Footer = ({ className = "" }: FooterProps) => {
 
   return (
     <footer
-      className={`bg-neutral-50 border-t border-neutral-100 py-12 ${className}`}
+      className={`bg-neutral-50 border-t border-neutral-200 py-2xl ${className}`}
       role="contentinfo"
       aria-label="Información del sitio"
     >
       <div className="container mx-auto px-4 md:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-xl mb-xl">
           {/* Columna 1: Marca y Descripción */}
           <div className="col-span-1 md:col-span-1">
-            <Logo className="mb-4 block" />
-            <p className="text-sm text-neutral-500 leading-relaxed">
+            <Logo className="mb-md block" />
+            <p className="text-body-sm text-neutral-500 leading-relaxed">
               Tu puerta de acceso al conocimiento. Gestiona tus préstamos y
               descubre nuevos libros de forma sencilla.
             </p>
@@ -28,12 +28,12 @@ export const Footer = ({ className = "" }: FooterProps) => {
 
           {/* Columna 2: Navegación */}
           <div>
-            <h3 className="font-semibold text-neutral-900 mb-4">Explorar</h3>
-            <ul className="space-y-2 text-sm text-neutral-600">
+            <h3 className="font-semibold text-neutral-900 mb-lg">Explorar</h3>
+            <ul className="gap-sm text-body-sm text-neutral-600 flex flex-col">
               <li>
                 <Link
                   to="/books"
-                  className="hover:text-emerald-600 transition-colors"
+                  className="hover:text-primary transition-colors duration-200 hover:underline"
                 >
                   Catálogo
                 </Link>
@@ -41,7 +41,7 @@ export const Footer = ({ className = "" }: FooterProps) => {
               <li>
                 <Link
                   to="/about"
-                  className="hover:text-emerald-600 transition-colors"
+                  className="hover:text-primary transition-colors duration-200 hover:underline"
                 >
                   Sobre Nosotros
                 </Link>
@@ -49,7 +49,7 @@ export const Footer = ({ className = "" }: FooterProps) => {
               <li>
                 <Link
                   to="/profile"
-                  className="hover:text-emerald-600 transition-colors"
+                  className="hover:text-primary transition-colors duration-200 hover:underline"
                 >
                   Mi Perfil
                 </Link>
@@ -59,12 +59,12 @@ export const Footer = ({ className = "" }: FooterProps) => {
 
           {/* Columna 3: Soporte */}
           <div>
-            <h3 className="font-semibold text-neutral-900 mb-4">Cuenta</h3>
-            <ul className="space-y-2 text-sm text-neutral-600">
+            <h3 className="font-semibold text-neutral-900 mb-lg">Cuenta</h3>
+            <ul className="gap-sm text-body-sm text-neutral-600 flex flex-col">
               <li>
                 <Link
                   to="/my/loans"
-                  className="hover:text-emerald-600 transition-colors"
+                  className="hover:text-primary transition-colors duration-200 hover:underline"
                 >
                   Mis Préstamos
                 </Link>
@@ -72,7 +72,7 @@ export const Footer = ({ className = "" }: FooterProps) => {
               <li>
                 <Link
                   to="/my/reservations"
-                  className="hover:text-emerald-600 transition-colors"
+                  className="hover:text-primary transition-colors duration-200 hover:underline"
                 >
                   Mis Reservas
                 </Link>
@@ -80,7 +80,7 @@ export const Footer = ({ className = "" }: FooterProps) => {
               <li>
                 <Link
                   to="/profile"
-                  className="hover:text-emerald-600 transition-colors"
+                  className="hover:text-primary transition-colors duration-200 hover:underline"
                 >
                   Mi Perfil
                 </Link>
@@ -90,25 +90,25 @@ export const Footer = ({ className = "" }: FooterProps) => {
 
           {/* Columna 4: Redes Sociales (Ejemplo) */}
           <div>
-            <h3 className="font-semibold text-neutral-900 mb-4">Síguenos</h3>
-            <div className="flex space-x-4">
+            <h3 className="font-semibold text-neutral-900 mb-lg">Síguenos</h3>
+            <div className="flex gap-lg">
               <a
                 href="#"
-                className="text-neutral-400 hover:text-academy-blue transition-colors"
+                className="text-neutral-400 hover:text-primary transition-colors duration-200 hover:scale-110"
                 aria-label="GitHub"
               >
                 <Facebook className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-neutral-400 hover:text-academy-blue transition-colors"
+                className="text-neutral-400 hover:text-primary transition-colors duration-200 hover:scale-110"
                 aria-label="Twitter"
               >
                 <Twitter className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-neutral-400 hover:text-academy-blue transition-colors"
+                className="text-neutral-400 hover:text-primary transition-colors duration-200 hover:scale-110"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />

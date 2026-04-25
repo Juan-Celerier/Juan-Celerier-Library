@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import React, { Suspense } from "react";
+import { Spinner } from "./components/ui/Spinner";
 
 // 1. IMPORTA TUS PÁGINAS Y LOADERS
 import Index, { indexLoader } from "./pages/index";
@@ -22,10 +23,7 @@ const BooksPage = React.lazy(() => import("./pages/books/index"));
 const BookDetailPage = React.lazy(() => import("./pages/books/[id]"));
 const AdminIndexPage = React.lazy(() => import("./pages/admin/index"));
 const AdminBooksPage = React.lazy(() => import("./pages/admin/books"));
-const AdminCategoriesPage = React.lazy(
-  () => import("./pages/admin/categories"),
-);
-const AdminAuthorsPage = React.lazy(() => import("./pages/admin/authors"));
+
 const AdminPublishersPage = React.lazy(
   () => import("./pages/admin/publishers"),
 );
@@ -36,8 +34,11 @@ const MyReservationsPage = React.lazy(() => import("./pages/my/reservations"));
 import { bookLoader } from "./pages/books/[id]";
 import { adminIndexLoader } from "./pages/admin/index";
 import { adminBooksLoader } from "./pages/admin/books";
-import { adminCategoriesLoader } from "./pages/admin/categories";
-import { adminAuthorsLoader } from "./pages/admin/authors";
+import {
+  adminCategoriesLoader,
+  AdminCategoriesPage,
+} from "./pages/admin/categories";
+import { adminAuthorsLoader, AdminAuthorsPage } from "./pages/admin/authors";
 import { adminPublishersLoader } from "./pages/admin/publishers";
 
 const router = createBrowserRouter([
@@ -54,7 +55,7 @@ const router = createBrowserRouter([
     path: "/books",
     element: (
       <ProtectedRoute>
-        <Suspense fallback={<div>Cargando libros...</div>}>
+        <Suspense fallback={<Spinner />}>
           <BooksPage />
         </Suspense>
       </ProtectedRoute>
@@ -64,7 +65,7 @@ const router = createBrowserRouter([
     path: "/books/:id",
     element: (
       <ProtectedRoute>
-        <Suspense fallback={<div>Cargando detalle...</div>}>
+        <Suspense fallback={<Spinner />}>
           <BookDetailPage />
         </Suspense>
       </ProtectedRoute>
@@ -75,7 +76,7 @@ const router = createBrowserRouter([
     path: "/admin",
     element: (
       <RoleProtectedRoute allowedRoles={["LIBRARIAN"]}>
-        <Suspense fallback={<div>Cargando administración...</div>}>
+        <Suspense fallback={<Spinner />}>
           <AdminIndexPage />
         </Suspense>
       </RoleProtectedRoute>
@@ -86,7 +87,7 @@ const router = createBrowserRouter([
     path: "/admin/books",
     element: (
       <RoleProtectedRoute allowedRoles={["LIBRARIAN"]}>
-        <Suspense fallback={<div>Cargando administración...</div>}>
+        <Suspense fallback={<Spinner />}>
           <AdminBooksPage />
         </Suspense>
       </RoleProtectedRoute>
@@ -97,7 +98,7 @@ const router = createBrowserRouter([
     path: "/admin/categories",
     element: (
       <RoleProtectedRoute allowedRoles={["LIBRARIAN"]}>
-        <Suspense fallback={<div>Cargando administración...</div>}>
+        <Suspense fallback={<Spinner />}>
           <AdminCategoriesPage />
         </Suspense>
       </RoleProtectedRoute>
@@ -108,7 +109,7 @@ const router = createBrowserRouter([
     path: "/admin/authors",
     element: (
       <RoleProtectedRoute allowedRoles={["LIBRARIAN"]}>
-        <Suspense fallback={<div>Cargando administración...</div>}>
+        <Suspense fallback={<Spinner />}>
           <AdminAuthorsPage />
         </Suspense>
       </RoleProtectedRoute>
@@ -119,7 +120,7 @@ const router = createBrowserRouter([
     path: "/admin/publishers",
     element: (
       <RoleProtectedRoute allowedRoles={["LIBRARIAN"]}>
-        <Suspense fallback={<div>Cargando administración...</div>}>
+        <Suspense fallback={<Spinner />}>
           <AdminPublishersPage />
         </Suspense>
       </RoleProtectedRoute>
@@ -138,7 +139,7 @@ const router = createBrowserRouter([
     path: "/profile",
     element: (
       <ProtectedRoute>
-        <Suspense fallback={<div>Cargando perfil...</div>}>
+        <Suspense fallback={<Spinner />}>
           <ProfilePage />
         </Suspense>
       </ProtectedRoute>
@@ -148,7 +149,7 @@ const router = createBrowserRouter([
     path: "/my/loans",
     element: (
       <ProtectedRoute>
-        <Suspense fallback={<div>Cargando préstamos...</div>}>
+        <Suspense fallback={<Spinner />}>
           <MyLoansPage />
         </Suspense>
       </ProtectedRoute>
@@ -158,7 +159,7 @@ const router = createBrowserRouter([
     path: "/my/reservations",
     element: (
       <ProtectedRoute>
-        <Suspense fallback={<div>Cargando reservas...</div>}>
+        <Suspense fallback={<Spinner />}>
           <MyReservationsPage />
         </Suspense>
       </ProtectedRoute>
@@ -168,6 +169,7 @@ const router = createBrowserRouter([
     path: "/about",
     element: <AboutPage />,
   },
+
   {
     path: "*",
     element: <NotFoundPage />,
@@ -181,7 +183,7 @@ function App() {
       fallback={
         <div className="h-screen flex items-center justify-center">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+						<Spinner />
             <p className="text-gray-600">Cargando BiblioSys...</p>
           </div>
         </div>

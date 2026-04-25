@@ -19,53 +19,56 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
   onCancelReservation,
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white rounded-lg shadow-subtle border border-neutral-200 overflow-hidden transition-all duration-200 hover:shadow-medium">
       <table className="w-full">
-        <thead className="bg-gray-50 border-b border-gray-200">
+        <thead className="bg-neutral-100 border-b border-neutral-200">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-lg py-md text-left text-caption font-semibold text-neutral-600 uppercase tracking-wider">
               Libro
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-lg py-md text-left text-caption font-semibold text-neutral-600 uppercase tracking-wider">
               Género
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-lg py-md text-left text-caption font-semibold text-neutral-600 uppercase tracking-wider">
               Usuario
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-lg py-md text-left text-caption font-semibold text-neutral-600 uppercase tracking-wider">
               Fecha Reserva
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-lg py-md text-left text-caption font-semibold text-neutral-600 uppercase tracking-wider">
               Estado
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-lg py-md text-left text-caption font-semibold text-neutral-600 uppercase tracking-wider">
               Acciones
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="divide-y divide-neutral-200">
           {reservations.map((reservation) => (
-            <tr key={reservation.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+            <tr
+              key={reservation.id}
+              className="hover:bg-neutral-50 transition-colors duration-150"
+            >
+              <td className="px-lg py-md font-medium text-neutral-900 text-body-sm">
                 {reservation.bookTitle}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td className="px-lg py-md text-neutral-600 text-body-sm">
                 {reservation.bookGenre || "N/A"}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td className="px-lg py-md text-neutral-600 text-body-sm">
                 {reservation.userName}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <td className="px-lg py-md text-neutral-600 text-body-sm">
                 {reservation.reservedAt}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-lg py-md">
                 <span
-                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                  className={`px-md py-xs caption font-semibold rounded-base inline-block transition-all duration-200 ${
                     reservation.status === "active"
-                      ? "bg-blue-100 text-blue-800"
+                      ? "bg-info/20 text-info"
                       : reservation.status === "cancelled"
-                        ? "bg-red-100 text-red-800"
-                        : "bg-green-100 text-green-800"
+                        ? "bg-error/20 text-error"
+                        : "bg-success/20 text-success"
                   }`}
                 >
                   {reservation.status === "active"
@@ -75,11 +78,11 @@ const ReservationsTable: React.FC<ReservationsTableProps> = ({
                       : "Cumplida"}
                 </span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <td className="px-lg py-md font-medium">
                 {reservation.status === "active" && onCancelReservation && (
                   <button
                     onClick={() => onCancelReservation(reservation.id)}
-                    className="text-indigo-600 hover:text-indigo-900"
+                    className="text-error hover:text-error/80 transition-colors duration-200 hover:underline focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-1 rounded-base px-sm py-xs text-body-sm"
                   >
                     Cancelar
                   </button>

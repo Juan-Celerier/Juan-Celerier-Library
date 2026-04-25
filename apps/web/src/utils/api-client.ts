@@ -251,15 +251,16 @@ export const apiClient = {
       const base = env.VITE_API_BASE_URL || "";
       if (!base) return { error: "VITE_API_BASE_URL no configurada" };
 
-      let method =
-        endpoint.startsWith("auth/") || endpoint.startsWith("dashboard")
-          ? "POST"
-          : "GET";
-      const params = { ..._params };
-      if (params._method) {
-        method = params._method;
-        delete params._method;
+      const { _method, ...params } = _params;
+      let method = _method;
+
+      if (!method) {
+        method =
+          endpoint.startsWith("auth/") || endpoint.startsWith("dashboard")
+            ? "POST"
+            : "GET";
       }
+
       const body =
         method !== "GET" && method !== "DELETE"
           ? JSON.stringify(params)

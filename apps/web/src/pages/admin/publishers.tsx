@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useRevalidator } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import AdminNavigation from "../../components/AdminNavigation";
 import { apiClient } from "../../utils/api-client";
@@ -22,9 +22,15 @@ interface PublisherFormData {
 }
 
 const AdminPublishersPage = () => {
-  const { publishers } = useLoaderData() as { publishers: any[] };
+  const { publishers: initialPublishers } = useLoaderData() as {
+    publishers: any[];
+  };
+  const [publishers, setPublishers] = useState(initialPublishers);
+  const revalidator = useRevalidator();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingPublisher, setEditingPublisher] = useState<any | null>(null);
+  const [deletingPublisher, setDeletingPublisher] = useState<any | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -61,6 +67,16 @@ const AdminPublishersPage = () => {
     setIsModalOpen(true);
   };
 
+  const openDeleteModal = (publisher: any) => {
+    setDeletingPublisher(publisher);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeletingPublisher(null);
+    setIsDeleteModalOpen(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -90,8 +106,7 @@ const AdminPublishersPage = () => {
         );
         setIsModalOpen(false);
         resetForm();
-        // Recargar la página para ver los cambios
-        window.location.reload();
+        revalidator.revalidate();
       }
     } catch (error) {
       setMessage("Error al guardar el editor");
@@ -100,100 +115,106 @@ const AdminPublishersPage = () => {
     }
   };
 
-  const handleDelete = async (publisherId: string) => {
-    if (!confirm("¿Estás seguro de que quieres eliminar este editor?")) return;
-
+  const handleDelete = async () => {
+    if (!deletingPublisher) return;
+    setIsSubmitting(true);
+    setMessage("");
     try {
-      const result = await apiClient.call(`publishers/${publisherId}`, {
-        _method: "DELETE",
-      });
+      const result = await apiClient.call(
+        `publishers/${deletingPublisher.id}`,
+        {
+          _method: "DELETE",
+        },
+      );
       if (result && typeof result === "object" && "error" in result) {
-        alert(result.error);
+        setMessage(result.error);
       } else {
-        alert("Editor eliminado exitosamente!");
-        window.location.reload();
+        setPublishers(publishers.filter((p) => p.id !== deletingPublisher.id));
+        setMessage("Editor eliminado exitosamente!");
+        closeDeleteModal();
       }
     } catch (error) {
-      alert("Error al eliminar el editor");
+      setMessage("Error al eliminar el editor");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <MainLayout>
       <AdminNavigation />
-      <div className="space-y-6">
+      <div className="space-y-xl">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Administración de Editores</h1>
-          <div className="flex gap-4">
+          <h1 className="text-heading-lg font-bold text-neutral-900">
+            Administración de Editores
+          </h1>
+          <div className="flex gap-lg">
             <Button
               onClick={openCreateModal}
-              className="bg-emerald-600 text-white"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-subtle hover:shadow-medium transition-all duration-200"
             >
               Agregar Editor
             </Button>
-            <a
-              href="/admin/books"
-              className="text-sm text-emerald-600 hover:underline"
-            >
-              Administrar Libros
-            </a>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+        <div className="bg-white rounded-lg shadow-medium border border-neutral-200 overflow-hidden">
+          <table className="min-w-full divide-y divide-neutral-200">
+            <thead className="bg-neutral-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-lg py-md text-left caption font-medium text-neutral-600 uppercase tracking-wider">
                   Nombre
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-lg py-md text-left caption font-medium text-neutral-600 uppercase tracking-wider">
                   Dirección
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-lg py-md text-left caption font-medium text-neutral-600 uppercase tracking-wider">
                   Teléfono
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-lg py-md text-left caption font-medium text-neutral-600 uppercase tracking-wider">
                   Email
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-lg py-md text-left caption font-medium text-neutral-600 uppercase tracking-wider">
                   Acciones
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-neutral-200">
               {publishers.map((publisher) => (
-                <tr key={publisher.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
+                <tr
+                  key={publisher.id}
+                  className="hover:bg-neutral-50 transition-colors duration-150"
+                >
+                  <td className="px-lg py-md whitespace-nowrap">
+                    <div className="text-body-sm font-medium text-neutral-900">
                       {publisher.name}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">
+                  <td className="px-lg py-md whitespace-nowrap">
+                    <div className="text-body-sm text-neutral-600">
                       {publisher.address}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">
+                  <td className="px-lg py-md whitespace-nowrap">
+                    <div className="text-body-sm text-neutral-600">
                       {publisher.phone}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">
+                  <td className="px-lg py-md whitespace-nowrap">
+                    <div className="text-body-sm text-neutral-600">
                       {publisher.email}
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-lg py-md whitespace-nowrap text-body-sm font-medium">
                     <button
                       onClick={() => openEditModal(publisher)}
-                      className="text-indigo-600 hover:text-indigo-900 mr-4"
+                      className="text-primary hover:text-primary/80 font-medium mr-lg transition-colors duration-200"
                     >
                       Editar
                     </button>
                     <button
-                      onClick={() => handleDelete(publisher.id)}
-                      className="text-red-600 hover:text-red-900"
+                      onClick={() => openDeleteModal(publisher)}
+                      className="text-error hover:text-error/80 font-medium transition-colors duration-200"
                     >
                       Eliminar
                     </button>
@@ -209,9 +230,9 @@ const AdminPublishersPage = () => {
           onClose={() => setIsModalOpen(false)}
           title={editingPublisher ? "Editar Editor" : "Crear Nuevo Editor"}
         >
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-lg">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
                 Nombre
               </label>
               <input
@@ -221,12 +242,12 @@ const AdminPublishersPage = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
                 Dirección
               </label>
               <input
@@ -235,12 +256,12 @@ const AdminPublishersPage = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, address: e.target.value })
                 }
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
                 Teléfono
               </label>
               <input
@@ -249,12 +270,12 @@ const AdminPublishersPage = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, phone: e.target.value })
                 }
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
                 Email
               </label>
               <input
@@ -263,30 +284,34 @@ const AdminPublishersPage = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
               />
             </div>
 
             {message && (
               <p
-                className={`text-sm ${message.includes("exitosamente") ? "text-green-600" : "text-red-600"}`}
+                className={`text-body-sm ${
+                  message.includes("exitosamente")
+                    ? "text-success"
+                    : "text-error"
+                }`}
               >
                 {message}
               </p>
             )}
 
-            <div className="flex justify-end gap-4">
+            <div className="flex justify-end gap-lg pt-lg">
               <Button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="bg-gray-500 text-white"
+                className="bg-neutral-300 text-neutral-900 hover:bg-neutral-400 transition-all duration-200"
               >
                 Cancelar
               </Button>
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-emerald-600 text-white disabled:opacity-50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 shadow-subtle hover:shadow-medium transition-all duration-200"
               >
                 {isSubmitting
                   ? "Guardando..."
@@ -296,6 +321,36 @@ const AdminPublishersPage = () => {
               </Button>
             </div>
           </form>
+        </Modal>
+
+        {/* Delete Confirmation Modal */}
+        <Modal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} title={""} >
+          <div className="space-y-lg">
+            <h2 className="text-heading-md font-bold text-neutral-900">
+              Confirmar Eliminación
+            </h2>
+            <p className="text-body-md text-neutral-700">
+              ¿Estás seguro de que quieres eliminar al editor "
+              {deletingPublisher?.name}"? Esta acción no se puede deshacer.
+            </p>
+            {message && <p className={`text-body-sm text-error`}>{message}</p>}
+            <div className="flex justify-end gap-lg pt-lg">
+              <Button
+                type="button"
+                onClick={closeDeleteModal}
+                className="bg-neutral-300 text-neutral-900 hover:bg-neutral-400 transition-all duration-200"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleDelete}
+                disabled={isSubmitting}
+                className="bg-error text-white hover:bg-error/90 disabled:opacity-50 shadow-subtle hover:shadow-medium transition-all duration-200"
+              >
+                {isSubmitting ? "Eliminando..." : "Eliminar"}
+              </Button>
+            </div>
+          </div>
         </Modal>
       </div>
     </MainLayout>

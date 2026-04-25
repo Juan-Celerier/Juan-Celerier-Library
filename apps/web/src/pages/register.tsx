@@ -21,58 +21,74 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-md py-lg">
       <form
         onSubmit={onSubmit}
-        className="w-full max-w-md p-6 bg-white rounded shadow"
+        className="w-full max-w-md px-lg py-2xl bg-white rounded-lg shadow-medium border border-neutral-200"
       >
-        <h2 className="text-2xl font-bold mb-4">Registrarse</h2>
-        {error && <div className="mb-3 text-red-600">{error}</div>}
+        <h2 className="text-heading-md font-bold mb-xl text-center text-neutral-900">
+          Registrarse
+        </h2>
+        {error && (
+          <div className="mb-lg px-md py-md bg-error/10 border border-error/30 rounded-base text-error text-body-sm">
+            {error}
+          </div>
+        )}
 
-        <label className="block mb-2">
-          <span className="text-sm">Nombre</span>
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            required
-          />
-        </label>
+        <div className="space-y-lg">
+          <label className="block">
+            <span className="text-body-sm font-medium text-neutral-900 mb-sm block">
+              Nombre
+            </span>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-xs block w-full rounded-base border border-neutral-300 px-md py-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              required
+            />
+          </label>
 
-        <label className="block mb-2">
-          <span className="text-sm">Apellido</span>
-          <input
-            value={surname}
-            onChange={(e) => setSurname(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            required
-          />
-        </label>
+          <label className="block">
+            <span className="text-body-sm font-medium text-neutral-900 mb-sm block">
+              Apellido
+            </span>
+            <input
+              value={surname}
+              onChange={(e) => setSurname(e.target.value)}
+              className="mt-xs block w-full rounded-base border border-neutral-300 px-md py-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              required
+            />
+          </label>
 
-        <label className="block mb-2">
-          <span className="text-sm">Email</span>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            type="email"
-            required
-          />
-        </label>
+          <label className="block">
+            <span className="text-body-sm font-medium text-neutral-900 mb-sm block">
+              Email
+            </span>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="mt-xs block w-full rounded-base border border-neutral-300 px-md py-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              type="email"
+              required
+            />
+          </label>
 
-        <label className="block mb-4">
-          <span className="text-sm">Contraseña</span>
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="mt-1 block w-full rounded border px-3 py-2"
-            type="password"
-            required
-          />
-        </label>
+          <label className="block">
+            <span className="text-body-sm font-medium text-neutral-900 mb-sm block">
+              Contraseña
+            </span>
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="mt-xs block w-full rounded-base border border-neutral-300 px-md py-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+              type="password"
+              required
+            />
+          </label>
+        </div>
 
         <button
-          className="w-full bg-emerald-600 text-white py-2 rounded"
+          className="w-full mt-xl bg-primary text-primary-foreground py-sm px-lg rounded-base font-medium transition-all duration-200 shadow-subtle hover:shadow-medium hover:bg-primary/90 text-body-sm"
           type="submit"
         >
           Crear cuenta

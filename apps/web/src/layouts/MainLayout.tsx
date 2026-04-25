@@ -23,11 +23,12 @@ export const MainLayout = ({ children, headerProps }: MainLayoutProps) => {
           empujando el footer hacia abajo si hay poco contenido. */}
       <main
         id="main-content"
-        className="flex-1 w-full max-w-7xl mx-auto p-4 md:p-6 lg:p-8"
+        className="flex-1 w-full flex flex-col items-center px-md md:px-lg lg:px-xl py-lg md:py-2xl lg:py-3xl"
         role="main"
         aria-label="Contenido principal"
       >
-        {children}
+        {/* Container con max-width y espaciado consistente */}
+        <div className="w-full max-w-7xl">{children}</div>
       </main>
 
       {/* 3. Footer */}

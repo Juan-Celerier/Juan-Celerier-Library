@@ -1,15 +1,20 @@
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import MainLayout from "../../layouts/MainLayout";
 import type { BookDTO } from "app-domain/dtos/dashboard";
 import { apiClient } from "../../utils/api-client";
-import { BookCard } from "../../components/Card/Book-card";
+import { BookGrid } from "../../components/Card/AdvancedBookCard";
 import { SearchBox } from "../../components/common/Search";
 import Button from "../../components/Button";
 import { Badge } from "../../ui/Badge";
+import {
+  NoDataState,
+  NoSearchResultsState,
+} from "../../components/ui/EmptyState";
 
 const BooksPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [books, setBooks] = useState<BookDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(
@@ -164,18 +169,9 @@ const BooksPage = () => {
     setCurrentPage(1);
   };
 
-  if (loading) {
-    return (
-      <MainLayout>
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Cargando catálogo de libros...</p>
-          </div>
-        </div>
-      </MainLayout>
-    );
-  }
+  const handleBookClick = (bookId: string) => {
+    navigate(`/books/${bookId}`);
+  };
 
   if (error) {
     return (
@@ -330,49 +326,32 @@ const BooksPage = () => {
         </div>
 
         {/* Resultados */}
-        {paginatedBooks.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">📚</div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              {filteredBooks.length === 0 && books.length === 0
-                ? "No hay libros disponibles"
-                : "No se encontraron libros"}
-            </h3>
-            <p className="text-gray-600 mb-6">
-              {filteredBooks.length === 0 && books.length === 0
-                ? "La biblioteca no tiene libros en este momento."
-                : "Prueba ajustando tus filtros de búsqueda."}
-            </p>
-            {(searchTerm || availabilityFilter !== "all") && (
-              <Button
-                onClick={clearFilters}
-                className="bg-emerald-600 text-white"
-              >
-                Ver todos los libros
-              </Button>
-            )}
-          </div>
+        {paginatedBooks.length === 0 && !loading ? (
+          searchTerm ? (
+            <NoSearchResultsState
+              searchTerm={searchTerm}
+              onReset={clearFilters}
+            />
+          ) : (
+            <NoDataState message="No hay libros que coincidan con los filtros actuales." />
+          )
         ) : (
           <>
             {/* Grid de libros */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-              {paginatedBooks.map((book) => (
-                <Link key={book.id} to={`/books/${book.id}`}>
-                  <BookCard
-                    title={book.title || "Sin título"}
-                    author={
-                      typeof book.author === "string"
-                        ? book.author
-                        : (book.author as any)?.name || "Autor desconocido"
-                    }
-                    isAvailable={Boolean(
-                      book.availableCopies && book.availableCopies > 0,
-                    )}
-                    imageUrl={book.imageUrl}
-                  />
-                </Link>
-              ))}
-            </div>
+            <BookGrid
+              isLoading={loading}
+              books={paginatedBooks.map((book) => ({
+                id: book.id!,
+                title: book.title!,
+                author:
+                  typeof book.author === "string"
+                    ? book.author
+                    : (book.author as any)?.name || "N/A",
+                availableCopies: book.availableCopies!,
+                image: book.imageUrl,
+              }))}
+              onBookClick={handleBookClick}
+            />
 
             {/* Paginación */}
             {totalPages > 1 && (

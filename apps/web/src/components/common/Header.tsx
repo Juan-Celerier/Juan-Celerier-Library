@@ -62,30 +62,30 @@ export const Header = ({
   };
   return (
     <header
-      className={`sticky top-0 z-50 w-full border-b border-neutral-100 bg-white/80 backdrop-blur-md transition-all ${className}`}
+      className={`sticky top-0 z-modal w-full border-b border-neutral-200 bg-white/90 backdrop-blur-md transition-all duration-200 shadow-subtle ${className}`}
       role="banner"
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         {/* Sección Izquierda: Logo y Navegación Desktop */}
-        <div className="flex items-center gap-6 md:gap-8">
+        <div className="flex items-center gap-lg md:gap-xl">
           <Logo />
 
           {/* Navegación - Oculta en móbiles, visible en md para arriba */}
           <nav
             id="navigation"
-            className="hidden md:flex items-center gap-6"
+            className="hidden md:flex items-center gap-lg"
             role="navigation"
             aria-label="Navegación principal"
           >
             <Link
               to="/books"
-              className="text-sm font-medium text-neutral-600 hover:text-academy-blue transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded px-2 py-1"
+              className="text-body-sm font-medium text-neutral-600 hover:text-primary transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 rounded-base px-md py-sm"
             >
               Catálogo
             </Link>
             <Link
               to="/about"
-              className="text-sm font-medium text-neutral-600 hover:text-academy-blue transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded px-2 py-1"
+              className="text-body-sm font-medium text-neutral-600 hover:text-primary transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-1 rounded-base px-md py-sm"
             >
               Nosotros
             </Link>
@@ -93,7 +93,7 @@ export const Header = ({
         </div>
 
         {/* Sección Central/Derecha: Búsqueda y Acciones */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-md">
           {/* La búsqueda se oculta en pantallas muy pequeñas si hace falta espacio */}
           <div id="search" className="hidden sm:block w-full max-w-xs">
             <SearchBox

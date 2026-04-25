@@ -9,7 +9,7 @@ export function Card({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`rounded-lg border border-gray-200 bg-white shadow-sm ${className}`}
+      className={`rounded-lg border border-neutral-200 bg-white shadow-subtle transition-all duration-200 hover:shadow-medium ${className}`}
       {...props}
     />
   );
@@ -22,7 +22,7 @@ export function CardHeader({
   className = "",
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`p-6 pb-4 ${className}`} {...props} />;
+  return <div className={`px-lg py-md pb-2 ${className}`} {...props} />;
 }
 
 /**
@@ -34,7 +34,7 @@ export function CardTitle({
 }: React.HTMLAttributes<HTMLHeadingElement>) {
   return (
     <h2
-      className={`text-lg font-semibold text-gray-900 ${className}`}
+      className={`text-heading-md font-semibold text-neutral-900 ${className}`}
       {...props}
     />
   );
@@ -47,7 +47,12 @@ export function CardDescription({
   className = "",
   ...props
 }: React.HTMLAttributes<HTMLParagraphElement>) {
-  return <p className={`text-sm text-gray-600 mt-1 ${className}`} {...props} />;
+  return (
+    <p
+      className={`text-body-sm text-neutral-600 mt-1 ${className}`}
+      {...props}
+    />
+  );
 }
 
 /**
@@ -57,7 +62,7 @@ export function CardContent({
   className = "",
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={`px-6 py-4 ${className}`} {...props} />;
+  return <div className={`px-lg py-md ${className}`} {...props} />;
 }
 
 /**
@@ -69,7 +74,7 @@ export function CardFooter({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={`px-6 py-4 border-t border-gray-200 bg-gray-50 ${className}`}
+      className={`px-lg py-md border-t border-neutral-200 bg-neutral-50 transition-colors duration-200 ${className}`}
       {...props}
     />
   );

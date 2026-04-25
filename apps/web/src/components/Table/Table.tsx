@@ -29,17 +29,17 @@ export const Table = <T extends object>({
   caption,
 }: TableProps<T>) => {
   return (
-    <div className="w-full overflow-x-auto rounded-lg border border-neutral-100 shadow-subtle bg-paper">
-      <table className="w-full text-sm text-left text-neutral-900">
+    <div className="w-full overflow-x-auto rounded-lg border border-neutral-200 shadow-subtle bg-paper transition-shadow duration-200 hover:shadow-medium">
+      <table className="w-full text-body-sm text-left text-neutral-900">
         {caption && (
-          <caption className="p-4 text-lg font-semibold text-left text-neutral-900 bg-paper">
+          <caption className="px-lg py-md text-heading-md font-semibold text-left text-neutral-900 bg-paper">
             {caption}
           </caption>
         )}
-        <thead className="text-xs text-neutral-500 uppercase bg-neutral-100">
+        <thead className="text-caption text-neutral-500 uppercase bg-neutral-100">
           <tr>
             {columns.map((column, index) => (
-              <th key={index} scope="col" className="px-6 py-3">
+              <th key={index} scope="col" className="px-lg py-md">
                 {column.header}
               </th>
             ))}
@@ -50,10 +50,10 @@ export const Table = <T extends object>({
             data.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
-                className="bg-paper border-b border-neutral-100 hover:bg-neutral-100/50"
+                className="bg-paper border-b border-neutral-200 hover:bg-neutral-50 transition-colors duration-150"
               >
                 {columns.map((column, colIndex) => (
-                  <td key={colIndex} className="px-6 py-4">
+                  <td key={colIndex} className="px-lg py-md">
                     {column.cell(row)}
                   </td>
                 ))}
@@ -64,7 +64,7 @@ export const Table = <T extends object>({
             <tr>
               <td
                 colSpan={columns.length}
-                className="px-6 py-4 text-center text-neutral-500"
+                className="px-lg py-md text-center text-neutral-500"
               >
                 No hay datos para mostrar.
               </td>

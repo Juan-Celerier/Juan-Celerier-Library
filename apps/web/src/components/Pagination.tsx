@@ -44,13 +44,14 @@ const Pagination: React.FC<PaginationProps> = ({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center justify-center space-x-2 py-6">
+    <div className="flex items-center justify-center gap-2 py-lg">
       {/* Botón Anterior */}
       <Button
         variant="ghost"
         size="sm"
         disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
+        className="transition-all duration-200 disabled:opacity-40"
       >
         Anterior
       </Button>
@@ -62,7 +63,7 @@ const Pagination: React.FC<PaginationProps> = ({
             return (
               <span
                 key={index}
-                className="px-3 py-2 text-neutral-900 opacity-60"
+                className="px-md py-sm text-neutral-900 opacity-60 caption transition-opacity duration-200 hover:opacity-100"
               >
                 ...
               </span>
@@ -73,10 +74,11 @@ const Pagination: React.FC<PaginationProps> = ({
           return (
             <Button
               key={page}
-              variant={isCurrent ? "primary" : "ghost"} // Destacamos la página actual
+              variant={isCurrent ? "primary" : "ghost"}
               size="icon"
               onClick={() => onPageChange(page as number)}
               aria-current={isCurrent ? "page" : undefined}
+              className={`transition-all duration-200 ${!isCurrent ? "hover:scale-110 focus:scale-110" : ""}`}
             >
               {page}
             </Button>
@@ -90,6 +92,7 @@ const Pagination: React.FC<PaginationProps> = ({
         size="sm"
         disabled={currentPage === totalPages}
         onClick={() => onPageChange(currentPage + 1)}
+        className="transition-all duration-200 disabled:opacity-40"
       >
         Siguiente
       </Button>

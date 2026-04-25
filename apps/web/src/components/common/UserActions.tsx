@@ -25,7 +25,7 @@ export const UserActions = ({
   const { user } = useAuth();
 
   return (
-    <div className={`flex items-center space-x-3 ${className}`}>
+    <div className={`flex items-center gap-md ${className}`}>
       {isAuthenticated ? (
         // --- Usuario Logueado ---
         <>

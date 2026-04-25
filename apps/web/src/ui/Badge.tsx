@@ -20,17 +20,17 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
 const getBadgeClasses = (variant: BadgeVariant = "secondary"): string => {
   switch (variant) {
     case "primary":
-      return "border-transparent bg-primary text-primary-foreground";
+      return "border-transparent bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-subtle";
     case "secondary":
-      return "border-transparent bg-secondary text-secondary-foreground";
-    case "success": // Usaremos 'academy-green' como ejemplo de éxito
-      return "border-transparent bg-academy-green text-white";
-    case "destructive": // Usaremos un rojo estándar para peligro/error
-      return "border-transparent bg-red-600 text-white";
+      return "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-subtle";
+    case "success":
+      return "border-transparent bg-success text-white hover:bg-success/90 hover:shadow-subtle";
+    case "destructive":
+      return "border-transparent bg-error text-white hover:bg-error/90 hover:shadow-subtle";
     case "outline":
-      return "text-foreground border-border"; // Usa los colores de borde definidos
+      return "text-foreground border border-border hover:bg-neutral-50 hover:border-neutral-300";
     default:
-      return "border-transparent bg-secondary text-secondary-foreground";
+      return "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:shadow-subtle";
   }
 };
 
@@ -43,7 +43,7 @@ export const Badge = ({
 }: BadgeProps) => {
   const variantClasses = getBadgeClasses(variant);
   const baseClasses =
-    "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
+    "inline-flex items-center rounded-base border px-3 py-1 caption transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 cursor-default";
 
   return (
     <div

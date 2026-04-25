@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../application/hooks/useAuth";
 import { useNotifications } from "../application/hooks/useNotifications";
+import { ErrorAlert } from "../components/ui/Alert";
 
 const LoginPage = () => {
   const { login } = useAuth();
@@ -96,72 +97,75 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-neutral-50 px-md py-lg">
       <form
         onSubmit={onSubmit}
-        className="w-full max-w-md p-8 bg-white rounded-lg shadow-md"
+        className="w-full max-w-md px-lg py-2xl bg-white rounded-lg shadow-medium border border-neutral-200"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center text-gray-900">
+        <h2 className="text-heading-md font-bold mb-lg text-center text-neutral-900">
           Iniciar sesión
         </h2>
 
         {serverError && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-red-600 text-sm">{serverError}</p>
-          </div>
+          <ErrorAlert
+            title="Error de inicio de sesión"
+            message={serverError}
+            onDismiss={() => setServerError(null)}
+            className="mb-lg"
+          />
         )}
 
-        <div className="space-y-4">
+        <div className="space-y-lg">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
               Email
             </label>
             <input
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`w-full px-md py-sm border rounded-base focus:outline-none focus:ring-2 focus:ring-primary/50 text-body-sm ${
                 errors.email
-                  ? "border-red-300 focus:border-red-500"
-                  : "border-gray-300"
+                  ? "border-error focus:border-error focus:ring-error/50"
+                  : "border-neutral-300 focus:border-primary"
               }`}
               type="email"
               placeholder="tu@email.com"
               disabled={isSubmitting}
             />
             {errors.email && (
-              <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+              <p className="mt-xs text-body-sm text-error">{errors.email}</p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
               Contraseña
             </label>
             <input
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+              className={`w-full px-md py-sm border rounded-base focus:outline-none focus:ring-2 focus:ring-primary/50 text-body-sm ${
                 errors.password
-                  ? "border-red-300 focus:border-red-500"
-                  : "border-gray-300"
+                  ? "border-error focus:border-error focus:ring-error/50"
+                  : "border-neutral-300 focus:border-primary"
               }`}
               type="password"
               placeholder="Tu contraseña"
               disabled={isSubmitting}
             />
             {errors.password && (
-              <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+              <p className="mt-xs text-body-sm text-error">{errors.password}</p>
             )}
           </div>
         </div>
 
         <button
-          className={`w-full mt-6 py-2 px-4 rounded-md font-medium transition-colors ${
+          className={`w-full mt-xl py-sm px-lg rounded-base font-medium transition-all duration-200 text-body-sm ${
             isSubmitting || !isFormValid()
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-emerald-600 text-white hover:bg-emerald-700"
+              ? "bg-neutral-100 text-neutral-400 cursor-not-allowed"
+              : "bg-primary text-primary-foreground hover:bg-primary/90 shadow-subtle hover:shadow-medium"
           }`}
           type="submit"
           disabled={isSubmitting || !isFormValid()}
@@ -169,12 +173,12 @@ const LoginPage = () => {
           {isSubmitting ? "Iniciando sesión..." : "Entrar"}
         </button>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
+        <div className="mt-xl text-center">
+          <p className="text-body-sm text-neutral-600">
             ¿No tienes cuenta?{" "}
             <a
               href="/register"
-              className="text-emerald-600 hover:text-emerald-700 font-medium"
+              className="text-primary hover:text-primary/80 font-medium transition-colors duration-200 hover:underline"
             >
               Regístrate aquí
             </a>

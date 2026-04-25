@@ -50,15 +50,15 @@ const Toast = ({ message, type, onClose, duration = 5000 }: ToastProps) => {
 
   return (
     <div
-      className={`fixed top-4 right-4 z-50 max-w-md w-full ${getBackgroundColor()} border rounded-lg shadow-lg p-4 flex items-start gap-3`}
+      className={`fixed top-md right-md z-tooltip max-w-md w-full ${getBackgroundColor()} border rounded-lg shadow-elevation-1 p-md flex items-start gap-md transition-all duration-200 animate-fade-up`}
     >
       {getIcon()}
       <div className="flex-1">
-        <p className="text-sm font-medium text-gray-900">{message}</p>
+        <p className="text-body-sm font-medium text-neutral-900">{message}</p>
       </div>
       <button
         onClick={onClose}
-        className="text-gray-400 hover:text-gray-600 transition-colors"
+        className="text-neutral-400 hover:text-neutral-600 transition-colors hover:shadow-subtle focus:outline-none focus:ring-2 focus:ring-ring rounded-base p-sm"
       >
         <X className="h-4 w-4" />
       </button>

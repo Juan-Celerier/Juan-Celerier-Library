@@ -5,6 +5,7 @@ import AdminNavigation from "../../components/AdminNavigation";
 import { apiClient } from "../../utils/api-client";
 import { Modal } from "../../components/Modal/modal";
 import Button from "../../components/Button";
+import { CategoryCard } from "../../components/Card/category-card";
 
 export const adminCategoriesLoader = async () => {
   const res = await apiClient.call("categories");
@@ -19,10 +20,15 @@ interface CategoryFormData {
   description: string;
 }
 
-const AdminCategoriesPage = () => {
-  const { categories } = useLoaderData() as { categories: any[] };
+export const AdminCategoriesPage = () => {
+  const { categories: initialCategories } = useLoaderData() as {
+    categories: any[];
+  };
+  const [categories, setCategories] = useState(initialCategories);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<any | null>(null);
+  const [deletingCategory, setDeletingCategory] = useState<any | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -53,6 +59,16 @@ const AdminCategoriesPage = () => {
     setIsModalOpen(true);
   };
 
+  const openDeleteModal = (category: any) => {
+    setDeletingCategory(category);
+    setIsDeleteModalOpen(true);
+  };
+
+  const closeDeleteModal = () => {
+    setDeletingCategory(null);
+    setIsDeleteModalOpen(false);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -65,25 +81,32 @@ const AdminCategoriesPage = () => {
           ...formData,
           _method: "PUT",
         });
+        if (result && typeof result === "object" && "error" in result) {
+          setMessage(result.error);
+        } else {
+          setCategories(
+            categories.map((cat) =>
+              cat.id === editingCategory.id ? { ...cat, ...formData } : cat,
+            ),
+          );
+          setMessage("Categoría actualizada exitosamente!");
+          setIsModalOpen(false);
+          resetForm();
+        }
       } else {
         result = await apiClient.call("categories", {
           ...formData,
           _method: "POST",
         });
-      }
 
-      if (result && typeof result === "object" && "error" in result) {
-        setMessage(result.error);
-      } else {
-        setMessage(
-          editingCategory
-            ? "Categoría actualizada exitosamente!"
-            : "Categoría creada exitosamente!",
-        );
-        setIsModalOpen(false);
-        resetForm();
-        // Recargar la página para ver los cambios
-        window.location.reload();
+        if (result && typeof result === "object" && "error" in result) {
+          setMessage(result.error);
+        } else {
+          setCategories([...categories, result]);
+          setMessage("Categoría creada exitosamente!");
+          setIsModalOpen(false);
+          resetForm();
+        }
       }
     } catch (error) {
       setMessage("Error al guardar la categoría");
@@ -92,93 +115,62 @@ const AdminCategoriesPage = () => {
     }
   };
 
-  const handleDelete = async (categoryId: string) => {
-    if (!confirm("¿Estás seguro de que quieres eliminar esta categoría?"))
-      return;
+  const handleDelete = async () => {
+    if (!deletingCategory) return;
+    setIsSubmitting(true);
+    setMessage("");
 
     try {
-      const result = await apiClient.call(`categories/${categoryId}`, {
+      const result = await apiClient.call(`categories/${deletingCategory.id}`, {
         _method: "DELETE",
       });
+
       if (result && typeof result === "object" && "error" in result) {
-        alert(result.error);
+        setMessage(result.error);
       } else {
-        alert("Categoría eliminada exitosamente!");
-        window.location.reload();
+        setCategories(
+          categories.filter((cat) => cat.id !== deletingCategory.id),
+        );
+        setMessage("Categoría eliminada exitosamente!");
+        closeDeleteModal();
       }
     } catch (error) {
-      alert("Error al eliminar la categoría");
+      setMessage("Error al eliminar la categoría");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  // ... (keep the existing code until the return statement)
 
   return (
     <MainLayout>
       <AdminNavigation />
-      <div className="space-y-6">
+      <div className="space-y-xl">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Administración de Categorías</h1>
-          <div className="flex gap-4">
+          <h1 className="text-heading-lg font-bold text-neutral-900">
+            Administración de Categorías
+          </h1>
+          <div className="flex gap-lg">
             <Button
               onClick={openCreateModal}
-              className="bg-emerald-600 text-white"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-subtle hover:shadow-medium transition-all duration-200"
             >
               Agregar Categoría
             </Button>
-            <a
-              href="/admin/books"
-              className="text-sm text-emerald-600 hover:underline"
-            >
-              Administrar Libros
-            </a>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Nombre
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Descripción
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Acciones
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {categories.map((category) => (
-                <tr key={category.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {category.name}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500">
-                      {category.description}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button
-                      onClick={() => openEditModal(category)}
-                      className="text-indigo-600 hover:text-indigo-900 mr-4"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => handleDelete(category.id)}
-                      className="text-red-600 hover:text-red-900"
-                    >
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-lg">
+          {categories.map((category) => (
+            <CategoryCard
+              key={category.id}
+              name={category.name}
+              description={category.description}
+              onClick={() => openEditModal(category)}
+              onDelete={() => openDeleteModal(category)}
+            />
+          ))}
         </div>
 
         <Modal
@@ -186,9 +178,9 @@ const AdminCategoriesPage = () => {
           onClose={() => setIsModalOpen(false)}
           title={editingCategory ? "Editar Categoría" : "Crear Nueva Categoría"}
         >
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-lg">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
                 Nombre
               </label>
               <input
@@ -198,12 +190,12 @@ const AdminCategoriesPage = () => {
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
                 Descripción
               </label>
               <textarea
@@ -212,30 +204,34 @@ const AdminCategoriesPage = () => {
                   setFormData({ ...formData, description: e.target.value })
                 }
                 rows={3}
-                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
               />
             </div>
 
             {message && (
               <p
-                className={`text-sm ${message.includes("exitosamente") ? "text-green-600" : "text-red-600"}`}
+                className={`text-body-sm ${
+                  message.includes("exitosamente")
+                    ? "text-success"
+                    : "text-error"
+                }`}
               >
                 {message}
               </p>
             )}
 
-            <div className="flex justify-end gap-4">
+            <div className="flex justify-end gap-lg pt-lg">
               <Button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="bg-gray-500 text-white"
+                className="bg-neutral-300 text-neutral-900 hover:bg-neutral-400 transition-all duration-200"
               >
                 Cancelar
               </Button>
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="bg-emerald-600 text-white disabled:opacity-50"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 shadow-subtle hover:shadow-medium transition-all duration-200"
               >
                 {isSubmitting
                   ? "Guardando..."
@@ -246,9 +242,47 @@ const AdminCategoriesPage = () => {
             </div>
           </form>
         </Modal>
+
+        {/* Delete Confirmation Modal */}
+        <Modal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} title={""}>
+          <div className="space-y-lg">
+            <h2 className="text-heading-md font-bold text-neutral-900">
+              Confirmar Eliminación
+            </h2>
+            <p className="text-body-md text-neutral-700">
+              ¿Estás seguro de que quieres eliminar la categoría "
+              {deletingCategory?.name}"? Esta acción no se puede deshacer.
+            </p>
+            {message && (
+              <p
+                className={`text-body-sm ${
+                  message.includes("exitosamente")
+                    ? "text-success"
+                    : "text-error"
+                }`}
+              >
+                {message}
+              </p>
+            )}
+            <div className="flex justify-end gap-lg pt-lg">
+              <Button
+                type="button"
+                onClick={closeDeleteModal}
+                className="bg-neutral-300 text-neutral-900 hover:bg-neutral-400 transition-all duration-200"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleDelete}
+                disabled={isSubmitting}
+                className="bg-error text-white hover:bg-error/90 disabled:opacity-50 shadow-subtle hover:shadow-medium transition-all duration-200"
+              >
+                {isSubmitting ? "Eliminando..." : "Eliminar"}
+              </Button>
+            </div>
+          </div>
+        </Modal>
       </div>
     </MainLayout>
   );
 };
-
-export default AdminCategoriesPage;

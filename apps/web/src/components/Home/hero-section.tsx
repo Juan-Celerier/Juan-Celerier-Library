@@ -12,34 +12,33 @@ export const HeroSection = () => {
     }
   };
   return (
-    <div className="relative bg-white border-b border-gray-200 overflow-hidden">
+    <div className="relative bg-white border-b border-neutral-200 overflow-hidden">
       {/* Fondo decorativo sutil (opcional) */}
       <div className="absolute inset-0 z-0 opacity-30">
-        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-emerald-100 blur-3xl"></div>
-        <div className="absolute top-1/2 -right-24 h-64 w-64 rounded-full bg-blue-100 blur-3xl"></div>
+        <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-primary/20 blur-3xl"></div>
+        <div className="absolute top-1/2 -right-24 h-64 w-64 rounded-full bg-secondary/20 blur-3xl"></div>
       </div>
 
-      <div className="container relative z-10 mx-auto px-6 py-16 md:py-24 text-center">
+      <div className="container relative z-10 mx-auto px-6 py-3xl md:py-4xl text-center">
         {/* Título Principal */}
-        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-6">
-          Descubre tu próxima{" "}
-          <span className="text-emerald-600">gran lectura</span>
+        <h1 className="text-display-md md:text-display-lg font-bold text-neutral-900 tracking-tight mb-lg">
+          Descubre tu próxima <span className="text-primary">gran lectura</span>
         </h1>
 
         {/* Subtítulo */}
-        <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10">
+        <p className="text-body-lg md:text-heading-sm text-neutral-600 max-w-2xl mx-auto mb-2xl">
           Explora miles de libros, gestiona tus préstamos y accede al
           conocimiento desde cualquier lugar. Tu biblioteca digital inteligente.
         </p>
 
         {/* Barra de Búsqueda Funcional */}
         <div className="max-w-2xl mx-auto relative shadow-lg rounded-full">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-6 w-6 text-gray-400" />
+          <div className="absolute inset-y-0 left-0 pl-lg flex items-center pointer-events-none">
+            <Search className="h-6 w-6 text-neutral-400" />
           </div>
           <input
             type="text"
-            className="block w-full pl-12 pr-4 py-4 rounded-full border-gray-200 bg-white text-gray-900 focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition-all placeholder-gray-400"
+            className="block w-full pl-14 pr-md py-md rounded-full border-neutral-200 bg-white text-neutral-900 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all duration-200 placeholder-neutral-400 text-body-md"
             placeholder="Buscar por título, autor o género..."
             onKeyDown={(e) => {
               if (e.key === "Enter") {
@@ -57,7 +56,7 @@ export const HeroSection = () => {
                   handleSearch(input.value);
                 }
               }}
-              className="h-full bg-emerald-600 hover:bg-emerald-700 text-white px-6 rounded-full font-medium transition-colors"
+              className="h-full bg-primary hover:bg-primary/90 text-primary-foreground px-xl rounded-full font-medium transition-all duration-200 text-body-sm shadow-subtle hover:shadow-medium"
             >
               Buscar
             </button>
@@ -65,9 +64,9 @@ export const HeroSection = () => {
         </div>
 
         {/* Botones Secundarios */}
-        <div className="mt-8 flex justify-center gap-4 text-sm font-medium text-gray-500">
-          <span className="flex items-center gap-1">
-            <BookOpen className="h-4 w-4 text-emerald-600" />
+        <div className="mt-xl flex justify-center gap-md text-body-sm font-medium text-neutral-600">
+          <span className="flex items-center gap-xs">
+            <BookOpen className="h-4 w-4 text-primary" />
             +1,200 Libros disponibles
           </span>
           <span>•</span>

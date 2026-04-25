@@ -12,7 +12,8 @@ COPY apps/api/package.json apps/api/
 COPY apps/web/package.json apps/web/
 COPY domain/package.json domain/
 
-RUN yarn install --frozen-lockfile
+RUN yarn install 
+
 
 COPY . .
 
@@ -32,8 +33,8 @@ COPY apps/api/package.json apps/api/
 COPY apps/web/package.json apps/web/
 COPY domain/package.json domain/
 
-# Instalar solo dependencias de producción
-RUN yarn install --frozen-lockfile --production
+# Copiar node_modules instalados desde builder
+COPY --from=builder /app/node_modules ./node_modules
 
 # Copiar archivos compilados desde builder
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
@@ -44,4 +45,4 @@ EXPOSE 3000
 
 ENV NODE_ENV=production
 
-CMD ["node", "apps/api/dist/src/server.js"]
+CMD ["node", "apps/api/dist/apps/api/src/server.js"]
