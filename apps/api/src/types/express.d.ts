@@ -1,10 +1,16 @@
-// apps/api/src/types/express.d.ts
-import type { User } from "domain/src/entities/User.js";
+import type { Request } from "express";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: User;
+      user?: {
+        id: string | number;
+        email?: string;
+        role: string;
+        [key: string]: unknown;
+      };
     }
   }
 }
+
+export {};

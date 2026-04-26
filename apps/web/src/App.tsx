@@ -183,7 +183,7 @@ function App() {
       fallback={
         <div className="h-screen flex items-center justify-center">
           <div className="text-center">
-						<Spinner />
+            <Spinner />
             <p className="text-gray-600">Cargando BiblioSys...</p>
           </div>
         </div>

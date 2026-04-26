@@ -324,7 +324,7 @@ const AdminPublishersPage = () => {
         </Modal>
 
         {/* Delete Confirmation Modal */}
-        <Modal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} title={""} >
+        <Modal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} title={""}>
           <div className="space-y-lg">
             <h2 className="text-heading-md font-bold text-neutral-900">
               Confirmar Eliminación

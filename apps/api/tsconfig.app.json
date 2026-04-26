@@ -4,6 +4,7 @@
     "noEmit": false,
     "outDir": "dist",
     "baseUrl": "../../",
+    "rootDir": "../..",
     "paths": {
       "domain/*": ["domain/src/*"]
     }
