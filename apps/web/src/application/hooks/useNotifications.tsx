@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
-import Toast from "../../components/common/Toast";
+
 import type { ToastType } from "../../components/common/Toast";
+import Toast from "../../components/common/Toast";
 
 interface Notification {
   id: string;
@@ -90,7 +91,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
               message={notification.message}
               type={notification.type}
               onClose={() => hideNotification(notification.id)}
-              duration={0} // We'll handle auto-hide manually
+              duration={0} 
             />
           </div>
         ))}
