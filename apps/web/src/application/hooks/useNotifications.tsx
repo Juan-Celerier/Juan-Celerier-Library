@@ -91,7 +91,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
               message={notification.message}
               type={notification.type}
               onClose={() => hideNotification(notification.id)}
-              duration={0} 
+              duration={0}
             />
           </div>
         ))}
