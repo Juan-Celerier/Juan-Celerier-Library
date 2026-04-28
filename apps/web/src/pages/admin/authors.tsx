@@ -173,10 +173,14 @@ export const AdminAuthorsPage = () => {
         >
           <form onSubmit={handleSubmit} className="space-y-lg">
             <div>
-              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
+              <label
+                htmlFor="author-name"
+                className="block text-body-sm font-medium text-neutral-900 mb-sm"
+              >
                 Nombre
               </label>
               <input
+                id="author-name"
                 type="text"
                 required
                 value={formData.name}
@@ -184,20 +188,26 @@ export const AdminAuthorsPage = () => {
                   setFormData({ ...formData, name: e.target.value })
                 }
                 className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
+                placeholder="Nombre del autor"
               />
             </div>
 
             <div>
-              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
+              <label
+                htmlFor="author-biography"
+                className="block text-body-sm font-medium text-neutral-900 mb-sm"
+              >
                 Biografía
               </label>
               <textarea
+                id="author-biography"
                 value={formData.biography}
                 onChange={(e) =>
                   setFormData({ ...formData, biography: e.target.value })
                 }
                 rows={4}
                 className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
+                placeholder="Una breve biografía o descripción del autor"
               />
             </div>
 

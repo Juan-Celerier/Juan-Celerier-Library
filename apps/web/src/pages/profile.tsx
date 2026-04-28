@@ -7,74 +7,92 @@ const ProfilePage = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-heading-lg font-bold mb-xl text-neutral-900">
-          Mi Perfil
-        </h1>
-        <div className="bg-white px-lg py-lg rounded-lg shadow-medium border border-neutral-200 mb-xl">
-          <div className="space-y-md">
+      <div className="space-y-10">
+        <section className="rounded-[32px] border border-neutral-200 bg-white p-8 shadow-sm">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <label className="text-neutral-700 text-body-sm font-semibold">
-                Nombre:
-              </label>
-              <p className="text-neutral-600 text-body-md mt-xs">
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-primary">
+                Mi perfil
+              </p>
+              <h1 className="mt-3 text-3xl font-bold text-neutral-900">
+                Bienvenido{user?.name ? `, ${user.name}` : ""}
+              </h1>
+              <p className="mt-3 text-body-md text-gray-600">
+                Revisa tu información y accede rápidamente a tus préstamos y
+                reservas.
+              </p>
+            </div>
+            <button
+              onClick={logout}
+              className="inline-flex items-center justify-center rounded-full bg-error px-6 py-3 text-sm font-semibold text-white transition hover:bg-error/90"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-[24px] border border-neutral-200 bg-neutral-50 p-6">
+              <p className="text-sm text-gray-500">Nombre</p>
+              <p className="mt-3 text-xl font-semibold text-neutral-900">
                 {user?.name || "-"}
               </p>
             </div>
-            <div>
-              <label className="text-neutral-700 text-body-sm font-semibold">
-                Email:
-              </label>
-              <p className="text-neutral-600 text-body-md mt-xs">
+            <div className="rounded-[24px] border border-neutral-200 bg-neutral-50 p-6">
+              <p className="text-sm text-gray-500">Email</p>
+              <p className="mt-3 text-xl font-semibold text-neutral-900">
                 {user?.email || "-"}
               </p>
             </div>
-            <div>
-              <label className="text-neutral-700 text-body-sm font-semibold">
-                Rol:
-              </label>
-              <p className="text-neutral-600 text-body-md mt-xs">
+            <div className="rounded-[24px] border border-neutral-200 bg-neutral-50 p-6">
+              <p className="text-sm text-gray-500">Rol</p>
+              <p className="mt-3 text-xl font-semibold text-neutral-900">
                 {user?.role || "-"}
               </p>
             </div>
           </div>
-          <button
-            className="mt-lg w-full bg-error text-white px-lg py-sm rounded-base font-medium transition-all duration-200 shadow-subtle hover:shadow-medium hover:bg-error/90"
-            onClick={() => logout()}
-          >
-            Cerrar Sesión
-          </button>
-        </div>
+        </section>
 
-        <div className="bg-white px-lg py-lg rounded-lg shadow-medium border border-neutral-200">
-          <h2 className="text-heading-md font-bold mb-lg text-neutral-900">
-            Mis Actividades
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-lg">
-            <Link
-              to="/my/loans"
-              className="bg-info/5 hover:bg-info/10 px-lg py-lg rounded-base border border-info/20 transition-all duration-200 hover:shadow-subtle"
-            >
-              <h3 className="font-semibold text-info mb-sm text-body-md">
-                Mis Préstamos
-              </h3>
-              <p className="text-body-sm text-neutral-600">
-                Ver y gestionar mis libros prestados
+        <section className="rounded-[32px] border border-neutral-200 bg-white p-8 shadow-sm">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h2 className="text-2xl font-semibold text-neutral-900">
+                Mis actividades
+              </h2>
+              <p className="mt-3 text-gray-600">
+                Navega rápidamente a tus secciones más importantes.
               </p>
-            </Link>
-            <Link
-              to="/my/reservations"
-              className="bg-success/5 hover:bg-success/10 px-lg py-lg rounded-base border border-success/20 transition-all duration-200 hover:shadow-subtle"
-            >
-              <h3 className="font-semibold text-success mb-sm text-body-md">
-                Mis Reservas
-              </h3>
-              <p className="text-body-sm text-neutral-600">
-                Ver y gestionar mis reservas de libros
-              </p>
-            </Link>
+            </div>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                to="/my/loans"
+                className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+              >
+                Mis préstamos
+              </Link>
+              <Link
+                to="/my/reservations"
+                className="rounded-full border border-primary/20 bg-white px-6 py-3 text-sm font-semibold text-primary transition hover:bg-primary/10"
+              >
+                Mis reservas
+              </Link>
+            </div>
           </div>
-        </div>
+
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            <div className="rounded-[24px] border border-neutral-200 bg-neutral-50 p-6">
+              <h3 className="font-semibold text-neutral-900">Préstamos</h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Revisa tus libros activos y fechas de devolución.
+              </p>
+            </div>
+            <div className="rounded-[24px] border border-neutral-200 bg-neutral-50 p-6">
+              <h3 className="font-semibold text-neutral-900">Reservas</h3>
+              <p className="mt-2 text-sm text-gray-600">
+                Visualiza tus reservas y administra tus solicitudes.
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
     </MainLayout>
   );

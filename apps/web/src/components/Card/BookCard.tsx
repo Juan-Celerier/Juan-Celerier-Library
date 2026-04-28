@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import React from "react";
-import { Badge, Divider } from "../ui";
+import { Badge } from "../ui";
+import { BookOpen, User, ArrowRight } from "lucide-react";
 
 interface BookCardProps {
   id: string;
@@ -8,6 +10,7 @@ interface BookCardProps {
   availableCopies: number;
   imageUrl?: string;
   description?: string;
+  genre?: string;
 }
 
 const BookCard: React.FC<BookCardProps> = ({
@@ -16,36 +19,74 @@ const BookCard: React.FC<BookCardProps> = ({
   author,
   availableCopies,
   imageUrl,
-  description,
+  genre,
 }) => {
+  const isAvailable = availableCopies > 0;
+
   return (
-    <div className="bg-white rounded-lg shadow-subtle overflow-hidden transition-all duration-200 hover:shadow-medium hover:scale-105 border border-neutral-200">
-      {imageUrl && (
-        <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
-      )}
-      <div className="p-lg">
-        <h3 className="text-heading-md font-bold text-neutral-900 mb-2">
-          {title}
-        </h3>
-        <p className="text-body-sm text-neutral-600 mb-3">{author}</p>
-        {description && (
-          <p className="text-body-sm text-neutral-700 mb-3 line-clamp-3">
-            {description}
-          </p>
+    <div className="group bg-white rounded-[2rem] overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-neutral-200/50 border border-neutral-100 flex flex-col h-full hover:-translate-y-1">
+      {/* Contenedor de Imagen con Badge flotante */}
+      <div className="relative aspect-[4/5] overflow-hidden">
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-neutral-50 to-neutral-200 flex items-center justify-center">
+            <BookOpen className="w-12 h-12 text-neutral-300" />
+          </div>
         )}
-        <Divider />
-        <div className="flex items-center justify-between mt-lg">
-          {availableCopies > 0 ? (
-            <Badge variant="success">Disponible</Badge>
-          ) : (
-            <Badge variant="error">Agotado</Badge>
-          )}
-          <button
-            className="bg-primary text-primary-foreground px-md py-sm rounded-base hover:bg-primary/90 hover:shadow-subtle transition-all duration-200 text-body-sm font-medium"
-            onClick={() => (window.location.href = `/books/${id}`)}
+
+        {/* Status flotante sobre la imagen */}
+        <div className="absolute top-4 left-4">
+          <Badge
+            variant={isAvailable ? "success" : "error"}
+            className={`backdrop-blur-md bg-opacity-90 shadow-sm border-none py-1 px-3 rounded-full text-[10px] font-bold uppercase tracking-wider`}
           >
-            Ver detalles
-          </button>
+            {isAvailable ? "● Disponible" : "○ Agotado"}
+          </Badge>
+        </div>
+      </div>
+
+      {/* Cuerpo de la Tarjeta */}
+      <div className="p-5 flex flex-col flex-grow">
+        <div className="mb-4">
+          {genre && (
+            <span className="text-[10px] font-bold text-primary uppercase tracking-widest mb-1 block">
+              {genre}
+            </span>
+          )}
+          <h3 className="font-bold text-base text-neutral-900 line-clamp-1 group-hover:text-primary transition-colors">
+            {title}
+          </h3>
+          <div className="flex items-center gap-1.5 mt-1 text-neutral-500">
+            <User size={12} />
+            <p className="text-xs font-medium">{author}</p>
+          </div>
+        </div>
+
+        {/* Info de Copias */}
+        <div className="mt-auto flex items-center justify-between">
+          <div className="flex flex-col">
+            <span className="text-[10px] text-neutral-400 font-semibold uppercase">
+              Stock
+            </span>
+            <span
+              className={`text-xs font-bold ${isAvailable ? "text-neutral-700" : "text-red-400"}`}
+            >
+              {availableCopies} {availableCopies === 1 ? "unidad" : "unidades"}
+            </span>
+          </div>
+
+          {/* Botón Minimalista */}
+          <Link
+            to={`/books/${id}`}
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-neutral-50 text-neutral-400 group-hover:bg-primary group-hover:text-white transition-all duration-300"
+          >
+            <ArrowRight size={18} />
+          </Link>
         </div>
       </div>
     </div>

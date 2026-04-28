@@ -4,226 +4,179 @@ import { BookOpen, Users, Clock, Award, Heart, Shield } from "lucide-react";
 const AboutPage = () => {
   return (
     <MainLayout>
-      <div className="space-y-3xl">
-        {/* Hero Section */}
-        <section className="text-center py-3xl bg-gradient-to-r from-primary/5 to-accent/5 rounded-lg">
-          <div className="max-w-4xl mx-auto px-lg">
-            <h1 className="text-display-lg font-bold text-neutral-900 mb-lg">
-              Sobre <span className="text-primary">BiblioSys</span>
+      <div className="space-y-16">
+        <section className="rounded-[32px] bg-gradient-to-r from-primary/10 via-white to-accent/10 p-12 md:p-16 shadow-sm shadow-primary/10">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="mb-5 inline-flex rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary">
+              BiblioSys: gestión bibliotecaria sin complicaciones
+            </p>
+            <h1 className="text-4xl font-extrabold tracking-tight text-neutral-900 sm:text-5xl">
+              Una biblioteca digital pensada para lectores y administradores
             </h1>
-            <p className="text-heading-md text-neutral-600 leading-relaxed">
-              Tu biblioteca digital inteligente. Gestionamos miles de libros
-              para que tú te enfoques en lo que realmente importa: leer,
-              aprender y disfrutar del conocimiento.
+            <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-gray-600">
+              Accede a libros, gestiona préstamos y reserva títulos de forma
+              segura y sencilla desde cualquier dispositivo.
             </p>
           </div>
         </section>
 
-        {/* Nuestra Misión */}
-        <section className="max-w-4xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Nuestra Misión
-            </h2>
-            <p className="text-lg text-gray-600">
-              Democratizar el acceso al conocimiento y facilitar la gestión
-              bibliotecaria en la era digital.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-xl">
-            <div className="bg-white px-lg py-lg rounded-lg shadow-subtle border border-neutral-200">
-              <BookOpen className="h-3xl w-3xl text-primary mb-lg" />
-              <h3 className="text-heading-md font-semibold text-neutral-900 mb-md">
-                Acceso Universal
-              </h3>
-              <p className="text-gray-600">
-                Creemos que el conocimiento debe estar al alcance de todos.
-                Nuestra plataforma permite acceder a miles de libros desde
-                cualquier lugar y dispositivo.
+        <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-6 md:grid-cols-2">
+            <article className="rounded-[28px] border border-neutral-200 bg-white p-8 shadow-sm transition hover:shadow-md">
+              <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-primary/10 text-primary">
+                <BookOpen className="h-7 w-7" />
+              </div>
+              <h2 className="text-2xl font-semibold text-neutral-900 mb-3">
+                Acceso universal
+              </h2>
+              <p className="text-gray-600 leading-7">
+                Libros disponibles siempre, con una plataforma rápida y usable
+                que acompaña tanto a estudiantes como a bibliotecarios.
               </p>
-            </div>
+            </article>
 
-            <div className="bg-white px-lg py-lg rounded-lg shadow-subtle border border-neutral-200">
-              <Users className="h-3xl w-3xl text-primary mb-lg" />
-              <h3 className="text-heading-md font-semibold text-neutral-900 mb-md">
-                Comunidad
-              </h3>
-              <p className="text-gray-600">
-                Fomentamos una comunidad de lectores apasionados, conectando a
-                personas con intereses similares a través de nuestros recursos.
+            <article className="rounded-[28px] border border-neutral-200 bg-white p-8 shadow-sm transition hover:shadow-md">
+              <div className="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-3xl bg-accent/10 text-accent">
+                <Users className="h-7 w-7" />
+              </div>
+              <h2 className="text-2xl font-semibold text-neutral-900 mb-3">
+                Comunidad inteligente
+              </h2>
+              <p className="text-gray-600 leading-7">
+                Conecta lectores, gestiona reservas y muestra información clara
+                para que cada usuario encuentre lo que necesita.
               </p>
-            </div>
+            </article>
           </div>
         </section>
 
-        {/* Características */}
-        <section className="bg-neutral-50 py-3xl">
-          <div className="max-w-6xl mx-auto px-lg">
-            <div className="text-center mb-2xl">
-              <h2 className="text-heading-lg font-bold text-neutral-900 mb-md">
+        <section className="bg-neutral-50 py-16">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-neutral-900">
                 ¿Por qué elegir BiblioSys?
               </h2>
-              <p className="text-body-lg text-neutral-600">
-                Tecnología de vanguardia para una experiencia bibliotecaria
-                excepcional
+              <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-gray-600">
+                Una solución diseñada para simplificar la gestión de tu
+                biblioteca, desde las reservas hasta los reportes
+                administrativos.
               </p>
             </div>
-
-            <div className="grid md:grid-cols-3 gap-xl">
-              <div className="text-center">
-                <Clock className="h-4xl w-4xl text-primary mx-auto mb-lg" />
-                <h3 className="text-heading-md font-semibold text-neutral-900 mb-md">
+            <div className="grid gap-6 md:grid-cols-3">
+              <article className="rounded-[28px] border border-neutral-200 bg-white p-8 text-center shadow-sm transition hover:shadow-md">
+                <div className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Clock className="h-8 w-8" />
+                </div>
+                <h3 className="text-xl font-semibold text-neutral-900 mb-3">
                   Acceso 24/7
                 </h3>
-                <p className="text-body-md text-neutral-600">
-                  Tu biblioteca nunca duerme. Accede a tus libros favoritos en
-                  cualquier momento del día.
+                <p className="text-gray-600 leading-7">
+                  Consulta el catálogo y tus préstamos en cualquier momento.
                 </p>
-              </div>
-
-              <div className="text-center">
-                <Shield className="h-4xl w-4xl text-primary mx-auto mb-lg" />
-                <h3 className="text-heading-md font-semibold text-neutral-900 mb-md">
-                  Seguro y Confiable
+              </article>
+              <article className="rounded-[28px] border border-neutral-200 bg-white p-8 text-center shadow-sm transition hover:shadow-md">
+                <div className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Shield className="h-8 w-8" />
+                </div>
+                <h3 className="text-xl font-semibold text-neutral-900 mb-3">
+                  Seguro y confiable
                 </h3>
-                <p className="text-body-md text-neutral-600">
-                  Tus datos están protegidos con los más altos estándares de
-                  seguridad y privacidad.
+                <p className="text-gray-600 leading-7">
+                  Protección de datos y permisos claros para cada usuario.
                 </p>
-              </div>
-
-              <div className="text-center">
-                <Heart className="h-4xl w-4xl text-primary mx-auto mb-lg" />
-                <h3 className="text-heading-md font-semibold text-neutral-900 mb-md">
-                  Fácil de Usar
+              </article>
+              <article className="rounded-[28px] border border-neutral-200 bg-white p-8 text-center shadow-sm transition hover:shadow-md">
+                <div className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Heart className="h-8 w-8" />
+                </div>
+                <h3 className="text-xl font-semibold text-neutral-900 mb-3">
+                  Fácil de usar
                 </h3>
-                <p className="text-body-md text-neutral-600">
-                  Interfaz intuitiva diseñada pensando en la experiencia del
-                  usuario para todos los niveles.
+                <p className="text-gray-600 leading-7">
+                  Una experiencia clara para cualquier perfil de usuario.
                 </p>
-              </div>
+              </article>
             </div>
           </div>
         </section>
 
-        {/* Estadísticas */}
-        <section className="max-w-4xl mx-auto px-lg">
-          <div className="text-center mb-2xl">
-            <h2 className="text-heading-lg font-bold text-neutral-900 mb-md">
-              Nuestros Números
-            </h2>
-            <p className="text-body-lg text-neutral-600">
-              El impacto que hemos generado en la comunidad lectora
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-xl">
-            <div className="text-center">
-              <div className="text-heading-lg font-bold text-primary mb-md">
-                10,000+
-              </div>
-              <div className="text-body-md text-neutral-600">
-                Libros en catálogo
-              </div>
+        <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-[28px] border border-neutral-200 bg-white p-8 text-center shadow-sm">
+              <p className="text-3xl font-bold text-primary">10,000+</p>
+              <p className="mt-3 text-sm text-gray-500">Libros en catálogo</p>
             </div>
-            <div className="text-center">
-              <div className="text-heading-lg font-bold text-primary mb-md">
-                2,500+
-              </div>
-              <div className="text-body-md text-neutral-600">
-                Usuarios activos
-              </div>
+            <div className="rounded-[28px] border border-neutral-200 bg-white p-8 text-center shadow-sm">
+              <p className="text-3xl font-bold text-primary">2,500+</p>
+              <p className="mt-3 text-sm text-gray-500">Usuarios activos</p>
             </div>
-            <div className="text-center">
-              <div className="text-heading-lg font-bold text-primary mb-md">
-                50,000+
-              </div>
-              <div className="text-body-md text-neutral-600">
-                Préstamos realizados
-              </div>
+            <div className="rounded-[28px] border border-neutral-200 bg-white p-8 text-center shadow-sm">
+              <p className="text-3xl font-bold text-primary">50,000+</p>
+              <p className="mt-3 text-sm text-gray-500">Préstamos realizados</p>
             </div>
-            <div className="text-center">
-              <div className="text-heading-lg font-bold text-primary mb-md">
-                98%
-              </div>
-              <div className="text-body-md text-neutral-600">Satisfacción</div>
+            <div className="rounded-[28px] border border-neutral-200 bg-white p-8 text-center shadow-sm">
+              <p className="text-3xl font-bold text-primary">98%</p>
+              <p className="mt-3 text-sm text-gray-500">Satisfacción</p>
             </div>
           </div>
         </section>
 
-        {/* Equipo */}
-        <section className="bg-white py-3xl">
-          <div className="max-w-4xl mx-auto px-lg">
-            <div className="text-center mb-2xl">
-              <h2 className="text-heading-lg font-bold text-neutral-900 mb-md">
-                Nuestro Equipo
-              </h2>
-              <p className="text-body-lg text-neutral-600">
-                Personas apasionadas por la tecnología y el conocimiento
+        <section className="rounded-[32px] border border-neutral-200 bg-white p-10 shadow-sm">
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="text-center">
+              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <Users className="h-8 w-8" />
+              </div>
+              <h3 className="text-xl font-semibold text-neutral-900">
+                Equipo de Desarrollo
+              </h3>
+              <p className="mt-3 text-gray-600 leading-7">
+                Construimos una experiencia de biblioteca digital robusta y
+                agradable.
               </p>
             </div>
-
-            <div className="grid md:grid-cols-3 gap-xl">
-              <div className="text-center">
-                <div className="h-3xl w-3xl bg-primary/10 rounded-full mx-auto mb-lg flex items-center justify-center">
-                  <Users className="h-2xl w-2xl text-primary" />
-                </div>
-                <h3 className="text-heading-md font-semibold text-neutral-900 mb-sm">
-                  Equipo de Desarrollo
-                </h3>
-                <p className="text-body-sm text-neutral-600">
-                  Ingenieros apasionados por crear soluciones innovadoras
-                </p>
+            <div className="text-center">
+              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 text-accent">
+                <BookOpen className="h-8 w-8" />
               </div>
-
-              <div className="text-center">
-                <div className="h-3xl w-3xl bg-accent/10 rounded-full mx-auto mb-lg flex items-center justify-center">
-                  <BookOpen className="h-2xl w-2xl text-accent" />
-                </div>
-                <h3 className="text-heading-md font-semibold text-neutral-900 mb-sm">
-                  Bibliotecarios
-                </h3>
-                <p className="text-body-sm text-neutral-600">
-                  Expertos en gestión del conocimiento y catalogación
-                </p>
+              <h3 className="text-xl font-semibold text-neutral-900">
+                Bibliotecarios
+              </h3>
+              <p className="mt-3 text-gray-600 leading-7">
+                Organizamos libros y trazamos caminos de lectura efectivos.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-secondary/10 text-secondary">
+                <Award className="h-8 w-8" />
               </div>
-
-              <div className="text-center">
-                <div className="h-3xl w-3xl bg-secondary/10 rounded-full mx-auto mb-lg flex items-center justify-center">
-                  <Award className="h-2xl w-2xl text-secondary" />
-                </div>
-                <h3 className="text-heading-md font-semibold text-neutral-900 mb-sm">
-                  Soporte Técnico
-                </h3>
-                <p className="text-body-sm text-neutral-600">
-                  Equipo dedicado a garantizar la mejor experiencia
-                </p>
-              </div>
+              <h3 className="text-xl font-semibold text-neutral-900">
+                Soporte Técnico
+              </h3>
+              <p className="mt-3 text-gray-600 leading-7">
+                Resolvemos dudas y aseguramos una experiencia sin fricciones.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* Contacto */}
-        <section className="bg-primary text-primary-foreground py-3xl">
-          <div className="max-w-4xl mx-auto px-lg text-center">
-            <h2 className="text-heading-lg font-bold mb-md">
-              ¿Tienes Preguntas?
-            </h2>
-            <p className="text-body-lg mb-xl text-primary-foreground/90">
-              Estamos aquí para ayudarte. Contáctanos para cualquier consulta
-              sobre nuestros servicios.
+        <section className="rounded-[32px] bg-primary text-primary-foreground p-12 shadow-sm shadow-primary/10">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold">¿Tienes alguna pregunta?</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-primary-foreground/90">
+              Estamos listos para ayudarte con cualquier consulta sobre
+              BiblioSys.
             </p>
-            <div className="flex flex-col sm:flex-row gap-lg justify-center">
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <a
                 href="mailto:contacto@bibliosys.com"
-                className="bg-primary-foreground text-primary px-lg py-sm rounded-base font-medium hover:bg-neutral-100 transition-all duration-200 shadow-subtle hover:shadow-medium"
+                className="inline-flex items-center justify-center rounded-full bg-primary-foreground px-8 py-3 text-sm font-semibold text-primary transition hover:bg-white hover:text-primary shadow-lg"
               >
                 contacto@bibliosys.com
               </a>
               <a
                 href="tel:+54123456789"
-                className="border border-primary-foreground text-primary-foreground px-lg py-sm rounded-base font-medium hover:bg-primary/90 transition-all duration-200"
+                className="inline-flex items-center justify-center rounded-full border border-primary-foreground px-8 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
               >
                 +54 123 456 789
               </a>

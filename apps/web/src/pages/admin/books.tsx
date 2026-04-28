@@ -1,13 +1,22 @@
 import { useState } from "react";
-import { useLoaderData, Link, useRevalidator } from "react-router-dom";
+import { useLoaderData, useRevalidator } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import AdminNavigation from "../../components/AdminNavigation";
 import type { BookDTO } from "app-domain/dtos/dashboard";
 import { apiClient } from "../../utils/api-client";
 import { Modal } from "../../components/Modal/modal";
-import Button from "../../components/Button";
-
 import { BookGrid } from "../../components/Card/AdvancedBookCard";
+import {
+  Sparkles,
+  Plus,
+  Trash2,
+  AlertCircle,
+  BookText,
+  UserCircle,
+  AlignLeft,
+  Layers,
+  Link2,
+} from "lucide-react";
 
 export const adminBooksLoader = async () => {
   const res = await apiClient.call<BookDTO[]>("books");
@@ -83,22 +92,13 @@ const AdminBooksPage = () => {
     }
   };
 
-  const closeDeleteModal = () => {
-    setDeletingBook(null);
-    setIsDeleteModalOpen(false);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setMessage("");
 
     try {
-      const submitData = {
-        ...formData,
-        author: { name: formData.author }, // Adaptar al formato esperado por la API
-      };
-
+      const submitData = { ...formData, author: { name: formData.author } };
       let result;
       if (editingBook) {
         result = await apiClient.call(`books/${editingBook.id}`, {
@@ -116,16 +116,14 @@ const AdminBooksPage = () => {
         setMessage(result.error);
       } else {
         setMessage(
-          editingBook
-            ? "Libro actualizado exitosamente!"
-            : "Libro creado exitosamente!",
+          editingBook ? "¡Libro actualizado!" : "¡Libro creado con éxito!",
         );
         setIsModalOpen(false);
         resetForm();
         revalidator.revalidate();
       }
     } catch (error) {
-      setMessage("Error al guardar el libro");
+      setMessage("Error al procesar la solicitud.");
     } finally {
       setIsSubmitting(false);
     }
@@ -134,57 +132,51 @@ const AdminBooksPage = () => {
   const handleDelete = async () => {
     if (!deletingBook) return;
     setIsSubmitting(true);
-    setMessage("");
-
     try {
       const result = await apiClient.call(`books/${deletingBook.id}`, {
         _method: "DELETE",
       });
-
       if (result && typeof result === "object" && "error" in result) {
         setMessage(result.error);
       } else {
         setBooks(books.filter((b) => b.id !== deletingBook.id));
-        setMessage("Libro eliminado exitosamente!");
-        closeDeleteModal();
+        setMessage("Libro eliminado.");
+        setIsDeleteModalOpen(false);
       }
     } catch (error) {
-      setMessage("Error al eliminar el libro");
+      setMessage("Error al eliminar.");
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleBookClick = (bookId: string) => {
-    const book = books.find((b) => b.id === bookId);
-    if (book) {
-      openEditModal(book);
     }
   };
 
   return (
     <MainLayout>
       <AdminNavigation />
-      <div className="space-y-xl">
-        <div className="flex items-center justify-between">
-          <h1 className="text-heading-lg font-bold text-neutral-900">
-            Administración de Libros
-          </h1>
-          <div className="flex gap-lg">
-            <Button
-              onClick={openCreateModal}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-subtle hover:shadow-medium transition-all duration-200"
-            >
-              Agregar Libro
-            </Button>
-            <Link
-              to="/books"
-              className="text-body-sm text-primary hover:text-primary/80 font-medium transition-colors duration-200 hover:underline"
-            >
-              Ver Catálogo Público
-            </Link>
+      <div className="max-w-7xl mx-auto space-y-10 pb-20 px-6">
+        {/* Header Section */}
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between pt-10">
+          <div>
+            <h1 className="text-5xl font-black text-neutral-900 tracking-tight">
+              Inventario
+            </h1>
+            <p className="mt-2 text-neutral-500 font-medium italic">
+              Gestión de activos de la biblioteca
+            </p>
           </div>
+          <button
+            onClick={openCreateModal}
+            className="flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-[2rem] font-bold shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+          >
+            <Plus size={22} /> Nuevo Libro
+          </button>
         </div>
+
+        {message && (
+          <div className="p-5 rounded-[2.5rem] border bg-emerald-50 border-emerald-100 text-emerald-600 flex items-center gap-3 text-sm font-bold animate-in fade-in zoom-in duration-300">
+            <AlertCircle size={20} /> {message}
+          </div>
+        )}
 
         <BookGrid
           books={books.map((book) => ({
@@ -196,163 +188,238 @@ const AdminBooksPage = () => {
                 : (book.author as any)?.name || "N/A",
             availableCopies: book.availableCopies!,
             image: book.imageUrl,
-            onViewDetails: () => handleBookClick(book.id!),
+            onViewDetails: () => openEditModal(book),
             onDelete: () => openDeleteModal(book.id!),
           }))}
-          onBookClick={handleBookClick}
         />
 
+        {/* MODAL ESTILIZADO */}
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           title={editingBook ? "Editar Libro" : "Crear Nuevo Libro"}
         >
-          <form onSubmit={handleSubmit} className="space-y-lg">
-            {/* Form fields... */}
-            <div>
-              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
-                Título
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
-              />
-            </div>
+          <div className="w-[640px] max-w-full">
+            <form onSubmit={handleSubmit} className="flex flex-col">
+              <div className="px-10 py-10 space-y-10">
+                {/* Visual Header */}
+                <div className="flex items-center gap-5 p-6 rounded-[2.5rem] bg-gradient-to-r from-primary/5 to-transparent border border-primary/10">
+                  <div className="h-14 w-14 rounded-2xl bg-white shadow-md flex items-center justify-center text-primary shrink-0">
+                    <Sparkles size={28} />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-black uppercase tracking-[0.2em] text-primary leading-none mb-2">
+                      {editingBook
+                        ? "Editor de Inventario"
+                        : "Registro de Libro"}
+                    </p>
+                    <p className="text-sm text-neutral-500 font-medium">
+                      {editingBook
+                        ? "Modifica los detalles del ejemplar seleccionado."
+                        : "Ingresa los datos para añadir un nuevo título al catálogo."}
+                    </p>
+                  </div>
+                </div>
 
-            <div>
-              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
-                Autor
-              </label>
-              <input
-                type="text"
-                required
-                value={formData.author}
-                onChange={(e) =>
-                  setFormData({ ...formData, author: e.target.value })
-                }
-                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
-              />
-            </div>
+                {/* Form Fields Grid */}
+                <div className="grid grid-cols-2 gap-x-8 gap-y-8">
+                  <div className="col-span-2 sm:col-span-1">
+                    <FormGroup label="Título" icon={<BookText size={18} />}>
+                      <input
+                        type="text"
+                        required
+                        value={formData.title}
+                        onChange={(e) =>
+                          setFormData({ ...formData, title: e.target.value })
+                        }
+                        placeholder="Ej: El Aleph"
+                        className="admin-field"
+                      />
+                    </FormGroup>
+                  </div>
 
-            <div>
-              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
-                Descripción
-              </label>
-              <textarea
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-                rows={3}
-                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
-              />
-            </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <FormGroup label="Autor" icon={<UserCircle size={18} />}>
+                      <input
+                        type="text"
+                        required
+                        value={formData.author}
+                        onChange={(e) =>
+                          setFormData({ ...formData, author: e.target.value })
+                        }
+                        placeholder="Ej: Jorge Luis Borges"
+                        className="admin-field"
+                      />
+                    </FormGroup>
+                  </div>
 
-            <div>
-              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
-                Copias Disponibles
-              </label>
-              <input
-                type="number"
-                min="0"
-                required
-                value={formData.availableCopies}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    availableCopies: parseInt(e.target.value),
-                  })
-                }
-                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
-              />
-            </div>
+                  <div className="col-span-2">
+                    <FormGroup label="Sinopsis" icon={<AlignLeft size={18} />}>
+                      <textarea
+                        value={formData.description}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            description: e.target.value,
+                          })
+                        }
+                        rows={3}
+                        placeholder="Breve resumen del contenido..."
+                        className="admin-field resize-none py-4"
+                      />
+                    </FormGroup>
+                  </div>
 
-            <div>
-              <label className="block text-body-sm font-medium text-neutral-900 mb-sm">
-                URL de Imagen
-              </label>
-              <input
-                type="url"
-                value={formData.imageUrl}
-                onChange={(e) =>
-                  setFormData({ ...formData, imageUrl: e.target.value })
-                }
-                className="block w-full border border-neutral-300 rounded-base shadow-sm px-md py-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors text-body-sm"
-              />
-            </div>
+                  <div className="col-span-1">
+                    <FormGroup label="Ejemplares" icon={<Layers size={18} />}>
+                      <input
+                        type="number"
+                        min="0"
+                        required
+                        value={formData.availableCopies}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            availableCopies: parseInt(e.target.value, 10),
+                          })
+                        }
+                        className="admin-field font-black text-lg"
+                      />
+                    </FormGroup>
+                  </div>
 
-            {message && (
-              <p
-                className={`text-body-sm ${
-                  message.includes("exitosamente")
-                    ? "text-success"
-                    : "text-error"
-                }`}
-              >
-                {message}
-              </p>
-            )}
+                  <div className="col-span-1">
+                    <FormGroup label="Imagen (URL)" icon={<Link2 size={18} />}>
+                      <input
+                        type="url"
+                        value={formData.imageUrl}
+                        onChange={(e) =>
+                          setFormData({ ...formData, imageUrl: e.target.value })
+                        }
+                        placeholder="https://..."
+                        className="admin-field font-medium"
+                      />
+                    </FormGroup>
+                  </div>
+                </div>
+              </div>
 
-            <div className="flex justify-end gap-lg pt-lg">
-              <Button
-                type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="bg-neutral-300 text-neutral-900 hover:bg-neutral-400 transition-all duration-200"
-              >
-                Cancelar
-              </Button>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 shadow-subtle hover:shadow-medium transition-all duration-200"
-              >
-                {isSubmitting
-                  ? "Guardando..."
-                  : editingBook
-                    ? "Actualizar"
-                    : "Crear"}
-              </Button>
-            </div>
-          </form>
+              {/* Action Footer */}
+              <div className="px-10 py-8 bg-neutral-50/50 border-t border-neutral-100 flex justify-end items-center gap-6">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-xs font-black uppercase tracking-widest text-neutral-400 hover:text-neutral-900 transition-colors"
+                >
+                  Descartar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-12 py-5 rounded-[1.5rem] bg-primary text-white font-black text-sm shadow-xl shadow-primary/25 hover:scale-[1.03] active:scale-[0.97] transition-all disabled:opacity-50"
+                >
+                  {isSubmitting
+                    ? "Guardando..."
+                    : editingBook
+                      ? "Actualizar Datos"
+                      : "Confirmar y Crear"}
+                </button>
+              </div>
+            </form>
+          </div>
         </Modal>
 
-        {/* Delete Confirmation Modal */}
-        <Modal isOpen={isDeleteModalOpen} onClose={closeDeleteModal} title={""}>
-          <div className="space-y-lg">
-            <h2 className="text-heading-md font-bold text-neutral-900">
-              Confirmar Eliminación
+        {/* Modal de Eliminación */}
+        <Modal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          title=""
+        >
+          <div className="w-[450px] p-12 text-center">
+            <div className="h-20 w-20 rounded-[2.5rem] bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-8 border border-rose-100">
+              <Trash2 size={36} />
+            </div>
+            <h2 className="text-3xl font-black text-neutral-900 tracking-tight">
+              ¿Eliminar Libro?
             </h2>
-            <p className="text-body-md text-neutral-700">
-              ¿Estás seguro de que quieres eliminar el libro "
-              {deletingBook?.title}"? Esta acción no se puede deshacer.
+            <p className="mt-4 text-neutral-500 font-medium leading-relaxed max-w-xs mx-auto">
+              Esta acción es irreversible para{" "}
+              <span className="text-neutral-900 font-bold">
+                "{deletingBook?.title}"
+              </span>
+              .
             </p>
-            {message && <p className={`text-body-sm text-error`}>{message}</p>}
-            <div className="flex justify-end gap-lg pt-lg">
-              <Button
-                type="button"
-                onClick={closeDeleteModal}
-                className="bg-neutral-300 text-neutral-900 hover:bg-neutral-400 transition-all duration-200"
+            <div className="grid grid-cols-2 gap-6 mt-12">
+              <button
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="py-4 rounded-2xl bg-neutral-50 text-neutral-500 font-bold hover:bg-neutral-100 transition-all"
               >
                 Cancelar
-              </Button>
-              <Button
+              </button>
+              <button
                 onClick={handleDelete}
-                disabled={isSubmitting}
-                className="bg-error text-white hover:bg-error/90 disabled:opacity-50 shadow-subtle hover:shadow-medium transition-all duration-200"
+                className="py-4 rounded-2xl bg-rose-500 text-white font-bold shadow-xl shadow-rose-200 hover:bg-rose-600 transition-all"
               >
-                {isSubmitting ? "Eliminando..." : "Eliminar"}
-              </Button>
+                Confirmar
+              </button>
             </div>
           </div>
         </Modal>
       </div>
+
+      <style>{`
+        .admin-field {
+          display: block;
+          width: 100%;
+          border: 2px solid transparent;
+          background-color: #f8fafc;
+          border-radius: 1.25rem;
+          padding: 1rem 1.25rem 1rem 3.25rem;
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: #1e293b;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          outline: none;
+        }
+        .admin-field::placeholder { color: #cbd5e1; font-weight: 500; }
+        .admin-field:focus {
+          background-color: white;
+          border-color: #3b82f6;
+          box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1), 0 8px 10px -6px rgba(59, 130, 246, 0.1);
+        }
+        .admin-icon-wrapper {
+          position: absolute;
+          left: 1.25rem;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #94a3b8;
+          transition: color 0.4s;
+          pointer-events: none;
+        }
+        .group-focus-within .admin-icon-wrapper { color: #3b82f6; }
+      `}</style>
     </MainLayout>
   );
 };
+
+const FormGroup = ({
+  label,
+  icon,
+  children,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) => (
+  <div className="space-y-3 group-focus-within">
+    <label className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em] ml-2 block">
+      {label}
+    </label>
+    <div className="relative">
+      <div className="admin-icon-wrapper">{icon}</div>
+      {children}
+    </div>
+  </div>
+);
 
 export default AdminBooksPage;

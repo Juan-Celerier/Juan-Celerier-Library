@@ -39,7 +39,7 @@ const Index = () => {
 
   return (
     <MainLayout>
-      <main>
+      <main className="space-y-16 py-10">
         {error && (
           <div className="mb-4 rounded-md bg-red-50 border border-red-200 p-4 text-red-700">
             <strong>Error:</strong> {error}

@@ -28,11 +28,9 @@ const MyLoansPage = () => {
             bookTitle: loan.book?.title || "Título desconocido",
             bookGenre: loan.book?.genre || "Género desconocido",
             borrowerName: loan.user?.name || "Usuario desconocido",
-            loanDate: new Date(loan.loanDate).toLocaleDateString(),
-            returnDate: loan.returnDate
-              ? new Date(loan.returnDate).toLocaleDateString()
-              : "No devuelto",
-            status: loan.status === "active" ? "active" : "returned",
+            loanDate: loan.loanDate ? new Date(loan.loanDate) : undefined,
+            returnDate: loan.returnDate ? new Date(loan.returnDate) : undefined,
+            status: loan.status === "active" ? "Activo" : "Devuelto",
           }));
           setLoans(mappedLoans);
         }
@@ -56,24 +54,12 @@ const MyLoansPage = () => {
       if (res && typeof res === "object" && "error" in (res as any)) {
         alert(`Error al devolver el préstamo: ${(res as any).error}`);
       } else {
-        // Actualizar el estado local removiendo el préstamo devuelto
         setLoans((prevLoans) => prevLoans.filter((loan) => loan.id !== loanId));
         alert("Préstamo devuelto exitosamente!");
       }
     } catch (error) {
       console.error("Error returning loan:", error);
       alert("Error al devolver el préstamo. Inténtalo de nuevo.");
-    }
-  };
-
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case "active":
-        return "Activo";
-      case "returned":
-        return "Devuelto";
-      default:
-        return status;
     }
   };
 
@@ -88,10 +74,12 @@ const MyLoansPage = () => {
   if (loading) {
     return (
       <MainLayout>
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-3xl w-3xl border-b-2 border-primary mx-auto mb-lg"></div>
-            <p className="text-body-md text-neutral-600">
+        <div className="flex min-h-[420px] items-center justify-center">
+          <div className="rounded-[32px] border border-neutral-200 bg-white p-14 text-center shadow-sm">
+            <div className="mb-8 inline-flex h-16 w-16 items-center justify-center rounded-full border border-primary/20 text-primary">
+              <span className="text-2xl">⏳</span>
+            </div>
+            <p className="text-lg font-semibold text-neutral-900">
               Cargando tus préstamos...
             </p>
           </div>
@@ -102,46 +90,69 @@ const MyLoansPage = () => {
 
   return (
     <MainLayout>
-      <div className="space-y-xl">
-        <header>
-          <h1 className="text-heading-lg font-bold text-neutral-900">
-            Mis préstamos
-          </h1>
-          <p className="text-body-md text-neutral-600 mt-sm">
-            Gestiona tus préstamos de libros y fechas de devolución
-          </p>
-        </header>
-
-        {loans.length === 0 ? (
-          <div className="text-center py-3xl">
-            <div className="text-6xl mb-lg">📚</div>
-            <h3 className="text-heading-md font-medium text-neutral-900 mb-md">
-              No tienes préstamos activos
-            </h3>
-            <p className="text-body-md text-neutral-600 mb-xl">
-              Cuando tomes prestados libros, aparecerán aquí.
-            </p>
+      <div className="space-y-10">
+        <section className="rounded-[32px] border border-neutral-200 bg-white p-10 shadow-sm">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
+                Cuenta
+              </p>
+              <h1 className="mt-3 text-3xl font-bold text-neutral-900">
+                Mis préstamos
+              </h1>
+              <p className="mt-3 text-body-md text-gray-600">
+                Administra los libros que tienes prestados y verifica sus fechas
+                de devolución.
+              </p>
+            </div>
             <Button
               onClick={() => (window.location.href = "/books")}
-              className="!bg-primary !text-primary-foreground hover:!bg-primary/90 !shadow-subtle hover:!shadow-medium transition-all duration-200"
+              className="rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
             >
               Explorar catálogo
             </Button>
           </div>
+        </section>
+
+        {loans.length === 0 ? (
+          <section className="rounded-[32px] border border-neutral-200 bg-white p-14 shadow-sm text-center">
+            <div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-primary text-3xl">
+              📚
+            </div>
+            <h2 className="text-2xl font-semibold text-neutral-900 mb-3">
+              No tienes préstamos activos
+            </h2>
+            <p className="mx-auto max-w-xl text-gray-600 leading-7 mb-8">
+              Cuando tomes prestados libros, los verás aquí con todas las fechas
+              de devolución y opciones disponibles.
+            </p>
+            <Button
+              onClick={() => (window.location.href = "/books")}
+              className="rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+            >
+              Ir al catálogo
+            </Button>
+          </section>
         ) : (
-          <LoansTable
-            loans={loans.map((loan) => ({
-              id: loan.id,
-              bookTitle: loan.book.title,
-              bookGenre: loan.book.category?.name || "N/A",
-              borrowerName: `${loan.borrower.firstName} ${loan.borrower.lastName}`,
-              loanDate: formatDate(loan.loanDate),
-              returnDate: formatDate(loan.returnDate),
-              status: loan.status,
-              statusText: getStatusText(loan.status),
-            }))}
-            onReturnLoan={handleReturnLoan}
-          />
+          <section className="rounded-[32px] border border-neutral-200 bg-white p-8 shadow-sm">
+            <LoansTable
+              loans={loans.map((loan) => ({
+                id: loan.id,
+                bookTitle: loan.bookTitle,
+                bookGenre: loan.bookGenre,
+                borrowerName: loan.borrowerName,
+                loanDate: loan.loanDate
+                  ? formatDate(loan.loanDate)
+                  : "Fecha desconocida",
+                returnDate: loan.returnDate
+                  ? formatDate(loan.returnDate)
+                  : "No devuelto",
+                status: loan.status,
+                statusText: loan.status,
+              }))}
+              onReturnLoan={handleReturnLoan}
+            />
+          </section>
         )}
       </div>
     </MainLayout>

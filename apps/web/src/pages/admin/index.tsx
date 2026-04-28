@@ -80,113 +80,165 @@ const AdminIndexPage = () => {
   return (
     <MainLayout>
       <AdminNavigation />
-      <div className="space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900">
-            Panel de Administración BiblioSys
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Gestión completa del sistema bibliotecario
-          </p>
-        </div>
+      <div className="space-y-10">
+        <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5 border border-primary/20 p-8 lg:p-12">
+          <div
+            className={`absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40`}
+          ></div>
+          <div className="relative">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-primary">
+                  Panel de administración
+                </p>
+                <h1 className="mt-3 text-4xl font-bold text-neutral-900 lg:text-5xl">
+                  BiblioSys Dashboard
+                </h1>
+                <p className="mt-4 text-lg text-neutral-600 max-w-xl">
+                  Monitorea métricas clave, administra contenido y mantén la
+                  biblioteca bajo control con insights en tiempo real.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+                <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-white/20 px-6 py-4 text-center shadow-lg">
+                  <div className="text-3xl font-bold text-primary">
+                    {stats.totalBooks}
+                  </div>
+                  <div className="text-sm font-medium text-neutral-600">
+                    Libros totales
+                  </div>
+                </div>
+                <div className="rounded-2xl bg-white/80 backdrop-blur-sm border border-white/20 px-6 py-4 text-center shadow-lg">
+                  <div className="text-3xl font-bold text-success">
+                    {stats.availableBooks}
+                  </div>
+                  <div className="text-sm font-medium text-neutral-600">
+                    Disponibles
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-red-600">{error}</p>
-          </div>
+          <section className="rounded-[28px] border border-red-200 bg-red-50 p-4 text-red-700 shadow-sm">
+            <p>{error}</p>
+          </section>
         )}
 
         {/* Estadísticas principales */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Total Libros
-                </p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {stats.totalBooks}
-                </p>
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <article className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200/50 p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-blue-500/10 rounded-full -mr-10 -mt-10"></div>
+            <div className="relative">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-blue-500/10">
+                  <BookOpen className="h-8 w-8 text-blue-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-neutral-900">
+                    {stats.totalBooks}
+                  </div>
+                  <div className="text-sm font-medium text-neutral-600">
+                    Total libros
+                  </div>
+                </div>
               </div>
-              <BookOpen className="h-8 w-8 text-blue-600" />
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                  {stats.availableBooks} disponibles
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                  {stats.unavailableBooks} agotados
+                </span>
+              </div>
             </div>
-            <div className="mt-4 flex text-sm">
-              <span className="text-green-600">
-                {stats.availableBooks} disponibles
-              </span>
-              <span className="mx-2 text-gray-400">•</span>
-              <span className="text-red-600">
-                {stats.unavailableBooks} agotados
-              </span>
-            </div>
-          </div>
+          </article>
 
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Usuarios Registrados
-                </p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {stats.totalUsers}
-                </p>
+          <article className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200/50 p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-green-500/10 rounded-full -mr-10 -mt-10"></div>
+            <div className="relative">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-green-500/10">
+                  <Users className="h-8 w-8 text-green-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-neutral-900">
+                    {stats.totalUsers}
+                  </div>
+                  <div className="text-sm font-medium text-neutral-600">
+                    Usuarios
+                  </div>
+                </div>
               </div>
-              <Users className="h-8 w-8 text-green-600" />
+              <div className="text-sm text-neutral-600">
+                Usuarios activos registrados en el sistema
+              </div>
             </div>
-            <div className="mt-4">
-              <span className="text-sm text-gray-600">
-                Usuarios activos en el sistema
-              </span>
-            </div>
-          </div>
+          </article>
 
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Préstamos Activos
-                </p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {stats.activeLoans}
-                </p>
+          <article className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200/50 p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-yellow-500/10 rounded-full -mr-10 -mt-10"></div>
+            <div className="relative">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-yellow-500/10">
+                  <Clock className="h-8 w-8 text-yellow-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-neutral-900">
+                    {stats.activeLoans}
+                  </div>
+                  <div className="text-sm font-medium text-neutral-600">
+                    Préstamos activos
+                  </div>
+                </div>
               </div>
-              <Clock className="h-8 w-8 text-yellow-600" />
-            </div>
-            <div className="mt-4 flex items-center text-sm">
-              {stats.overdueLoans > 0 && (
-                <>
-                  <AlertTriangle className="h-4 w-4 text-red-500 mr-1" />
-                  <span className="text-red-600">
+              <div className="flex items-center gap-2">
+                {stats.overdueLoans > 0 ? (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-3 py-1 text-xs font-semibold text-red-700">
+                    <AlertTriangle className="h-3 w-3" />
                     {stats.overdueLoans} vencidos
                   </span>
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-lg shadow-sm border p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">
-                  Disponibilidad
-                </p>
-                <p className="text-2xl font-bold text-gray-900">
-                  {stats.totalBooks > 0
-                    ? Math.round(
-                        (stats.availableBooks / stats.totalBooks) * 100,
-                      )
-                    : 0}
-                  %
-                </p>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                    Sin vencidos
+                  </span>
+                )}
               </div>
-              <TrendingUp className="h-8 w-8 text-purple-600" />
             </div>
-            <div className="mt-4">
-              <span className="text-sm text-gray-600">Libros disponibles</span>
+          </article>
+
+          <article className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100 border border-purple-200/50 p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <div className="absolute top-0 right-0 w-20 h-20 bg-purple-500/10 rounded-full -mr-10 -mt-10"></div>
+            <div className="relative">
+              <div className="flex items-center justify-between mb-4">
+                <div className="p-3 rounded-xl bg-purple-500/10">
+                  <TrendingUp className="h-8 w-8 text-purple-600" />
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-neutral-900">
+                    {stats.totalBooks > 0
+                      ? Math.round(
+                          (stats.availableBooks / stats.totalBooks) * 100,
+                        )
+                      : 0}
+                    %
+                  </div>
+                  <div className="text-sm font-medium text-neutral-600">
+                    Disponibilidad
+                  </div>
+                </div>
+              </div>
+              <div className="text-sm text-neutral-600">
+                Porcentaje de libros disponibles para préstamo
+              </div>
             </div>
-          </div>
-        </div>
+          </article>
+        </section>
 
         {/* Actividad reciente y gestión */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

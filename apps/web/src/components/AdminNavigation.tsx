@@ -12,22 +12,22 @@ const AdminNavigation = () => {
   ];
 
   return (
-    <nav className="bg-white border-b border-neutral-200 mb-lg">
+    <nav className="bg-neutral-50 border-b border-neutral-200 mb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex gap-xl">
+        <div className="flex flex-wrap gap-3 py-4">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path;
             return (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-all duration-200 ${
+                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition ${
                   isActive
-                    ? "border-primary text-primary"
-                    : "border-transparent text-neutral-500 hover:text-neutral-700 hover:border-neutral-300"
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-transparent text-neutral-600 hover:border-neutral-300 hover:bg-white hover:text-neutral-900"
                 }`}
               >
-                <span className="mr-2">{item.icon}</span>
+                <span>{item.icon}</span>
                 {item.label}
               </Link>
             );

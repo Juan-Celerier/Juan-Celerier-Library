@@ -1,6 +1,16 @@
 import React from "react";
-import { Star, ShoppingCart, Heart, Trash2 } from "lucide-react";
+import {
+  Star,
+  ShoppingCart,
+  Heart,
+  Trash2,
+  BookOpen,
+  ArrowRight,
+  User,
+} from "lucide-react";
 import { BookCardSkeleton } from "../ui";
+
+// --- Interfaces ---
 
 export interface AdvancedBookCardProps {
   id: string;
@@ -17,9 +27,15 @@ export interface AdvancedBookCardProps {
   onDelete?: (id: string) => void;
 }
 
-/**
- * Tarjeta de libro mejorada con más interacciones
- */
+export interface BookGridProps {
+  books: AdvancedBookCardProps[];
+  isLoading?: boolean;
+  onBookClick?: (id: string) => void;
+  className?: string;
+}
+
+// --- Componente: AdvancedBookCard ---
+
 export const AdvancedBookCard: React.FC<AdvancedBookCardProps> = ({
   id,
   title,
@@ -37,138 +53,142 @@ export const AdvancedBookCard: React.FC<AdvancedBookCardProps> = ({
   const isAvailable = availableCopies > 0;
 
   return (
-    <div className="group relative h-full overflow-hidden rounded-lg bg-white border border-neutral-200 shadow-subtle transition-all duration-300 hover:shadow-lg hover:border-primary/50">
-      {/* Imagen Container */}
-      <div className="relative h-48 overflow-hidden bg-neutral-100">
+    <article className="group flex h-full flex-col overflow-hidden rounded-[2.5rem] border border-neutral-100 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-neutral-200/60">
+      {/* Portada con Acciones Flotantes */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
         {image ? (
           <img
             src={image}
             alt={title}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-neutral-100 to-neutral-200">
-            <div className="h-16 w-12 rounded bg-neutral-300 opacity-50" />
+          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-neutral-50 to-neutral-200">
+            <BookOpen className="h-16 w-16 text-neutral-300/50" />
           </div>
         )}
 
-        {/* Overlay con acciones */}
-        <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20 flex items-end justify-center pb-4 opacity-0 group-hover:opacity-100">
-          <button
-            onClick={() => onViewDetails?.(id)}
-            className="px-lg py-md bg-primary text-primary-foreground text-body-sm font-medium rounded-base shadow-lg hover:bg-primary/90 transition-all duration-200 hover:scale-105"
+        {/* Badges Superiores */}
+        <div className="absolute inset-x-0 top-5 flex items-start justify-between px-5">
+          <span
+            className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest backdrop-blur-md shadow-sm border border-white/20 ${
+              isAvailable
+                ? "bg-emerald-500/80 text-white"
+                : "bg-rose-500/80 text-white"
+            }`}
           >
-            Ver detalles
-          </button>
-        </div>
+            {isAvailable ? "● En Stock" : "○ Agotado"}
+          </span>
 
-        {/* Badge Disponibilidad */}
-        <div
-          className={`absolute top-2 left-2 px-md py-sm rounded-full text-xs font-semibold ${
-            isAvailable
-              ? "bg-success/20 text-success"
-              : "bg-error/20 text-error"
-          }`}
-        >
-          {isAvailable ? "Disponible" : "Agotado"}
-        </div>
-
-        <div className="absolute top-2 right-2 flex flex-col gap-2">
-          <button
-            onClick={() => onToggleFavorite?.(id)}
-            className="p-2 rounded-lg bg-white/90 hover:bg-white shadow-subtle transition-all hover:shadow-md"
-            aria-label={
-              isFavorite ? "Quitar de favoritos" : "Agregar a favoritos"
-            }
-          >
-            <Heart
-              className={`h-5 w-5 transition-colors ${
-                isFavorite ? "fill-error text-error" : "text-neutral-400"
-              }`}
-            />
-          </button>
-          {onDelete && (
-            <button
-              onClick={() => onDelete(id)}
-              className="p-2 rounded-lg bg-white/90 hover:bg-white shadow-subtle transition-all hover:shadow-md"
-              aria-label="Eliminar libro"
-            >
-              <Trash2 className="h-5 w-5 text-neutral-400 hover:text-error transition-colors" />
-            </button>
-          )}
+          <div className="flex flex-col gap-2">
+            {onToggleFavorite && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleFavorite(id);
+                }}
+                className="h-11 w-11 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-neutral-600 shadow-md transition-all hover:scale-110 active:scale-90"
+              >
+                <Heart
+                  className={`h-5 w-5 transition-colors ${isFavorite ? "fill-rose-500 text-rose-500" : "text-neutral-400"}`}
+                />
+              </button>
+            )}
+            {onDelete && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onDelete(id);
+                }}
+                className="h-11 w-11 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-rose-500 shadow-md transition-all hover:scale-110 active:scale-90"
+              >
+                <Trash2 className="h-5 w-5" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Contenido */}
-      <div className="flex flex-col p-lg">
-        {/* Título y Autor */}
-        <h3 className="font-semibold text-heading-sm text-neutral-900 line-clamp-2 group-hover:text-primary transition-colors mb-sm">
-          {title}
-        </h3>
-
-        <p className="text-body-sm text-neutral-600 mb-md line-clamp-1">
-          {author}
-        </p>
-
-        {/* Rating */}
-        {rating && (
-          <div className="flex items-center gap-sm mb-md">
-            <div className="flex items-center gap-xs">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className={`h-4 w-4 ${
-                    i < Math.round(rating)
-                      ? "fill-warning text-warning"
-                      : "text-neutral-300"
-                  }`}
-                />
-              ))}
-            </div>
-            <span className="text-body-sm text-neutral-500">({rating})</span>
+      {/* Cuerpo de la Tarjeta */}
+      <div className="flex flex-1 flex-col p-7">
+        <div className="mb-5">
+          <div className="flex items-center gap-3 mb-2">
+            {rating && (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-amber-50 border border-amber-100">
+                <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                <span className="text-[12px] font-bold text-amber-700">
+                  {rating.toFixed(1)}
+                </span>
+              </div>
+            )}
+            <span className="text-[10px] font-black text-neutral-300 uppercase tracking-[0.2em]">
+              Premium
+            </span>
           </div>
-        )}
 
-        {/* Precio y Disponibilidad */}
-        <div className="flex items-center justify-between pt-md border-t border-neutral-200">
+          <h3
+            className="text-xl font-bold text-neutral-900 line-clamp-1 group-hover:text-primary transition-colors cursor-pointer"
+            onClick={() => onViewDetails?.(id)}
+          >
+            {title}
+          </h3>
+          <div className="flex items-center gap-2 mt-1.5 text-neutral-400">
+            <User size={14} />
+            <p className="text-sm font-semibold italic">{author}</p>
+          </div>
+        </div>
+
+        {/* Footer: Precio y Botones de Acción */}
+        <div className="mt-auto pt-6 border-t border-neutral-50 flex items-center justify-between">
           <div>
-            {price && (
-              <p className="text-body-sm text-neutral-600">
+            {price !== undefined && (
+              <p className="text-2xl font-black text-neutral-900 tracking-tight">
                 ${price.toFixed(2)}
               </p>
             )}
-            <p className="text-body-sm font-medium text-neutral-600">
-              {availableCopies} copias
+            <p className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest">
+              {availableCopies} {availableCopies === 1 ? "Unidad" : "Unidades"}
             </p>
           </div>
 
-          <button
-            onClick={() => onAddToCart?.(id)}
-            disabled={!isAvailable}
-            className={`p-2 rounded-lg transition-all ${
-              isAvailable
-                ? "bg-primary/10 hover:bg-primary text-primary hover:text-white hover:shadow-lg"
-                : "bg-neutral-100 text-neutral-400 cursor-not-allowed"
-            }`}
-            aria-label="Agregar al carrito"
-          >
-            <ShoppingCart className="h-5 w-5" />
-          </button>
+          <div className="flex gap-3">
+            {onAddToCart && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAddToCart(id);
+                }}
+                disabled={!isAvailable}
+                className={`h-14 w-14 flex items-center justify-center rounded-[1.25rem] transition-all duration-300 ${
+                  isAvailable
+                    ? "bg-primary text-white shadow-xl shadow-primary/25 hover:scale-110 active:scale-95"
+                    : "bg-neutral-100 text-neutral-300 cursor-not-allowed"
+                }`}
+              >
+                <ShoppingCart className="h-6 w-6" />
+              </button>
+            )}
+
+            {onViewDetails && (
+              <button
+                type="button"
+                onClick={() => onViewDetails?.(id)}
+                className="h-14 w-14 flex items-center justify-center rounded-[1.25rem] bg-neutral-50 text-neutral-400 hover:bg-neutral-900 hover:text-white transition-all duration-300 shadow-sm"
+              >
+                <ArrowRight className="h-6 w-6" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 
-/**
- * Grid responsivo para mostrar múltiples tarjetas
- */
-export interface BookGridProps {
-  books: AdvancedBookCardProps[];
-  isLoading?: boolean;
-  onBookClick?: (id: string) => void;
-  className?: string;
-}
+// --- Componente: BookGrid ---
 
 export const BookGrid: React.FC<BookGridProps> = ({
   books,
@@ -179,7 +199,7 @@ export const BookGrid: React.FC<BookGridProps> = ({
   if (isLoading) {
     return (
       <div
-        className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg ${className}`}
+        className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 px-6 py-12 ${className}`}
       >
         {Array.from({ length: 8 }).map((_, i) => (
           <BookCardSkeleton key={i} />
@@ -191,26 +211,28 @@ export const BookGrid: React.FC<BookGridProps> = ({
   if (books.length === 0) {
     return (
       <div
-        className={`col-span-full flex items-center justify-center py-8xl text-center ${className}`}
+        className={`flex flex-col items-center justify-center py-24 text-center ${className}`}
       >
-        <div>
-          <p className="text-body-lg text-neutral-600">
-            No hay libros para mostrar
-          </p>
+        <div className="bg-neutral-50 p-8 rounded-full mb-6 border border-neutral-100">
+          <BookOpen className="h-12 w-12 text-neutral-200" />
         </div>
+        <h3 className="text-xl font-bold text-neutral-900">No hay libros</h3>
+        <p className="text-neutral-500 mt-2 max-w-xs">
+          Parece que no encontramos lo que buscas en nuestro catálogo actual.
+        </p>
       </div>
     );
   }
 
   return (
     <div
-      className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg ${className}`}
+      className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 px-6 py-12 ${className}`}
     >
       {books.map((book) => (
         <AdvancedBookCard
           key={book.id}
           {...book}
-          onViewDetails={onBookClick ?? book.onViewDetails}
+          onViewDetails={book.onViewDetails ?? onBookClick}
         />
       ))}
     </div>
