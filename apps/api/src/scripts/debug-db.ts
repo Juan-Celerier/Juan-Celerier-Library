@@ -25,6 +25,10 @@ async function debugDB() {
     console.log(`${name}: ${count}`);
   }
 
+  console.log("\n--- Usuarios registrados en la BD ---");
+  const users = await repos.Users.find();
+  console.log(users.map((u) => ({ id: u.id, email: u.email, role: u.role })));
+
   await AppDataSource.destroy();
 }
 

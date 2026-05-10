@@ -6,7 +6,7 @@ import compression from "compression";
 import morgan from "morgan";
 import { CLIENT_URL } from "./constants.js";
 import { errorHandler } from "./middlewares/error-handler.js";
-import { loadRoutes } from "./utils/load-routes.js";
+import apiRoutes from "./routes/index.js";
 
 export interface ExpressAppConfig {
   clientUrl?: string;
@@ -27,11 +27,16 @@ export function createExpressApp(config: ExpressAppConfig = {}): Express {
   if (enableCompression) app.use(compression());
 
   app.use(
-    cors({ origin: [clientUrl, "http://localhost:5174"], credentials: true }),
+    cors({
+      origin: [clientUrl, "http://localhost:5174", "http://localhost:5173"],
+      credentials: true,
+    }),
   );
+
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  // Ruta de salud técnica
   app.get("/api/health", (req, res) => {
     res.json({
       success: true,
@@ -40,6 +45,7 @@ export function createExpressApp(config: ExpressAppConfig = {}): Express {
     });
   });
 
+  // Ruta base informativa
   app.get("/", (req, res) => {
     res.json({
       message: "BookLend API is running",
@@ -48,7 +54,13 @@ export function createExpressApp(config: ExpressAppConfig = {}): Express {
     });
   });
 
-  app.use(loadRoutes());
+  /**
+   * CORRECCIÓN APLICADA:
+   * Montamos las rutas en "/" para que los endpoints coincidan
+   * con las peticiones del frontend (ej: /auth/login, /upload/image)
+   */
+  app.use("/", apiRoutes);
+
   app.use(errorHandler);
 
   return app;

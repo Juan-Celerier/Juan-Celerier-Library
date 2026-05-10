@@ -10,7 +10,7 @@
     "lib": ["ES2022"],
     "types": ["node"],
 
-    "baseUrl": ".",
+    
     "paths": {
       "@domain/*": ["../../domain/dist/*"]
     },

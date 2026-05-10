@@ -6,6 +6,7 @@ import type { BookDTO } from "app-domain/dtos/dashboard";
 import { apiClient } from "../../utils/api-client";
 import { Modal } from "../../components/Modal/modal";
 import { BookGrid } from "../../components/Card/AdvancedBookCard";
+
 import {
   Sparkles,
   Plus,
@@ -15,8 +16,9 @@ import {
   UserCircle,
   AlignLeft,
   Layers,
-  Link2,
+  Image as ImageIcon,
 } from "lucide-react";
+import { ImageUpload } from "../../components/Input/ImageUpload";
 
 export const adminBooksLoader = async () => {
   const res = await apiClient.call<BookDTO[]>("books");
@@ -193,7 +195,6 @@ const AdminBooksPage = () => {
           }))}
         />
 
-        {/* MODAL ESTILIZADO */}
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -270,7 +271,7 @@ const AdminBooksPage = () => {
                     </FormGroup>
                   </div>
 
-                  <div className="col-span-1">
+                  <div className="col-span-2 sm:col-span-1">
                     <FormGroup label="Ejemplares" icon={<Layers size={18} />}>
                       <input
                         type="number"
@@ -288,16 +289,17 @@ const AdminBooksPage = () => {
                     </FormGroup>
                   </div>
 
-                  <div className="col-span-1">
-                    <FormGroup label="Imagen (URL)" icon={<Link2 size={18} />}>
-                      <input
-                        type="url"
+                  {/* Campo de Imagen con Upload a MinIO */}
+                  <div className="col-span-2 sm:col-span-1">
+                    <FormGroup
+                      label="Portada del Libro"
+                      icon={<ImageIcon size={18} />}
+                    >
+                      <ImageUpload
                         value={formData.imageUrl}
-                        onChange={(e) =>
-                          setFormData({ ...formData, imageUrl: e.target.value })
+                        onChange={(url) =>
+                          setFormData({ ...formData, imageUrl: url })
                         }
-                        placeholder="https://..."
-                        className="admin-field font-medium"
                       />
                     </FormGroup>
                   </div>
@@ -315,7 +317,7 @@ const AdminBooksPage = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !formData.imageUrl}
                   className="px-12 py-5 rounded-[1.5rem] bg-primary text-white font-black text-sm shadow-xl shadow-primary/25 hover:scale-[1.03] active:scale-[0.97] transition-all disabled:opacity-50"
                 >
                   {isSubmitting
