@@ -58,6 +58,6 @@
     "db:seed": "tsx src/scripts/seed-dev-db.ts",
     "db:init": "npm run db:setup && npm run db:seed",
     "db:prod:seed": "tsx src/scripts/seed-production.ts",
-   "clean:db": "rimraf data/library-system.sqlite"
+    "clean:db": "rimraf data/library-system.sqlite"
   }
 }
