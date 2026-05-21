@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { apiClient } from "../../utils/api-client";
-import { X, Image as ImageIcon } from "lucide-react";
+import { X, Image as ImageIcon, Loader2 } from "lucide-react";
 
 interface ImageUploadProps {
   value?: string;
@@ -23,7 +23,6 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Validar tamaño (5MB)
     if (file.size > 5 * 1024 * 1024) {
       onError?.("La imagen no puede superar 5MB");
       return;
@@ -35,26 +34,22 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
       const formData = new FormData();
       formData.append("image", file);
 
-      /**
-       * CORRECCIÓN CRÍTICA:
-       * El endpoint debe ser 'upload/image' para que coincida con:
-       * router.use("/upload", uploadRoutes) + router.post("/image", ...)
-       */
-      const response = await apiClient.call<{ url: string }>("upload/image", {
-        method: "POST",
+      const response: any = await apiClient.call("upload/image", {
+        _method: "POST",
         body: formData,
-        // Importante: No definimos Content-Type aquí para que el navegador
-        // setee el boundary del FormData automáticamente.
       });
 
-      if (response && "url" in response) {
-        const imageUrl = (response as { url: string }).url;
+      if (response && response.success && response.data) {
+        const imageUrl = response.data;
         setPreview(imageUrl);
         onChange(imageUrl);
+      } else {
+        console.error("Respuesta del servidor sin datos válidos:", response);
+        throw new Error("Respuesta de servidor inválida");
       }
     } catch (error) {
       onError?.("Error al subir la imagen");
-      console.error("Upload error:", error);
+      console.error("Upload error detail:", error);
     } finally {
       setUploading(false);
     }
@@ -70,36 +65,48 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
-        Imagen del libro
-      </label>
+      <p className="text-[10px] font-black text-neutral-400 uppercase tracking-[0.2em] ml-2 block">
+        Vista Previa de Portada
+      </p>
 
       {preview ? (
-        <div className="relative">
+        <div className="relative group w-full aspect-[3/4] max-w-[200px] mx-auto overflow-hidden rounded-[2rem] border-4 border-white shadow-2xl">
           <img
             src={preview}
             alt="Preview"
-            className="w-32 h-32 object-cover rounded-lg border"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
-          <button
-            type="button"
-            onClick={handleRemove}
-            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-          >
-            <X size={16} />
-          </button>
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+            <button
+              type="button"
+              onClick={handleRemove}
+              className="bg-white/20 backdrop-blur-md text-white p-3 rounded-2xl hover:bg-white/40 transition-colors"
+            >
+              <X size={24} />
+            </button>
+          </div>
         </div>
       ) : (
         <div
-          onClick={() => fileInputRef.current?.click()}
-          className="w-32 h-32 border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-gray-400 transition-colors"
+          onClick={() => !uploading && fileInputRef.current?.click()}
+          className={`w-full aspect-[3/4] max-w-[200px] mx-auto border-4 border-dashed rounded-[2rem] flex flex-col items-center justify-center cursor-pointer transition-all duration-300
+            ${uploading ? "border-primary/20 bg-primary/5" : "border-neutral-100 hover:border-primary/40 hover:bg-primary/5"}`}
         >
           {uploading ? (
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="animate-spin text-primary" size={32} />
+              <span className="text-[10px] font-black text-primary uppercase tracking-widest">
+                Subiendo...
+              </span>
+            </div>
           ) : (
             <>
-              <ImageIcon size={24} className="text-gray-400 mb-2" />
-              <span className="text-sm text-gray-500">Seleccionar imagen</span>
+              <div className="h-12 w-12 rounded-2xl bg-neutral-50 flex items-center justify-center text-neutral-400 mb-4">
+                <ImageIcon size={24} />
+              </div>
+              <span className="text-[10px] font-black text-neutral-400 uppercase tracking-widest">
+                Añadir Portada
+              </span>
             </>
           )}
         </div>
@@ -115,3 +122,5 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     </div>
   );
 };
+
+export default ImageUpload;

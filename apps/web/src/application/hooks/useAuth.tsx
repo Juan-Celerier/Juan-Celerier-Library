@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { apiClient } from "../../utils/api-client";
 
 interface UserSession {
@@ -24,15 +24,37 @@ interface AuthContextValue extends UserSession {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  // Inicialización síncrona del token
   const [token, setToken] = useState<string | null>(() => {
     return typeof window !== "undefined" ? localStorage.getItem("token") : null;
   });
-  const [user, setUser] = useState<any | undefined>(undefined);
+
+  // CORRECCIÓN TÉCNICA: Inicialización síncrona del usuario para evitar pantallas en blanco en F5
+  const [user, setUser] = useState<any | undefined>(() => {
+    if (typeof window !== "undefined") {
+      const savedUser = localStorage.getItem("user");
+      return savedUser ? JSON.parse(savedUser) : undefined;
+    }
+    return undefined;
+  });
+
+  // Sincronizamos el localStorage cuando cambian los estados
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user"); // Limpieza preventiva
+    }
+  }, [token]);
 
   useEffect(() => {
-    if (token) localStorage.setItem("token", token);
-    else localStorage.removeItem("token");
-  }, [token]);
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
 
   const login = async (email: string, password: string) => {
     console.log("Attempting login with:", {
@@ -52,7 +74,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return { ok: false, message };
     }
 
-    // Handle successful response - API returns { success: true, data: { token, user } }
     const response = res as any;
     if (response && response.success && response.data) {
       const { token: t, user: u } = response.data;
@@ -62,7 +83,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return { ok: true };
     }
 
-    // Fallback for other response formats
+    // Fallback por si la estructura varía
     const { data } = response || {};
     const { token: t, user: u } = data || {};
     setToken(t || null);

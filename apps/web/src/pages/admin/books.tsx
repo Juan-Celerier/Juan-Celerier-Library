@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useLoaderData, useRevalidator } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLoaderData, useRevalidator, useNavigate } from "react-router-dom";
 import MainLayout from "../../layouts/MainLayout";
 import AdminNavigation from "../../components/AdminNavigation";
 import type { BookDTO } from "app-domain/dtos/dashboard";
@@ -19,13 +19,19 @@ import {
   Image as ImageIcon,
 } from "lucide-react";
 import { ImageUpload } from "../../components/Input/ImageUpload";
+import { useAuth } from "../../application/hooks/useAuth";
 
+// EL LOADER AHORA ES PASIVO: No toma decisiones de Auth para no colgar la UI en el F5
 export const adminBooksLoader = async () => {
-  const res = await apiClient.call<BookDTO[]>("books");
-  if (res && typeof res === "object" && "error" in (res as any)) {
+  try {
+    const res = await apiClient.call<BookDTO[]>("books");
+    if (res && typeof res === "object" && "error" in (res as any)) {
+      return { books: [] };
+    }
+    return { books: (res as BookDTO[]) || [] };
+  } catch {
     return { books: [] };
   }
-  return { books: res as BookDTO[] };
 };
 
 interface BookFormData {
@@ -37,9 +43,19 @@ interface BookFormData {
 }
 
 const AdminBooksPage = () => {
-  const { books: initialBooks } = useLoaderData() as { books: BookDTO[] };
-  const [books, setBooks] = useState(initialBooks);
+  const loaderData = useLoaderData() as { books: BookDTO[] } | BookDTO[] | null;
+
+  // Normalizamos la lectura de datos por si React Router cambia la estructura del wrapper
+  const initialBooks = Array.isArray(loaderData)
+    ? loaderData
+    : loaderData?.books || [];
+
+  const { token } = useAuth(); // 👈 DESESTRUCTURACIÓN INCORPORADA
+  const [books, setBooks] = useState<BookDTO[]>(initialBooks);
+  const [isLoading, setIsLoading] = useState(initialBooks.length === 0);
   const revalidator = useRevalidator();
+  const navigate = useNavigate();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingBook, setEditingBook] = useState<BookDTO | null>(null);
@@ -54,6 +70,41 @@ const AdminBooksPage = () => {
     availableCopies: 1,
     imageUrl: "",
   });
+
+  // CONTROL DEL F5: Validamos las credenciales y recuperamos los datos de forma segura
+  useEffect(() => {
+    const activeToken = token || localStorage.getItem("token");
+    if (!activeToken) {
+      console.warn(
+        "No se encontró credencial en el almacenamiento local. Redirigiendo.",
+      );
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    const syncData = async () => {
+      // Si el loader vino vacío por la sincronización síncrona o caché del F5,
+      // la página hace un fetch de contingencia aislado sin romper el Router.
+      if (initialBooks.length === 0) {
+        setIsLoading(true);
+        try {
+          const res = await apiClient.call<BookDTO[]>("books");
+          if (res && !("error" in (res as any))) {
+            setBooks(res as BookDTO[]);
+          }
+        } catch (error) {
+          console.error("Error cargando inventario en contingencia:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        setBooks(initialBooks);
+        setIsLoading(false);
+      }
+    };
+
+    syncData();
+  }, [initialBooks, token, navigate]);
 
   const resetForm = () => {
     setFormData({
@@ -100,8 +151,13 @@ const AdminBooksPage = () => {
     setMessage("");
 
     try {
-      const submitData = { ...formData, author: { name: formData.author } };
-      let result;
+      const submitData = {
+        ...formData,
+        author: { name: formData.author },
+        image: formData.imageUrl,
+      };
+
+      let result: any;
       if (editingBook) {
         result = await apiClient.call(`books/${editingBook.id}`, {
           ...submitData,
@@ -117,15 +173,32 @@ const AdminBooksPage = () => {
       if (result && typeof result === "object" && "error" in result) {
         setMessage(result.error);
       } else {
-        setMessage(
-          editingBook ? "¡Libro actualizado!" : "¡Libro creado con éxito!",
-        );
+        const updatedBook: BookDTO = {
+          id: editingBook ? editingBook.id : result?.id || `book-${Date.now()}`,
+          title: formData.title,
+          author: formData.author,
+          description: formData.description,
+          availableCopies: formData.availableCopies,
+          imageUrl: formData.imageUrl,
+        };
+
+        if (editingBook) {
+          setBooks((prev) =>
+            prev.map((b) => (b.id === editingBook.id ? updatedBook : b)),
+          );
+          setMessage("¡Libro actualizado!");
+        } else {
+          setBooks((prev) => [updatedBook, ...prev]);
+          setMessage("¡Libro creado con éxito!");
+        }
+
         setIsModalOpen(false);
         resetForm();
         revalidator.revalidate();
       }
     } catch (error) {
       setMessage("Error al procesar la solicitud.");
+      console.error("Error en submit:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -180,21 +253,32 @@ const AdminBooksPage = () => {
           </div>
         )}
 
-        <BookGrid
-          books={books.map((book) => ({
-            id: book.id!,
-            title: book.title!,
-            author:
-              typeof book.author === "string"
-                ? book.author
-                : (book.author as any)?.name || "N/A",
-            availableCopies: book.availableCopies!,
-            image: book.imageUrl,
-            onViewDetails: () => openEditModal(book),
-            onDelete: () => openDeleteModal(book.id!),
-          }))}
-        />
+        {/* Spinner interno controlado localmente para evitar la pantalla trabada */}
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20 gap-4">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+            <p className="text-sm font-bold text-neutral-400 uppercase tracking-widest">
+              Sincronizando Inventario...
+            </p>
+          </div>
+        ) : (
+          <BookGrid
+            books={books.map((book) => ({
+              id: book.id!,
+              title: book.title!,
+              author:
+                typeof book.author === "string"
+                  ? book.author
+                  : (book.author as any)?.name || "N/A",
+              availableCopies: book.availableCopies!,
+              image: book.imageUrl,
+              onViewDetails: () => openEditModal(book),
+              onDelete: () => openDeleteModal(book.id!),
+            }))}
+          />
+        )}
 
+        {/* Modal de formulario */}
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -203,7 +287,6 @@ const AdminBooksPage = () => {
           <div className="w-[640px] max-w-full">
             <form onSubmit={handleSubmit} className="flex flex-col">
               <div className="px-10 py-10 space-y-10">
-                {/* Visual Header */}
                 <div className="flex items-center gap-5 p-6 rounded-[2.5rem] bg-gradient-to-r from-primary/5 to-transparent border border-primary/10">
                   <div className="h-14 w-14 rounded-2xl bg-white shadow-md flex items-center justify-center text-primary shrink-0">
                     <Sparkles size={28} />
@@ -222,7 +305,6 @@ const AdminBooksPage = () => {
                   </div>
                 </div>
 
-                {/* Form Fields Grid */}
                 <div className="grid grid-cols-2 gap-x-8 gap-y-8">
                   <div className="col-span-2 sm:col-span-1">
                     <FormGroup label="Título" icon={<BookText size={18} />}>
@@ -289,7 +371,6 @@ const AdminBooksPage = () => {
                     </FormGroup>
                   </div>
 
-                  {/* Campo de Imagen con Upload a MinIO */}
                   <div className="col-span-2 sm:col-span-1">
                     <FormGroup
                       label="Portada del Libro"
@@ -306,7 +387,6 @@ const AdminBooksPage = () => {
                 </div>
               </div>
 
-              {/* Action Footer */}
               <div className="px-10 py-8 bg-neutral-50/50 border-t border-neutral-100 flex justify-end items-center gap-6">
                 <button
                   type="button"

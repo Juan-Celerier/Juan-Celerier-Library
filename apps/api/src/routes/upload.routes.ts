@@ -11,4 +11,10 @@ router.post(
   UploadController.uploadImage,
 );
 
+router.get("/image", (req, res) => {
+  res.json({
+    message: "La ruta de upload está activa. Usá POST para subir archivos.",
+  });
+});
+
 export default router;

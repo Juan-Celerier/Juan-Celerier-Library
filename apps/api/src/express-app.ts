@@ -36,29 +36,28 @@ export function createExpressApp(config: ExpressAppConfig = {}): Express {
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  // Ruta de salud técnica
-  app.get("/api/health", (req, res) => {
+  // ESTANDARIZACIÓN DE HEALTHCHECK
+  // Lo ponemos en /health para que coincida con el docker-compose
+  app.get("/health", (req, res) => {
     res.json({
       success: true,
-      message: "API is running",
+      message: "API is healthy",
       timestamp: new Date().toISOString(),
     });
   });
 
-  // Ruta base informativa
+  // Mantenemos /api/health por si el frontend lo usa en algún lado
+  app.get("/api/health", (req, res) => res.json({ success: true }));
+
   app.get("/", (req, res) => {
     res.json({
       message: "BookLend API is running",
       version: "0.0.1",
-      timestamp: new Date().toISOString(),
     });
   });
 
-  /**
-   * CORRECCIÓN APLICADA:
-   * Montamos las rutas en "/" para que los endpoints coincidan
-   * con las peticiones del frontend (ej: /auth/login, /upload/image)
-   */
+  // MONTAJE DE RUTAS
+  // apiRoutes debe contener router.use("/upload", uploadRoutes)
   app.use("/", apiRoutes);
 
   app.use(errorHandler);

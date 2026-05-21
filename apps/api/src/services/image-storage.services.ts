@@ -2,13 +2,15 @@ import { HeadBucketCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import path from "path";
 import { s3Client, BUCKET_NAME } from "../config/minio.js";
 import multer from "multer";
+
 export class ImageStorageService {
   static async ensureBucketExists() {
     try {
       await s3Client.send(new HeadBucketCommand({ Bucket: BUCKET_NAME }));
     } catch (error) {
-      // Bucket no existe, pero MinIO lo crea automáticamente en el primer upload
-      console.log("Bucket will be created on first upload");
+      console.log(
+        "Bucket will be created on first upload or check configuration",
+      );
     }
   }
 
@@ -23,13 +25,18 @@ export class ImageStorageService {
       Key: fileName,
       Body: file.buffer,
       ContentType: file.mimetype,
-      ACL: "public-read" as const,
     };
 
     await s3Client.send(new PutObjectCommand(uploadParams));
-    // Retornar URL pública
-    const endpoint = process.env.MINIO_ENDPOINT || "http://localhost:9000";
-    return `${endpoint}/${BUCKET_NAME}/${fileName}`;
+
+    // CORRECCIÓN DE ARQUITECTURA:
+    // Usamos una variable dedicada para las URLs del cliente (Frontend).
+    // Si no está definida en las variables de entorno, clavamos 'http://localhost:9000'
+    // para que tu Fedora pueda renderizar la imagen sin problemas de host.
+    const publicEndpoint =
+      process.env.MINIO_PUBLIC_URL || "http://localhost:9000";
+
+    return `${publicEndpoint}/${BUCKET_NAME}/${fileName}`;
   }
 }
 

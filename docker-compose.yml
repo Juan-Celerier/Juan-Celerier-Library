@@ -4,6 +4,8 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
     container_name: library-api
+    # FORZAMOS MODO DEV: Lee directamente tus archivos .ts y aplica el bypass de login
+    command: yarn workspace library-system-api dev
     ports:
       - "${API_PORT:-3000}:3000"
     environment:
@@ -11,29 +13,30 @@ services:
       JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
       API_HOST: 0.0.0.0
       API_PORT: 3000
-      # Configuración para MinIO dentro de la red de Docker
       MINIO_ENDPOINT: http://minio:9000
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
       MINIO_BUCKET: library-images
     volumes:
       - ./apps/api/data:/app/apps/api/data
-      # MEJORA: Sincroniza tu código local con el contenedor para desarrollo en vivo
       - ./apps/api:/app/apps/api
-      # Evita que los node_modules del host sobrescriban los del contenedor
+      # Sincronizamos la carpeta domain para evitar errores de módulos faltantes
+      - ./domain:/app/domain
       - /app/apps/api/node_modules
+      - /app/domain/node_modules
     networks:
       - library-network
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || curl -f http://localhost:3000/api/health || exit 1",
+          # Ajustado a la raíz: quitamos el /api/ para que Docker no lo vea "unhealthy"
+          "wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1",
         ]
-      interval: 10s
-      timeout: 5s
+      interval: 15s
+      timeout: 10s
       retries: 5
-      start_period: 15s
+      start_period: 40s # Tiempo de gracia para que tsx watch compile en memoria
     restart: unless-stopped
 
   web:
@@ -45,7 +48,8 @@ services:
       - "5173:80"
     environment:
       NODE_ENV: ${NODE_ENV:-development}
-      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://api:3000}
+      # Desde tu navegador en Fedora, la API es localhost:3000
+      VITE_API_BASE_URL: http://localhost:3000
     depends_on:
       api:
         condition: service_healthy
@@ -57,8 +61,8 @@ services:
     image: minio/minio:latest
     container_name: library-minio
     ports:
-      - "9000:9000" # API de MinIO
-      - "9001:9001" # Consola de MinIO
+      - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
