@@ -27,8 +27,7 @@ services:
     networks:
       - library-network
     healthcheck:
-      test:
-        [
+      test: [
           "CMD-SHELL",
           # Ajustado a la raíz: quitamos el /api/ para que Docker no lo vea "unhealthy"
           "wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1",

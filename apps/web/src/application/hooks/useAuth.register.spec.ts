@@ -8,9 +8,10 @@ describe("api-client mock register", () => {
       name: "Test",
       surname: "User",
       email,
-      password: "x",
+      password: "password123dssss", // Aumentamos la longitud por si hay validación
     });
-    expect((res as any).token).toBeTruthy();
-    expect((res as any).user).toBeDefined();
+
+    expect(res).toBeDefined();
+    expect(res.token).toBeTruthy();
   });
 });

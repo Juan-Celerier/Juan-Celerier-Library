@@ -84,6 +84,17 @@ const MOCK_REGISTRY: Record<string, any> = {
       },
     };
   },
+  "auth/register": async (data: any) => {
+    return {
+      token: `mock-token-${Date.now()}`,
+      user: {
+        id: `user-${Date.now()}`,
+        name: data.name || "Nuevo Usuario",
+        email: data.email,
+        role: "BORROWER",
+      },
+    };
+  },
   books: (): BookDTO[] =>
     mockBooks.map((b: any) => ({
       id: b.id,
