@@ -56,6 +56,10 @@ export function createExpressApp(config: ExpressAppConfig = {}): Express {
     });
   });
 
+  app.get("/health", (_, res) => {
+    res.json({ status: "ok" });
+  });
+
   // MONTAJE DE RUTAS
   // apiRoutes debe contener router.use("/upload", uploadRoutes)
   app.use("/", apiRoutes);

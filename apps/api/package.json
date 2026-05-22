@@ -44,7 +44,7 @@
   },
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "start": "yarn build && node dist/server.js",
+    "start": "node dist/apps/api/src/server.js",
     "build": "tsc -p tsconfig.app.json",
     "db:seed:dev": "tsx src/scripts/seed-dev-db.ts",
     "db:seed:prod": "tsx src/scripts/seed-production.ts",
