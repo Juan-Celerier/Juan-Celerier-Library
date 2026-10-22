@@ -48,6 +48,22 @@ Abre <http://localhost:5173>. La API queda disponible en <http://localhost:3000>
 
 El ejemplo de entorno del frontend apunta a la API local y desactiva los mocks para que el recorrido use el backend real.
 
+### Usar Docker Compose
+
+Antes de iniciar los contenedores, crea tu archivo local de entorno y genera un secreto JWT aleatorio:
+
+```bash
+cp .env.example .env
+```
+
+Genera el secreto con `openssl rand -hex 32` y colócalo como valor de `JWT_SECRET` en `.env`. No compartas ni subas ese archivo; el repositorio lo ignora. Docker Compose se detendrá si `JWT_SECRET` no está definido.
+
+```bash
+docker compose up --build
+```
+
+El valor vacío de `JWT_SECRET` en `.env.example` es intencional: es una guía de configuración, no una clave válida.
+
 ## Comandos útiles
 
 ```bash

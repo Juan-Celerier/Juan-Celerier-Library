@@ -10,7 +10,7 @@ services:
       - "${API_PORT:-3000}:3000"
     environment:
       NODE_ENV: ${NODE_ENV:-development}
-      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env before starting Docker Compose}
       API_HOST: 0.0.0.0
       API_PORT: 3000
       MINIO_ENDPOINT: http://minio:9000
