@@ -1,573 +1,74 @@
-# 📚 Library Management System
+# BiblioSys — sistema de gestión de bibliotecas
 
-Una **plataforma de gestión de bibliotecas** moderna y modular construida con **TypeScript**, siguiendo **Clean Architecture** y **Test Driven Development (TDD)**.
+Aplicación web full-stack para consultar un catálogo y gestionar libros, préstamos y reservas. Es un proyecto de portfolio que muestra trabajo con **React, TypeScript, Node.js y Express**: interfaz, API REST, autenticación por roles, persistencia y pruebas.
 
-El sistema proporciona una experiencia completa con:
+> No es un e-commerce ni incorpora funciones de IA. Lo presento como muestra de desarrollo frontend y backend con tecnologías que también se usan en productos web y plataformas comerciales.
 
-- ✅ **Backend REST API** con Express
-- ✅ **Frontend moderno** con React + Vite + Storybook
-- ✅ **Docker Compose** para despliegue con un solo comando
-- ✅ **Arquitectura limpia** y código mantenible
-- ✅ **Autenticación JWT** y control de roles
-- ✅ **Testing completo** (unitarios, integración)
+## Qué se puede revisar
 
----
+- **Frontend:** React 18, TypeScript, Vite y React Router. Incluye catálogo con búsqueda y filtros, vistas de detalle, formularios, panel administrativo y componentes documentados con Storybook.
+- **Backend:** API REST en Node.js y Express, con endpoints para autenticación, libros, autores, categorías, editoriales, préstamos, reservas, favoritos y usuarios.
+- **Persistencia:** SQLite con TypeORM.
+- **Autorización:** inicio de sesión con JWT y rutas administrativas protegidas por rol.
+- **Estructura:** monorepo Yarn con aplicaciones separadas (`apps/web`, `apps/api`) y un paquete de dominio (`domain`).
+- **Calidad:** pruebas con Vitest y workflow de CI en GitHub Actions.
 
-## 🚀 Quick Start
+## Probar localmente
 
-### Opción 1: Docker Compose (Recomendado)
-
-```bash
-# Clonar el repositorio
-git clone <repo-url>
-cd library-system
-
-# Crear archivo de configuración
-cp .env.example .env
-
-# Iniciar todo el sistema
-docker-compose up -d
-
-# Acceder a las aplicaciones
-# Frontend: http://localhost:4173
-# API:      http://localhost:3000
-```
-
-### Opción 2: Desarrollo Local
+Requisitos: Node.js 20 y Yarn 4.1.1 (el repositorio declara la versión de Yarn en `package.json`).
 
 ```bash
-# Instalar dependencias
 yarn install
+```
 
-# Terminal 1: Iniciar API
-yarn workspace api dev
+En una terminal, inicializa la base local con datos de demostración y arranca la API:
 
-# Terminal 2: Iniciar Frontend
+```bash
+yarn workspace library-system-api db:seed:dev
+yarn workspace library-system-api dev
+```
+
+El seed crea usuarios y datos de ejemplo. Está pensado para una base local vacía; no lo ejecutes repetidamente sobre la misma base.
+
+En otra terminal, configura y arranca el frontend:
+
+```bash
+cp apps/web/.env.example apps/web/.env
 yarn workspace web dev
-
-# Frontend estará en http://localhost:5173
-# API estará en http://localhost:3000
 ```
 
----
+Abre <http://localhost:5173>. La API queda disponible en <http://localhost:3000>.
 
-## 📋 Requisitos
+**Usuarios locales de demostración** (creados por el seed; no usar en producción):
 
-- **Node.js** 18+ y **Yarn**
-- **Docker** y **Docker Compose** (para opción 1)
-- **Git**
+| Rol           | Email            | Contraseña    |
+| ------------- | ---------------- | ------------- |
+| Bibliotecario | `admin@test.com` | `password123` |
+| Usuario       | `user@test.com`  | `password123` |
 
----
+El ejemplo de entorno del frontend apunta a la API local y desactiva los mocks para que el recorrido use el backend real.
 
-## ✨ Características
-
-### 📖 Gestión de Libros
-
-- Crear, actualizar y eliminar libros
-- Listar libros disponibles
-- Buscar y filtrar por categoría/autor
-- Ver detalles y disponibilidad
-- Agregar a favoritos
-
-### 👤 Usuarios y Autenticación
-
-- Registro e inicio de sesión
-- Roles: BORROWER (usuario) y LIBRARIAN (administrador)
-- Gestión de perfiles
-- Autenticación JWT
-
-### 📦 Préstamos y Devoluciones
-
-- Solicitar préstamos de libros
-- Devolver libros
-- Renovar préstamos
-- Calcular multas por atrasos
-- Historial de préstamos
-
-### 📌 Reservas
-
-- Reservar libros no disponibles
-- Cancelar reservas
-- Listar mis reservas
-- Notificación cuando estén listos
-
-### 🏷️ Administración
-
-- Panel administrativo (LIBRARIAN)
-- Gestionar libros, autores, editoriales
-- Gestionar categorías
-- Ver estadísticas del sistema
-- Usuarios registrados y activos
-
----
-
-## 🏗️ Arquitectura
-
-El proyecto sigue **Clean Architecture** con 3 capas claramente separadas:
-
-```
-project-root/
-├── apps/
-│   ├── api/              # Express API
-│   │   ├── src/
-│   │   │   ├── controllers/
-│   │   │   ├── routes/
-│   │   │   ├── services/
-│   │   │   ├── middlewares/
-│   │   │   └── container/  (Inyección de dependencias)
-│   │   └── Dockerfile
-│   │
-│   └── web/              # React Frontend
-│       ├── src/
-│       │   ├── components/  (Componentes reutilizables)
-│       │   ├── pages/       (Páginas con rutas)
-│       │   ├── application/ (Hooks y servicios)
-│       │   ├── utils/       (API client, helpers)
-│       │   └── ui/          (Componentes base)
-│       └── Dockerfile
-│
-├── domain/              # Lógica de negocio (framework-independent)
-│   ├── entities/
-│   ├── use-cases/
-│   ├── repositories/
-│   ├── errors/
-│   └── services/
-│
-├── docker-compose.yml   # Orquestación de contenedores
-├── DEPLOYMENT.md        # Guía de despliegue en servidor
-└── package.json
-```
-
-### Capas de Arquitectura
-
-**Domain Layer**
-
-- Entidades y reglas de negocio
-- Use cases independientes del framework
-- Definición de repositorios
-- Errores del dominio
-
-**Application Layer**
-
-- Orquestación de use cases
-- Inyección de dependencias
-- Asignación de rutas
-- Autenticación y autorización
-
-**Infrastructure Layer**
-
-- Controladores HTTP
-- Implementación de repositorios
-- Servicios externos
-- Cliente HTTP para frontend
-
----
-
-## 🧪 Testing
-
-### Backend
+## Comandos útiles
 
 ```bash
-# Tests unitarios
-yarn workspace api test
-
-# Tests en watch mode
-yarn workspace api test:watch
-
-# Coverage
-yarn workspace api test --coverage
-```
-
-### Frontend
-
-```bash
-# Tests unitarios
-yarn workspace web test
-
-# Tests en watch mode
-yarn workspace web test:watch
-
-# Coverage
-yarn workspace web test --coverage
-```
-
----
-
-## 📖 Storybook (Visual TDD)
-
-Visualizar componentes en aislamiento:
-
-```bash
-# Iniciar Storybook
+yarn build
+yarn workspace web test:run
+yarn workspace library-system-api test:run
+yarn workspace domain test --run
 yarn workspace web storybook
-
-# Acceder a http://localhost:6006
 ```
 
-Componentes principales:
+Storybook queda disponible en <http://localhost:6006>.
 
-- `Header` - Barra de navegación
-- `Footer` - Pie de página
-- `Button` - Botones reutilizables
-- `Card` - Tarjetas de contenido
-- `Modal` - Diálogos modales
-- `Pagination` - Paginación
-- `Table` - Tablas de datos
+## Estructura
 
----
-
-## 🔌 API del Backend
-
-### Autenticación
-
-```bash
-# Registro
-POST /auth/register
-{
-  "name": "Juan",
-  "surname": "Pérez",
-  "email": "juan@example.com",
-  "password": "secure-password"
-}
-
-# Login
-POST /auth/login
-{
-  "email": "juan@example.com",
-  "password": "secure-password"
-}
-
-# Perfil (requiere token JWT)
-GET /auth/me
+```text
+apps/
+  api/       API REST, configuración y pruebas
+  web/       Aplicación React y Storybook
+domain/      Entidades, contratos y lógica compartida
 ```
 
-### Libros
+## Estado y alcance
 
-```bash
-# Listar todos
-GET /books
-
-# Obtener uno
-GET /books/:id
-
-# Crear (solo LIBRARIAN)
-POST /books
-{
-  "title": "...",
-  "isbn": "...",
-  "authorId": "...",
-  "publisherId": "...",
-  "categoryId": "..."
-}
-
-# Actualizar
-PUT /books/:id
-
-# Eliminar
-DELETE /books/:id
-```
-
-### Préstamos
-
-```bash
-# Listar préstamos del usuario
-GET /loans
-
-# Crear préstamo
-POST /loans
-{
-  "bookCopyId": "..."
-}
-
-# Devolver libro
-PATCH /loans/:id/return
-```
-
-### Reservas
-
-```bash
-# Listar mis reservas
-GET /reservations
-
-# Crear reserva
-POST /reservations
-{
-  "bookId": "..."
-}
-
-# Cancelar
-DELETE /reservations/:id
-```
-
-Todos los endpoints requieren encabezado:
-
-```
-Authorization: Bearer <JWT_TOKEN>
-```
-
----
-
-## 🌐 Comunicación Frontend-Backend
-
-El frontend consume la API real del backend usando un cliente HTTP optimizado:
-
-```typescript
-// En src/utils/api.ts
-import { api } from "@/utils/api";
-
-// Usar en componentes
-const books = await api.books.getAll();
-const book = await api.books.getById("123");
-const newBook = await api.books.create({ title: "..." });
-```
-
-Variables de entorno en `.env`:
-
-```
-VITE_API_BASE_URL=http://localhost:3000  # Desarrollo
-VITE_API_BASE_URL=https://api.prod.com   # Producción
-```
-
----
-
-## 📦 Docker Compose
-
-### Servicios Disponibles
-
-1. **API** - Express en puerto 3000
-2. **Web** - React/Vite en puerto 4173
-
-```yaml
-# docker-compose.yml incluye:
-- Health checks automáticos
-- Restart policies
-- Variables de entorno
-- Volúmenes persistentes para la BD
-- Network aislada entre servicios
-```
-
-### Comandos Útiles
-
-```bash
-# Iniciar
-docker-compose up -d
-
-# Ver logs
-docker-compose logs -f
-
-# Logs de un servicio específico
-docker-compose logs -f api
-docker-compose logs -f web
-
-# Detener
-docker-compose down
-
-# Eliminar volúmenes (resetear BD)
-docker-compose down -v
-
-# Rebuild después de cambios
-docker-compose build --no-cache
-docker-compose up -d
-```
-
----
-
-## 🚀 Despliegue en Producción
-
-Para hostear en un servidor, ver [DEPLOYMENT.md](./DEPLOYMENT.md).
-
-### Puntos clave:
-
-1. **SSL/HTTPS** - Certificados Let's Encrypt
-2. **Nginx** - Reverse proxy y balanceo
-3. **Variables de entorno** - Configuración segura
-4. **Backups** - Base de datos persistente
-5. **Monitoreo** - Health checks y logs
-6. **Seguridad** - Rates limiting, CORS, headers
-
-Plataformas recomendadas:
-
-- AWS ECS / Fargate
-- DigitalOcean App Platform
-- Google Cloud Run
-- Railway / Render.com
-- Hetzner Cloud
-
----
-
-## 🧹 Calidad de Código
-
-```bash
-# Linting
-yarn lint
-
-# Formateo
-yarn format
-
-# Verificar todo
-yarn verify
-```
-
-Reglas aplicadas:
-
-- **ESLint** - Estilo y errores comunes
-- **Prettier** - Formateo consistente
-- **TypeScript strict** - Tipado seguro
-
----
-
-## 📚 Tecnologías Utilizadas
-
-### Backend
-
-- **Node.js** 20 + Express
-- **TypeScript** - Tipado estático
-- **SQLite** - Base de datos
-- **JWT** - Autenticación
-- **Vitest** - Testing
-
-### Frontend
-
-- **React** 18 + Vite
-- **React Router** - Routing
-- **TypeScript** - Tipado estático
-- **Tailwind CSS** - Estilos
-- **Lucide React** - Iconos
-- **Storybook** - Component library
-- **Vitest** - Testing
-
-### DevOps
-
-- **Docker** & **Docker Compose** - Containerización
-- **Nginx** - Reverse proxy
-- **Let's Encrypt** - SSL/TLS
-
----
-
-## 📝 Variables de Entorno
-
-Ver [.env.example](./.env.example) para todas las opciones.
-
-**Entrada mínima:**
-
-```
-NODE_ENV=development
-JWT_SECRET=<valor-aleatorio>
-VITE_API_BASE_URL=http://localhost:3000
-```
-
----
-
-## 🤝 Estructura de Carpetas
-
-```
-library-system/
-├── apps/
-│   ├── api/
-│   │   ├── src/
-│   │   │   ├── server.ts
-│   │   │   ├── controllers/
-│   │   │   ├── routes/
-│   │   │   ├── services/
-│   │   │   ├── middlewares/
-│   │   │   └── container/
-│   │   ├── data/           (BD SQLite)
-│   │   ├── Dockerfile
-│   │   └── package.json
-│   │
-│   └── web/
-│       ├── src/
-│       │   ├── App.tsx
-│       │   ├── pages/
-│       │   ├── components/
-│       │   ├── application/
-│       │   ├── utils/
-│       │   └── ui/
-│       ├── storybook/
-│       ├── Dockerfile
-│       └── package.json
-│
-├── domain/
-│   ├── src/
-│   │   ├── entities/
-│   │   ├── use-cases/
-│   │   ├── repositories/
-│   │   ├── errors/
-│   │   └── services/
-│   └── package.json
-│
-├── docker-compose.yml
-├── DEPLOYMENT.md
-├── .env.example
-└── package.json
-```
-
----
-
-## 🐛 Troubleshooting
-
-### El frontend no conecta con API
-
-```bash
-# Verificar que API está corriendo
-curl http://localhost:3000
-
-# Verificar variable de entorno
-echo $VITE_API_BASE_URL
-
-# Revisar CORS en backend
-# header: Access-Control-Allow-Origin
-```
-
-### Contenedor no inicia
-
-```bash
-# Ver logs detallados
-docker-compose logs api
-
-# Rebuild forzado
-docker-compose build --no-cache api
-
-# Iniciar con stdin
-docker-compose up api (sin -d)
-```
-
-### Puerto en uso
-
-```bash
-# Cambiar puerto en .env
-API_PORT=3001
-WEB_PORT=4174
-
-# O matar proceso existente
-lsof -i :3000
-kill -9 <PID>
-```
-
----
-
-## 📞 Soporte
-
-Para problemas, abre un issue en el repositorio incluyendo:
-
-- Logs (`docker-compose logs`)
-- Versión de Docker
-- Sistema operativo
-- Pasos para reproducir
-
----
-
-## 📄 Licencia
-
-MIT
-
----
-
-## 🎯 Próximos Pasos
-
-- [ ] Integración con pagos (Stripe/MercadoPago)
-- [ ] Notificaciones por email
-- [ ] Mobile app (React Native)
-- [ ] Analytics y reportes
-- [ ] Búsqueda avanzada (Elasticsearch)
-- [ ] Caché distribuido (Redis)
+El proyecto es una aplicación de demostración en evolución. Los usuarios y la base de datos del seed son locales; no representan un servicio público ni datos de una biblioteca real. Para evaluarlo, se puede recorrer el acceso de bibliotecario y el de usuario, y revisar los módulos de frontend, API y dominio.

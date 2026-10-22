@@ -39,8 +39,8 @@ export const HeroSection = () => {
         </h1>
 
         <p className="text-lg md:text-xl text-neutral-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Explora miles de libros, gestiona tus préstamos y accede al
-          conocimiento desde cualquier lugar. Tu biblioteca inteligente.
+          Explora el catálogo, consulta la disponibilidad y gestiona tus
+          préstamos y reservas desde un solo lugar.
         </p>
 
         {/* Search Bar - Rediseñada para ser más "limpia" */}
@@ -73,14 +73,14 @@ export const HeroSection = () => {
             <div className="p-1.5 bg-primary/10 rounded-lg">
               <BookOpen className="h-4 w-4 text-primary" />
             </div>
-            +1,200 Libros disponibles
+            Catálogo de libros
           </span>
           <div className="hidden md:block w-1.5 h-1.5 rounded-full bg-neutral-300"></div>
           <span className="flex items-center gap-2">
             <div className="p-1.5 bg-green-50 rounded-lg">
               <div className="w-2 h-2 rounded-full bg-green-500"></div>
             </div>
-            Acceso 24/7 sin límites
+            Préstamos y reservas
           </span>
         </div>
       </div>

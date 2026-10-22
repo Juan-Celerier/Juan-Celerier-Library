@@ -95,8 +95,8 @@ const AdminIndexPage = () => {
                   BiblioSys Dashboard
                 </h1>
                 <p className="mt-4 text-lg text-neutral-600 max-w-xl">
-                  Monitorea métricas clave, administra contenido y mantén la
-                  biblioteca bajo control con insights en tiempo real.
+                  Consulta las métricas del catálogo y administra libros,
+                  autores, categorías y editoriales.
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">

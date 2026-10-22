@@ -398,10 +398,11 @@ const BookDetailPage = () => {
                 Información importante:
               </h4>
               <ul className="text-sm text-blue-800 space-y-1">
-                <li>• El préstamo tendrá una duración de 30 días</li>
-                <li>• Puedes renovar el préstamo hasta 2 veces</li>
-                <li>• Debes devolver el libro en buen estado</li>
-                <li>• Se aplicarán multas por retrasos</li>
+                <li>• La solicitud se registra para el libro seleccionado.</li>
+                <li>
+                  • La disponibilidad y las condiciones se confirman con la
+                  biblioteca.
+                </li>
               </ul>
             </div>
 

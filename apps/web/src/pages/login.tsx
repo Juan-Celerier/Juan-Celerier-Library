@@ -71,22 +71,22 @@ const LoginPage = () => {
 
           <div className="relative">
             <span className="px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest">
-              BiblioSys Cloud
+              BiblioSys
             </span>
             <h1 className="mt-6 text-5xl font-black text-neutral-900 leading-tight">
               Tu próxima <span className="text-primary italic">aventura</span>{" "}
               comienza aquí.
             </h1>
             <p className="mt-6 text-lg text-neutral-500 leading-relaxed max-w-sm">
-              Inicia sesión para gestionar tus préstamos y descubrir
-              recomendaciones personalizadas.
+              Inicia sesión para consultar el catálogo y gestionar tus préstamos
+              y reservas.
             </p>
           </div>
 
           <div className="mt-12 space-y-4 relative">
-            <FeatureItem text="Control total de préstamos" />
-            <FeatureItem text="Reservas en tiempo real" />
-            <FeatureItem text="Acceso a 1,200+ títulos" />
+            <FeatureItem text="Consulta del catálogo y disponibilidad" />
+            <FeatureItem text="Gestión de préstamos y reservas" />
+            <FeatureItem text="Panel administrativo por roles" />
           </div>
         </section>
 
